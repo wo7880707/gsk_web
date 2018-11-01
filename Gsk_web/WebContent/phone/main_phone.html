@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+		<title>杠上开期货决策系统</title>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet" >
+		<link href="../css/ALL.css" rel="stylesheet" >
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+
+		<script type="text/javascript" src="../js/init.js"></script>
+	</head>
+	<body style="background-color: gray;">
+		<!--1.第一行  显示框-->
+		<div class="container-fluid" style="background-color: #808080; ">
+			<div class="row" style="line-height: 50px; ">
+				<div class = "col-lg-1  col-md-1 col-sm-1 col-xs-1" style="padding-left: 0px; ">	
+					<img src="../img/g.png" style="margin: 0px; padding: 0px; border: solid 0px white;"/>
+				</div>
+				<div class = "col-lg-7  col-md-7 col-sm-7 col-xs-7" style="padding-left: 0px; ">
+					<span class="text-left" style="color: #FFFFFF; font-size: 18px; font-weight: 500; margin-left: 30px;">杠上开期货决策系统</span>							
+				</div>
+				<div class = "col-lg-4  col-md-4 col-sm-4 col-xs-4" style="padding-left: 0px; ">
+					<span class="text-left" style="color: #FFFFFF;font-size: 14px; ">杠上开服务器2</span>
+				</div>
+			</div>	
+			<!--主力合约-->
+			<div class="row" style="line-height: 50px;background-color: #FFFFFF; ">
+				<div class = "col-lg-6  col-md-6 col-sm-6 col-xs-6  col-lg-offset-1  col-md-offset-1 col-sm-offset-1 col-xs-offset-1 " style="padding-left: 0px; ">
+					<span  style="color: #2B669A;font-size: 16px; margin-left: 30px;">欢迎您！
+					<span  id="username" style="color: #2B669A;font-size: 16px;margin-right: 30px;">dasdads</span></span>
+				</div>
+				<div class = "col-lg-4  col-md-4 col-sm-4 col-xs-4  col-lg-offset-1  col-md-offset-1 col-sm-offset-1 col-xs-offset-1" style="padding-left: 0px; ">
+					<span class="text-left" style="font-size: 16px; color: #2B669A;">主力合约</span>
+				</div>
+			</div>
+			
+			<!--期货公司-->
+			<div class="row" style="line-height: 60px; background-color: #FFFFFF; margin-left: -15px; border-bottom: solid 1px #337AB7; border-top: solid 1px #337AB7;">	
+				<div class= "col-lg-12  col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px; padding-right: 0px;" align="center">
+					<a href="main_phone.html">
+					<button type="button" class="btn btn-default " style="height: 40px; margin-left: 5px;">
+  					<span class="glyphicon glyphicon-th-list" style="color: blue;"></span>
+					</button>
+					</a>							
+					<span  style="  color: #FFFFFF; font-size: 14px; "><a style="cursor: pointer; ">中金所CFFEX</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">上期所SHFE</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">大商所DCE</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">郑商所CZCE</a></span>						
+				</div>
+			</div>
+		<!--2.功能框-->				
+			<div class="row" style="line-height: 60px; background-color: #FFFFFF; margin-left: -15px; ">
+				<div class= "col-lg-12  col-md-12 col-sm-12 col-xs-12" align="center" style="padding-left: 0px; padding-right: 0px;">				
+					<span class="dropdown" style="color: #FFFFFF; font-size: 14px; margin-left: 20px;">
+						<!--<a href = "login_trade_acc.html" style="cursor: pointer; ">期货账号登录</a>-->
+						<a id="future_login" class="dropdown-toggle" data-toggle="dropdown" role= "button" style="cursor: pointer; ">期货账号登录</a>
+						<ul id="future_login_list" class="dropdown-menu" style="margin-top: 12px; " >
+      						<li><a href = "login_trade_acc_phone.html">首创期货</a></li>
+      						<li><a href = "login_trade_acc_phone_hongyuan.html">宏源期货</a></li>
+    					</ul>
+					</span>		
+					<span class="dropdown" style="color: #FFFFFF;font-size: 14px; margin-left: 10px; display: inline-block;">						
+						<a id="order" class="dropdown-toggle" data-toggle="dropdown" role= "button" style="cursor: pointer; ">委托单
+							<!-- <span class="badge" style="background-color: lightgreen;width: 18px; position:relative;left:-6px ; top: -9px;">
+								7
+							</span> -->
+						</a>
+						<ul id="order_list"  class="dropdown-menu" style="margin-top: -10px;" >
+      						<li><a href = "show_strategy_orders_phone.html">所有委托单</a></li>
+      						<li><a href = "add_strategy_orders_phone.html">增加委托单</a></li>
+    					</ul>
+					</span>		
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px;"><a id = "accountdetail" style="cursor: pointer; ">账户信息</a></span>		
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px; margin-right: 30px;"><a id = "out" style="cursor: pointer; ">注销登录</a></span>		
+				</div>
+			</div>	
+					<!--数据显示栏。。。。。。。。。。。。。。。。。。-->
+			<div class="row" style="background-color:gray;">
+					<!--<div class="row" style="text-align: center;color: lightcoral;">
+						<h1>您账号下的所有委托单</h1>
+					</div>-->
+						<div class="table-responsive">
+						  <table id="show_quotesnapshot" class="table" style="color: yellow;" >
+						    <thead>					      
+						        <th>名称</th>
+								<th>最新</th>
+								<th>涨幅%</th>
+								<th>成交量</th>
+						    </thead>
+						  </table>
+						</div>
+			</div>			
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->  
+        <div class="modal" id="aa" >  
+            <div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">  
+                <p class="page-header">尊贵的客户，您好！</p>    
+              
+                <div class="table-responsive" style="margin-top: 30px;">
+                <table  style="width: 85%; margin-left: 15%; ">              	
+                	<tr class="success">	
+                		<td >姓名:<span id="return_Name"></span></td>
+                		<td>用户类型:<span id="return_UserType"></span></td>
+                	</tr>
+                	<tr class="success">
+                		<td>电话:<span id="return_Telephone"></span></td>
+                		<td>邮箱:<span id="return_EmailAddress"></span></td>
+                	</tr>
+                </table>
+                </div>
+                <div class="table-responsive" style="margin-top: 30px;">
+                <table id="login_detail_Indices" class="table-bordered" style="width: 100%;">
+                	<thead>
+                		<td>指标类型</td>
+                		<td>指标订阅到期日</td>
+                		<td>状态</td>
+                	</thead>
+                	<!-- <tr>
+                		<td>白盘</td>
+                		<td>2018年4月21日</td>
+                		<td>正常</td>
+                	</tr>
+                	<tr>
+                		<td>白盘指标</td>
+                		<td>2018年4月21日</td>
+                		<td>正常</td>
+                	</tr> -->
+                </table>
+                </div>
+                <p style="margin-top: 20px;">
+                	注：如有任何问题请联系杠上开期货交易决策系统客服!  
+                </p>     
+                <p class="text-right"><button class="btn btn-info"  
+                 onclick='$("#aa").modal("hide")'>关闭</button></p>  
+            </div>  
+        </div>  
+	</body>
+<script type="text/javascript">
+//正则表达式  ：为了能取到合约前面的字母
+		var reg = /[a-z]+/gi;
+		var reg1 = /[0-9]+/gi;
+		//合约列表中英文对照对象
+		var contracts_contrast = {"pp":"PP","T":"T","TF":"TF","bb":"胶板","ni":"沪镍","RI":"早稻","i":"铁矿",
+								  "rb":"螺纹","y":"豆油","al":"沪铝","FG":"玻璃","v":"PVC","fu":"燃油料","jd":"鸡蛋",
+								  "ZC":"郑煤","jm":"焦煤","p":"棕榈","CF":"郑棉","c":"玉米","sn":"沪锡","RM":"菜粕",
+								  "WH":"郑麦","fb":"纤板","ru":"橡胶","OI":"郑油","pb":"沪铅","TA":"PTA","a":"豆一",
+								  "cs":"淀粉","SF":"硅铁","l":"塑料","au":"沪金","LR":"晚稻","zn":"沪锌","j":"焦炭",    
+								  "SM":"猛硅","m":"豆粕","bu":"沥青","SR":"白糖","MA":"郑醇","ag":"沪银","hc":"热卷",
+								  "cu":"沪铜","IH":"IH","IF":"IF","IC":"IC"}  
+		//做一个转换方法 将合约英文名称  变成中文名称
+		function change(contract){
+			var chinese  = contract.match(reg)[0];
+			var num  = contract.match(reg1)[0];
+			chinese = contracts_contrast[chinese];
+			return chinese + num;
+		}
+/*		//合约列表中英文对照数组
+		var contracts_contrast = ["pp","PP","T","T","TF","TF","bb","胶板","ni","沪镍","RI","早稻","i","铁矿",
+								  "rb","螺纹","y","豆油","al","沪铝","FG","玻璃","v","PVC","fu","燃油料","jd","鸡蛋",
+								  "ZC","郑煤","jm","焦煤","p","棕榈","CF","郑棉","c","玉米","sn","沪锡","RM","菜粕",
+								  "WH","郑麦","fb","纤板","ru","橡胶","OI","郑油","pb","沪铅","TA","PTA","a","豆一",
+								  "cs","淀粉","SF","硅铁","l","塑料","au","沪金","LR","晚稻","zn","沪锌","j","焦炭",    
+								  "SM","猛硅","m","豆粕","bu","沥青","SR","白糖","MA","郑醇","ag","沪银","hc","热卷",
+								  "cu","沪铜","IH","IH","IF","IF","IC","IC"]
+
+		//做一个转换方法 将合约英文名称  变成中文名称
+		function change(contract){
+			var chinese  = contract.match(reg)[0];
+			var num  = contract.match(reg1)[0];
+						for (var i = 0; i < contracts_contrast.length; i++) {
+							if(chinese == contracts_contrast[i]){
+								//取到数组下一个值
+								chinese = contracts_contrast[i+1];
+								break;
+							}
+						}
+			return chinese + num;
+		}*/
+		//这一句代码是调用了bootstrap的函数,直接传入ID即可使用.
+		//如果是从login.html页面过来的 就显示
+		var url_forward = document.referrer;
+		//如果字符串里有login.html 就显示
+		if (url_forward.indexOf("login.html") > 0) {
+			$('#aa').modal("show");
+		}
+		//点击出现用户个人信息
+		$('#accountdetail').click(function() {
+				$('#aa').modal("show");
+			})
+		//先查询一次  显示
+		var param_data = {
+				"ResoType": "1",
+				"Contracts": ""
+			}
+			$.ajax({
+				type: "post",
+				url: "../restapi/qry_quotesnapshot_return.action",
+				data: {
+					"param": JSON.stringify(param_data)
+				}
+			}).done(function(temp) {
+				var res = JSON.parse(temp);
+				//预留BASE64编码的解码方法
+				//解码
+				//var msgDesc=$("#divId").html().replace(/(\s*)/g, "");  注意替换一下特殊字符
+				//$.base64.decode(res.Snapshots, 'utf8')  一定要注意引用 utf8务端加密方式一致。
+				if (res.RetNo == "0") {
+					//在表格中显示
+					$('#show_quotesnapshot').empty();
+					$('#show_quotesnapshot').append('<thead><th>序号</th><th>合约名称</th><th>最新价</th><th>现手</th><th>买盘价</th><th>卖盘价</th><th>买盘量</th><th>卖盘量</th><th>成交量</th><th>涨跌</th><th>涨跌幅</th><th>持仓量</th><th>日增仓</th><th>开盘价</th><th>最高价</th><th>最低价</th><th>结算价</th><th>昨结算</th><th>昨收盘</th><th>合约代码</th><th>交易所</th></thead>');
+					for (var i = 0; i < res.Snapshots.length; i++) {
+						 //取到Date数据
+						var s1 = res.Snapshots[i].Data;
+						//分割数据
+						var s2 = s1.split(",");
+						//序号
+						var s3 = i + 1;
+						/* //中文合约名称
+					 	var chinese  = s2[0].match(reg)[0];
+						for (var i = 0; i < contracts_contrast.length; i++) {
+							if(chinese == contracts_contrast[i]){
+								//取到数组下一个值
+								chinese = contracts_contrast[i+1];
+								break;
+							}
+						}
+						//取到中文名字和数字代码的整体
+						chinese = chinese + s2[0].match(reg1)[0];   */
+						//var chinese  ="11";
+					$('#show_quotesnapshot').append('<thead><tr class="kline"><th>' + s3 +'</th><th>' + s2[0] +'</th><th>' + change(s2[0]) +'</th><th>' +  s2[2]  +'</th><th>' +   s2[3] +'</th><th>' +  s2[4]  +'</th><th>' +   s2[5] +'</th><th>' +  s2[6] +'</th><th>' +  s2[7]  +'</th><th>' +  s2[8]  +'</th><th>' +  s2[9]  +'</th><th>' +  s2[10]  +'</th><th>' +  s2[11]  +'</th><th>' +  s2[12]  +'</th><th>' +   s2[13] +'</th><th>' +  s2[14]  +'</th><th>' +  s2[15]  +'</th><th>' +  s2[16]  +'</th><th>' +  s2[17]  +'</th><th>' +  s2[18]  +'</th><th>' + s2[19]   + '</th></tr></thead>');
+					} 
+				} else {
+					//swal("行情快照接口返回值不等于0  没成功");
+					alert("行情快照接口返回值不等于0  没成功");
+				}
+				//表格单击事件
+			 $(".kline").click(function(){
+			var contract = $(this).children().first().next().html();
+			location.href = "kline.html?contract="+contract;
+		})	
+			}).fail(function(error){	
+				//swal("行情快照api问题");
+				alert("行情快照api问题");
+			})	
+			//调用api
+			//1.快照qry_quotesnapshot  :定时显示
+ 		 $("body").everyTime("2s", "快照qry_quotesnapshot", function() {
+			//传参
+			var param_data = {
+				"ResoType": "1",
+				"Contracts": ""
+			}
+			$.ajax({
+				type: "post",
+				url: "../restapi/qry_quotesnapshot_return.action",
+				data: {
+					"param": JSON.stringify(param_data)
+				}
+			}).done(function(temp) {
+				var res = JSON.parse(temp);
+				//预留BASE64编码的解码方法
+				//解码
+				//var msgDesc=$("#divId").html().replace(/(\s*)/g, "");  注意替换一下特殊字符
+				//$.base64.decode(res.Snapshots, 'utf8')  一定要注意引用 utf8务端加密方式一致。
+				if (res.RetNo == "0") {
+					//在表格中显示
+					$('#show_quotesnapshot').empty();
+					$('#show_quotesnapshot').append('<thead><th>序号</th><th>合约名称</th><th>最新价</th><th>现手</th><th>买盘价</th><th>卖盘价</th><th>买盘量</th><th>卖盘量</th><th>成交量</th><th>涨跌</th><th>涨跌幅</th><th>持仓量</th><th>日增仓</th><th>开盘价</th><th>最高价</th><th>最低价</th><th>结算价</th><th>昨结算</th><th>昨收盘</th><th>合约代码</th><th>交易所</th></thead>');
+				 	for (var i = 0; i < res.Snapshots.length; i++) {
+				 		//取到Date数据
+						var s1 = res.Snapshots[i].Data;
+						//分割数据
+						var s2 = s1.split(",");
+						//序号
+						var s3 = i + 1;
+						//中文合约名称
+						/* var chinese  = s2[0].match(reg)[0];
+						for (var i = 0; i < contracts_contrast.length; i++) {
+							if(chinese == contracts_contrast[i]){
+								//取到数组下一个值
+								chinese = contracts_contrast[i+1];
+								break;
+							}
+						}
+						//取到中文名字和数字代码的整体
+						chinese = chinese + s2[0].match(reg1)[0];  */
+						//var chinese  = "111";
+					$('#show_quotesnapshot').append('<thead><tr class="kline"><th>' + s3 +'</th><th>' + s2[0] +'</th><th>' + change(s2[0]) +'</th><th>' +  s2[2]  +'</th><th>' +   s2[3] +'</th><th>' +  s2[4]  +'</th><th>' +   s2[5] +'</th><th>' +  s2[6] +'</th><th>' +  s2[7]  +'</th><th>' +  s2[8]  +'</th><th>' +  s2[9]  +'</th><th>' +  s2[10]  +'</th><th>' +  s2[11]  +'</th><th>' +  s2[12]  +'</th><th>' +   s2[13] +'</th><th>' +  s2[14]  +'</th><th>' +  s2[15]  +'</th><th>' +  s2[16]  +'</th><th>' +  s2[17]  +'</th><th>' +  s2[18]  +'</th><th>' + s2[19]   + '</th></tr></thead>');
+					} 
+				} else {
+					//swal("行情快照接口返回值不等于0  没成功");
+					alert("行情快照接口返回值不等于0  没成功");
+				}
+				//表格单击事件
+				 $(".kline").click(function(){
+				var contract = $(this).children().first().next().html();
+				location.href = "kline_phone.html?contract="+contract;
+					})	
+			})			
+		}, 0, true)  
+			/*	[{
+			"RetNo": "0",
+			"ResoType": "1",
+			"Snapshots": [{
+				"Data": "pp1801,,9106,9002,9176,8971,9110,9106,9007,9085,701292,31857972680,439822,471118,9106,3,9107,1"
+			}, {
+				"Data": "T1712,,94,94.27,94.39,93.89,94.32,94,94.35,94.01,46056,43363754850,71857,72753,94,29,94,12"
+		}] */
+
+	</script>
+	<script type="text/javascript" src="../js/login.js"></script>
+</html>

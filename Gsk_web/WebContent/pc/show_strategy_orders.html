@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<script type="text/javascript" src="../sweet/js/sweet-alert.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sweet/css/sweet-alert.css"/>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.nicescroll.min.js"></script>
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+		<script type="text/javascript" src="../js/init.js"></script>
+	</head>
+	<body style="background-color: #white; margin-right: 0px; overflow:-Scroll;/* overflow-y:hidden */">
+		<!--1.第一行  显示框-->
+		<div class="container-fluid" style="background-color: #000000; ">
+			<div class="row" style=" height: 60px; background-color: #5BC0DE;;" id = "bb1">
+			</div>
+			<!--2.功能框-->
+			<div class="row" style="line-height: 50px; background-color: #FFFFFF; margin-left: -15px; "id = "bb2">
+			</div>
+			<!-- <div class="row" style="line-height: 50px; background-color: #FFFFFF; margin-left: -15px; "id = "bb3">
+				<div class="col-lg-12  col-md-12 col-sm-12 " align="center" >
+					<div >
+						<ul class="nav nav-pills" style="text-align: center;" >
+						  <li role="presentation" class="active" ><a id="info_tradeAcc" href="#"></a></li>
+						  <li role="presentation" class="active" ><a id="info_preBalance" href="#"></a></li>
+						  <li role="presentation" class="active" ><a id="info_balance" href="#"></a></li>
+						  <li role="presentation" class="active" ><a id="info_currMargin" href="#"></a></li>
+						  <li role="presentation" class="active" ><a id="info_frozenMargin" href="#"></a></li>
+						  <li role="presentation" class="active" ><a id="info_available" href="#"></a></li>
+						  <li role="presentation" class="active" ><a id="info_riskRate" href="#"></a></li>
+						</ul>
+					</div>
+				</div>
+			</div> -->
+	<script type="text/javascript">
+	$('#bb1').load("header_1floor.html",function() {
+		if(window.innerWidth <= 1100){
+			$('#xuanchuanzi').html("");
+		}
+		if(window.innerWidth <= 800){
+					$('#div1').prop("class","col-lg-2  col-md-2 col-sm-2 col-xs-2");
+					$('#div2').prop("class","col-lg-9  col-md-9 col-sm-9 col-xs-9");
+					$('#div3').prop("class","col-lg-1  col-md-1 col-sm-1 col-xs-1");
+					$('#xitongming').html("");
+					$('#username_button').html("");
+				}
+		if(window.innerWidth <= 1219){
+		
+				}		
+		});
+	
+	$('#bb2').load("header_2floor.html",function() {
+		var height_log = window.innerHeight - 373 - parseInt($("#log_detail_title").css("height")) - 30  - parseInt($("#bb1").css("height")) - parseInt($("#bb2").css("height"));
+		$("#log").css("height", height_log > 100 ? height_log + "" : 100 + "");
+		//$("#log_detail").css("height", height_log + 53 + 30 + "");
+		if(height_log > 0){
+			$('body').css("overflow-y","hidden");
+		}
+	});
+	</script>
+			<!--3.所有委托单-->
+			<div class="row" style="background-color:gray; " >
+				<div style="text-align: center;color: lightcoral; margin-top :10px ; margin-bottom: 10px;">
+					<h2>委 托 单 状 态</h2>
+				</div>
+				<div class="col-lg-10  col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1" >
+				<div class="table-responsive">
+					<table id="table_data" class="table table-condensed table-bordered" style = "color : white; font-size : 16px;"   >
+						<thead style = "font-size : 18px; font-weight : 700"  >
+							<tr align = "center"  valign = "center">
+							<td>合约</td>
+							<td>策略</td>
+							<td>数量</td>
+							<td>期望收益</td>
+							<td>浮动收益</td>
+							<td>平仓盈亏</td>
+							<td>手续费</td>
+							<td>最新价</td>
+							<td>订单状态</td>
+							<td>策略单操作</td>
+							</tr>
+						</thead>
+						<thead>
+							<tr style = " height : 42px;" >
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							</tr>
+						</thead>
+						<thead>
+							<tr style = " height : 42px;" >
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							</tr>
+						</thead>
+						<thead>
+							<tr style = " height : 42px;" >
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							</tr>
+						</thead>
+						<thead>
+							<tr style = " height : 42px;" >
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							</tr>
+						</thead>
+						<thead>
+							<tr style = " height : 42px;" >
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							</tr>
+						</thead>
+						<thead>
+							<tr style = " height : 42px;" >
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-danger" id = "log_detail" style = "margin-bottom : 0px;">
+			  <div id = "log_detail_title" class="panel-heading" >
+			  	<center><span style="font-size: large;"><h3 style="margin-bottom: 3px;margin-top: 3px;color: lightcoral;">-------------------------------------- &nbsp;&nbsp;&nbsp;日 志 信 息&nbsp;&nbsp;&nbsp;--------------------------------------</h3></span></center>
+			  </div>
+			  <div class="panel-body" id = "log_detail_log" >
+			    <div class="col-lg-10  col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1"  id = "log" style="height : 800px; font-size : 16px;"> </div>
+			  </div>
+		</div>	
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->
+		<div class="modal" id="aa">
+			<div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<p class="page-header" style="margin-left: 15px; font-size : 20px; color : lightcoral; font-weight : 600;margin-right: 15px;">
+					尊贵的客户，您好！
+				</p>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table style="width: 85%; margin-left: 15%; font-size: 18px;">
+						<tr class="success">
+							<td>姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_Name"></span></td>
+							<td>用户类型&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_UserType"></span></td>
+						</tr>
+						<tr class="success">
+							<td>电 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_Telephone"></span></td>
+							<td>邮 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_EmailAddress"></span></td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="table-responsive" style="margin-top: 30px;" align = "center">
+					<table id="login_detail_Indices" class="table-bordered table-striped" style="width: 97%;" >
+						<thead>
+							<td> 指标类型</td>
+							<td> 指标订阅到期日</td>
+							<td> 状态</td>
+						</thead>
+					</table>
+				</div>
+				<p style="margin-top: 20px;margin-left: 15px; font-size : 17px; ">
+					温馨提示 ：如有任何问题请联系杠上开期货交易决策系统客服 !
+				</p>
+				<p class="text-right " style="margin-right: 20px;"><button class="btn btn-info " onclick='$("#aa").modal("hide")'>关闭</button></p>
+			</div>
+		</div>
+		<!--这里制作一个模态框，显示策略单详情的-->
+		<div class = "modal" id = "bba">
+			<div class="col-md-4 col-sm-4  col-md-offset-4 col-sm-offset-4" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<div id = "add_top"  style="" align="center">
+						<span id = "close_bba" class="glyphicon glyphicon-remove"  onclick='$("#bba").css("display","none")' style=" cursor:pointer; top : 0px;"></span>	 
+						 <!-- <div style=" margin-left: 0px;"> 
+							<button type="button" class="btn btn-default " style="  margin-left: 4px; " onclick='$("#bba").css("display","none")'>
+  								<span class="glyphicon glyphicon-remove" style="color: black; font-size : 10px; padding-left : -20px; top: 0px;"></span>
+							</button>
+						</div>  -->
+						<div style="text-align: center;" >
+						<h3 style="color: lightcoral; font-size : 32px; margin-top : 10px;">策略单详情</h3>
+						</div>
+					<fieldset>
+						<legend></legend>
+							<div class="form-group" >
+								<span style= "font-size : 16px; margin-top : 40px;" >合&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;约</span> 
+								<input id = "ContractID" type="text" style="margin-left:20px; height: 30px; width : 172px;"  >
+							</div> 
+			                <div class="form-group" >			
+								<span id="Name_change" style= "font-size : 16px; cursor:pointer;" >策&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;略</span> 
+								<input id = "Name" type="text" style="margin-left:20px; height: 30px; width : 172px;"  >
+							</div> 
+							<div class="form-group" >
+								<span style= "font-size : 16px;" >委托数量</span> 
+								<input id = "OrderAmount" type="text" style="margin-left:20px; height: 30px; width : 172px;"  >
+							</div>
+							<div class="form-group" >
+								<span style= "font-size : 16px;" >报入时间</span> 
+								<input type="text" id = "InsertDate" style="margin-left:20px; height: 30px; width : 172px;" >
+							</div>
+							<div class="form-group" >
+								<span style= "font-size : 16px;" >有效期限</span> 
+								<input type="text"  id = "ExpirationDate" style="margin-left:20px; height: 30px; width : 172px;" >
+							</div>
+							<div class="form-group" >
+								<span style= "font-size : 16px;" >有效交易时段</span> 
+								<input id = "ValidTime" type="text" style="margin-left:20px; height: 30px; width : 145px;"  >
+							</div>
+					</fieldset>
+					<fieldset id = "add_index">
+                	</fieldset>
+				</div>
+				<!--<p class="text-right " style="margin-right: 20px;"><button class="btn btn-info " onclick='$("#bba").modal("hide")'>关闭</button></p>-->
+				<p class="text-right " style="margin-right: 20px;"><button class="btn btn-info " onclick='$("#bba").css("display","none")'>关闭</button></p>
+			</div>
+			
+		</div>
+	</body>
+	<script>
+		var allstrategys = JSON.parse(localStorage.getItem("strategys_return")).Strategys;
+		var allPropertyDescription = JSON.parse(localStorage.getItem("strategys_return")).PropertyDescription;
+		var dynamic_param = [];
+		//根据ID查到合约，然后显示在modal上
+		
+		$(window).resize(function() {
+			window.location.reload();
+		});
+		//状态
+		function option_change(a){
+			var temp = {"enable":"正常","disable":"暂停","remove":"撤销","complete":"完成"};
+			return  temp[a];
+		} 
+		
+		function change_option(b){
+			var temp = {"正常":"enable","暂停":"disable","撤销":"remove","完成":"complete"};
+			return  temp[b];
+		} 
+
+		/* var height_log = window.innerHeight - 373 - 53 - 30 - 70 - parseInt($("#bb1").css("height")) - parseInt($("#bb2").css("height"));
+		$("#log").css("height", height_log > 100 ? height_log + "" : 100 + ""); */
+		var ValidTime_temp = ["白盘","夜盘","白盘+夜盘"];
+		var log_date = "";
+		var Last_Index = "0";
+		//调用api
+		function apiconnection(){
+		param = {
+					"UserID": UserID,
+					"TradeAcc": TradeAcc,
+					"TradePwd":TradePwd,								// 交易密码（暂定不使用）
+					"BrokerID":BrokerID,								// 经纪公司代码
+					"LastIndex": Number(Last_Index)  + ""
+				}
+		$.ajax({
+			type: "post",
+			url: "../restapi/qry_base_info_return.action",
+			data: {
+				"param": JSON.stringify(param)
+			}
+		}).done(function(temp) {
+			
+			var res = JSON.parse(temp);
+			var up = "red";
+			var down = "green";
+			var enable = "enable";
+			var disable = "disable";
+			var disabled = "disabled";
+			if(res.RetNo == "0") {
+				/* try{
+					//显示资金信息
+					$('#info_tradeAcc').html("交易账号:" + res.TradeAccInfo.ClientInfo.TradeAcc );
+					$('#info_preBalance').html("静态权益:" + res.TradeAccInfo.TradeInfo.PreBalance);
+					$('#info_balance').html("动态权益:" + res.TradeAccInfo.TradeInfo.Balance);
+					$('#info_currMargin').html("占用保证金:" + res.TradeAccInfo.TradeInfo.CurrMargin);
+					$('#info_frozenMargin').html("下单冻结:" + res.TradeAccInfo.TradeInfo.FrozenMargin);
+					$('#info_available').html("可用资金:" + res.TradeAccInfo.TradeInfo.Available);
+					$('#info_riskRate').html("风险度:" + res.TradeAccInfo.TradeInfo.RiskRate + "%");
+					if(res.TradeAccInfo.TradeInfo.RiskRate >= 70) {
+						$('#info_riskRate').css("color","red");
+					}
+				}catch(e){
+					//先不做处理 因为显示是交易所拉起策略单后显示
+					//8：55分之后才能出来数据 之前的数据全部为空 不进行try catch 页面会产生bug   夜盘也是对应的
+				} */
+				
+				//显示表格内容
+				$('#table_data').empty();
+
+				$('#table_data').append('<thead style = "font-size : 18px; font-weight : 700"><tr align = "center"  valign = "center"><td valign = "center">合约</td><td valign = "center">策略</td><td valign = "center">数量</td><td>期望收益</td><td>浮动收益</td><td>平仓盈亏</td><td>手续费</td><td>最新价</td><td>策略单状态</td><td>策略单操作</td></tr></thead>');
+				var index = res.TurnoverInfo.length;
+				for(var i = 0; i <= 5; i++) {
+				 if(i < index ){ 
+					
+					var s0 = i + 1;
+					
+					var s00 = res.TurnoverInfo[i].ContractID;
+					
+					var sID = res.TurnoverInfo[i].StrategyOrderID;
+				
+					var s1 = res.TurnoverInfo[i].ContractName;
+				
+					var s5 = res.TurnoverInfo[i].FloatTurnover;
+					
+					var s4 = res.TurnoverInfo[i].ExpectTurnover;
+				
+					var s9 = res.TurnoverInfo[i].OrderState;
+				
+					var s2 = res.TurnoverInfo[i].Name;
+				
+					var s3 = "0";
+					if(res.TurnoverInfo[i].LongPosi != "0"){
+						s3 = "多" + res.TurnoverInfo[i].LongPosi ;
+					}else if(res.TurnoverInfo[i].ShortPosi != "0"){
+						s3 = "空" + res.TurnoverInfo[i].ShortPosi ;
+					}
+			
+					var s6 = res.TurnoverInfo[i].CloseProfit;
+			
+					var s7 = res.TurnoverInfo[i].Commission;
+				
+					var s8 = res.TurnoverInfo[i].LastPrice;
+				
+					var show_parse = s9 != enable ? "disabled" : "enabled";
+					var show_recover = s9 != disable ? "disabled" : "enabled";
+					
+					if(s5 > 0 ){
+						$('#table_data').append('<thead style = "color : #F08080; " id = "' + sID + '"><tr style = "vertical-align: middle ;height : 40px; " align = "center"  ><td style = "vertical-align : middle;"><a style = "color : #F08080;cursor: pointer; " href = "kline.html?contract='+s00+'">'  + s1 + '</a></td><td  style = "vertical-align : middle;"><a style = "color : #F08080;cursor: pointer; " class = "show_strategy">' + s2 + '</a></td><td style = "vertical-align : middle;">' + s3 + '</td><td style = "vertical-align : middle;">' + s4 + '</td><td style = "vertical-align : middle;">' +s5 + '</td><td style = "vertical-align : middle;">' + s6 + '</td><td style = "vertical-align : middle;">' + s7 + '</td><td style = "vertical-align : middle;">' + s8 + '</td><td style = "vertical-align : middle;">' + option_change(s9) + '</td><td style = "vertical-align : middle;"><button class="btn btn-sm btn-warning"  ' + show_parse + ' >暂停</button> &nbsp;<button class="btn btn-sm btn-info" style = "margin-left = 20px;" ' + show_recover  + '>恢复</button> &nbsp;<button class="btn btn-sm btn-danger" style = "margin-left = 10px;" >撤销</button></td></tr></thead>');
+					}else if(s5 < 0){
+						$('#table_data').append('<thead style = "color : #00DA3C; " id = "' + sID + '"><tr style = "vertical-align: middle ; height : 40px;" align = "center"  ><td style = "vertical-align : middle;" ><a style = "color : #00DA3C;cursor: pointer; " href = "kline.html?contract='+s00+'">' +  s1 + '</a></td><td  style = "vertical-align : middle;"><a style = "color : #00DA3C;cursor: pointer; " class = "show_strategy">' + s2 + '</a></td><td style = "vertical-align : middle;">' + s3 + '</td><td style = "vertical-align : middle;">' + s4 + '</td><td style = "vertical-align : middle;">' +s5 + '</td><td style = "vertical-align : middle;">' + s6 + '</td><td style = "vertical-align : middle;">' + s7 + '</td><td style = "vertical-align : middle;">' + s8 + '</td><td style = "vertical-align : middle;">' + option_change(s9) + '</td><td style = "vertical-align : middle;"><button class="btn btn-sm btn-warning" ' + show_parse  + ' >暂停</button> &nbsp;<button class="btn btn-sm btn-info" style = "margin-left = 20px;"  ' + show_recover  + '>恢复</button> &nbsp;<button class="btn btn-sm btn-danger" style = "margin-left = 10px;" >撤销</button></td></tr></thead>');
+					}else{
+						$('#table_data').append('<thead  id = "' + sID + '"><tr style = "vertical-align: middle ; height : 40px; " align = "center"  ><td style = "vertical-align : middle;" ><a style = "color : white;cursor: pointer; " href = "kline.html?contract='+s00+'">' + s1 + '</a></td><td  style = "vertical-align : middle;"><a style = "color : white;cursor: pointer; " class = "show_strategy">' + s2 + '</a></td><td>' + s3 + '</td><td style = "vertical-align : middle;">' + s4 + '</td><td style = "vertical-align : middle;">' +s5 + '</td><td style = "vertical-align : middle;">' + s6 + '</td><td style = "vertical-align : middle;">' + s7 + '</td><td style = "vertical-align : middle;">' + s8 + '</td><td style = "vertical-align : middle;">' + option_change(s9) + '</td><td style = "vertical-align : middle;"><button class="btn btn-sm btn-warning"  ' + show_parse + '  >暂停</button> &nbsp;<button class="btn btn-sm btn-info" style = "margin-left = 20px;"  ' + show_recover  + ' >恢复</button> &nbsp;<button class="btn btn-sm btn-danger" style = "margin-left = 10px;" >撤销</button></td></tr></thead>');
+					}
+				 }else{
+					 $('#table_data').append('<thead ><tr style = "vertical-align: middle ; height : 42px;" align = "center"  ><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></thead>');
+				 }
+				}
+
+				var log = [];
+				if(res.OptionLog != null){
+					log = res.OptionLog;
+				}
+				
+				for(var i = log.length - 1; i >= 0; i--) {
+					log_date =  "<" + log[i].Index + ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + log[i].Log +  "<br >" + log_date  ;					
+				}
+				if(log[0] != null){
+					Last_Index = log[0].Index  + "" ;
+				}
+				$('#log').html(log_date);
+			}else if(res.RetNo != "0" && res.RetInfo.ErrNo == "-3"){
+				swal({
+					  title: "客户，您好！",
+					  text: "无法连接 TMS服务器",
+					  type: "error",
+					  showCancelButton: false,
+					  confirmButtonColor: "#DD6B55",
+					  confirmButtonText: "确定",
+					  closeOnConfirm: true  
+				}, function(){
+					location.href = "../welcome.html"
+					});
+			}else {
+				swal("查询委托单接口返回值不等于0");
+			}
+				//取到策略详情
+				var btns = $('.show_strategy');
+				var strategys_Name;
+				for(var i = 0; i < btns.length; ++i) {
+					btns[i].onclick = function() {
+						//先把add_index下的子元素清空
+						$("#add_index").empty();
+						// 查到策略单ID
+						var strategyId = $(this).parent().parent().parent().prop("id");
+						//访问策略单api取到数据
+						var conntract_data =  {
+							"UserID": UserID,
+							"TradeAcc": TradeAcc,
+							"TradePwd":TradePwd,								// 交易密码（暂定不使用）
+							"BrokerID":BrokerID									// 经纪公司代码
+						}
+						$.ajax({
+							type: "POST",
+							url: "../restapi/qry_strategy_orders_return.action",
+							data:{"param":JSON.stringify(conntract_data)}
+						}).done(function(temp) {
+							//查出策略详单
+							var res = JSON.parse(temp);
+							for (var k = 0; k < res.StrategyOrders.length; k++) {							
+								if (strategyId == res.StrategyOrders[k].StrategyOrderID) {		
+									//找到了 清空元素
+									$("#add_index").empty();
+									//循环遍历添加元素
+									for (var i = 0; i < allstrategys.length; i++) {
+										if (res.StrategyOrders[k].Name == allstrategys[i].Name) {
+																						
+											var property = allstrategys[i].Property ;
+											
+											var property_array = property.split("").reverse();
+											
+											for (var j = 0; j < property_array.length; j++) {
+												if(property_array[j] != "0"){
+													
+													var propertyDescription = allPropertyDescription[allPropertyDescription.length - 1 - j];
+													
+													if(propertyDescription.DispType == "Edit"){
+														
+														$('#add_index').append('<div class="form-group"  id="makemoney" style=""><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><input id = "' + propertyDescription.Name + '" type="text" style="margin-left:20px; height: 30px;width : 172px;"  >');								
+														
+														$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+														$('#' + propertyDescription.Name).prop("disabled","true");
+													}else if(propertyDescription.DispType == "Check"){
+														
+														$('#add_index').append('<div class="form-group" ><div align = "left" style = "width : 260px"><label style= "font-size : 16px;"   class="control-label" for="' + propertyDescription.Name + '" >' + propertyDescription.Title + '</label><input id="' + propertyDescription.Name + '" style="margin-left: 25px; height: 15px;width: 15px; " type="checkbox" value=""  />');
+														
+														if(res.StrategyOrders[k]["" + propertyDescription.Name] == "0"){
+															
+														}else if(res.StrategyOrders[k]["" + propertyDescription.Name] == "1"){
+															$('#' + propertyDescription.Name).prop("checked","checked");
+														}
+														$('#' + propertyDescription.Name).prop("disabled","true");
+													}else if(propertyDescription.DispType == "List"){
+														
+														$('#add_index').append('<div class="form-group" ><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><select id="' + propertyDescription.Name + '" style="margin-left:20px; height: 30px; width:145px; cursor:pointer;" ></select></div>')
+													
+														var dataRange = propertyDescription.DataRange.split(",");
+														for (var k = 0; k < dataRange.length; k++) {								
+															$('#' + propertyDescription.Name).append('<option value="'+dataRange[k]+'">' + dataRange[k] + '</option>')								
+														}
+														
+														$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+														$('#' + propertyDescription.Name).prop("disabled","true");
+													}else if(propertyDescription.DispType == "Dates"){
+														
+														$('#add_index').append('<div class="form-group" ><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><input type="text" id ="' + propertyDescription.Name + '" style="margin-left:20px; height: 30px;width : 172px;" ></div>')
+														
+														laydate.render({
+														  elem: '#' + propertyDescription.Name
+														  ,type: 'datetime'
+														});		
+														
+														$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+														$('#' + propertyDescription.Name).prop("disabled","true");
+													}
+												}						
+											}	
+										
+										break;
+										}					
+									}
+									//显示静态的数据
+									$("#ContractID").val(res.StrategyOrders[k].ContractName + "(" + res.StrategyOrders[k].ContractID + ")");	//合约名称
+									$("#ContractID").prop("disabled","true");										
+									$("#ContractID").css("background-color","#EBEBE4");
+									$("#Name").val(res.StrategyOrders[k].Name);								//策略名
+									$("#Name").prop("disabled","true");										
+									$("#Name").css("background-color","#EBEBE4");
+									$("#OrderAmount").val(res.StrategyOrders[k].OrderAmount),				// 托管手数
+									$("#OrderAmount").prop("disabled","true");
+									$("#ExpectPoint").val(res.StrategyOrders[k].ExpectPoint),				// 期望收益的Tick数
+									$("#ExpectPoint").prop("disabled","true");
+									$("#InsertDate").val(res.StrategyOrders[k].InsertDate),					// 报入时间
+									$("#InsertDate").prop("disabled","true");
+									$("#ExpirationDate").val(res.StrategyOrders[k].ExpirationDate),			// 有效期限
+									$("#ExpirationDate").prop("disabled","true");
+									$("#ValidTime").val(ValidTime_temp[res.StrategyOrders[k].ValidTime])	// 有效时段
+									$("#ValidTime").prop("disabled","true");
+									$("#ValidTime").css("background-color","#EBEBE4");
+									
+									break;
+								}
+						}
+							
+						})
+						//循环显示动态的属性
+								for (var i = 0; i < allstrategys.length; i++) {
+									if(strategys_Name == allstrategys[i].Name){							
+										var property = allstrategys[i].Property ;
+										
+										var property_array = property.split("").reverse();
+										
+										for (var j = 0; j < property_array.length; j++) {
+											if(property_array[j] != "0"){
+
+												var propertyDescription = allPropertyDescription[allPropertyDescription.length - 1 - j];
+					
+												if(propertyDescription.DispType == "Edit"){
+													
+													$('#add_index').append('<div class="form-group"  id="makemoney" style=""><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><input id = "' + propertyDescription.Name + '" type="text" style="margin-left:20px; height: 30px;width : 172px;"  >');								
+													
+													$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}else if(propertyDescription.DispType == "Check"){
+													
+													$('#add_index').append('<div class="form-group" ><div align = "left" style = "width : 260px"><label style= "font-size : 16px;"   class="control-label" for="' + propertyDescription.Name + '" >' + propertyDescription.Title + '</label><input id="' + propertyDescription.Name + '" style="margin-left: 25px; height: 15px;width: 15px; " type="checkbox" value=""  />');
+													
+													if(res.StrategyOrders[k]["" + propertyDescription.Name] == "0"){
+														
+													}else if(res.StrategyOrders[k]["" + propertyDescription.Name] == "1"){
+														$('#' + propertyDescription.Name).prop("checked","checked");
+													}
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}else if(propertyDescription.DispType == "List"){
+													
+													$('#add_index').append('<div class="form-group" ><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><select id="' + propertyDescription.Name + '" style="margin-left:20px; height: 30px; width:145px; cursor:pointer;" ></select></div>')
+													
+													var dataRange = propertyDescription.DataRange.split(",");
+													for (var k = 0; k < dataRange.length; k++) {								
+														$('#' + propertyDescription.Name).append('<option value="'+dataRange[k]+'">' + dataRange[k] + '</option>')								
+													}
+													
+													$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}else if(propertyDescription.DispType == "Dates"){
+
+													$('#add_index').append('<div class="form-group" ><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><input type="text" id ="' + propertyDescription.Name + '" style="margin-left:20px; height: 30px;width : 172px;" ></div>')
+													
+													laydate.render({
+													  elem: '#' + propertyDescription.Name
+													  ,type: 'datetime'
+													});		
+													
+													$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}
+											}									
+										}	
+
+									break;
+									}					
+								}
+					//显示modal
+					$('#bba').show();   
+					}
+				}
+				var btns = $('.btn.btn-sm.btn-warning');
+
+				for(var i = 0; i < btns.length; ++i) {
+					btns[i].onclick = function() {
+
+						var param = {
+							"UserID": UserID,
+							"TradeAcc": TradeAcc,
+							"BrokerID": BrokerID,
+							"TradePwd": TradePwd,
+							"StrategyOrderID": $(this).parent().parent().parent().prop("id"),
+							"ClientInfo": ClientInfo,
+							"Option": "disable",
+							"OrderOpt": "closeall",
+							"Price": "3800.00",
+							"Volume": "5"
+						}
+						sweetAlert({
+							  title: "客户,您好！",
+							  text: "确定要暂停此委托单！",
+							  type: "warning",
+							  showCancelButton: true,
+							  confirmButtonColor: "#DD6B55",
+							  cancelButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  cancelButtonText: "取消",
+							  closeOnConfirm: true
+					}, function(){
+
+						
+								$.ajax({
+									type: "post",
+									url: "../restapi/strategy_order_opt_return.action",
+									data: {
+										"param": JSON.stringify(param)
+									}
+								}).done(function(temp) {
+									var res = JSON.parse(temp);
+								
+									if(res.RetNo == "0") {
+									}
+								})
+								});
+		   
+					}
+				}
+
+				var btns = $('.btn.btn-sm.btn-info');
+	
+				for(var i = 0; i < btns.length; ++i) {
+					btns[i].onclick = function() {
+				
+						var param = {
+							"UserID": UserID,
+							"TradeAcc": TradeAcc,
+							"BrokerID": BrokerID,
+							"TradePwd": TradePwd,
+							"StrategyOrderID": $(this).parent().parent().parent().prop("id"),
+							"ClientInfo": ClientInfo,
+							"Option": "enable",
+							"OrderOpt": "",
+							"Price": "",
+							"Volume": ""
+						}
+					
+						sweetAlert({
+							  title: "客户,您好！",
+							  text: "确定要恢复此委托单！",
+							  type: "warning",
+							  showCancelButton: true,
+							  confirmButtonColor: "#DD6B55",
+							  cancelButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  cancelButtonText: "取消",
+							  closeOnConfirm: true
+					}, function(){
+
+							
+								$.ajax({
+									type: "post",
+									url: "../restapi/strategy_order_opt_return.action",
+									data: {
+										"param": JSON.stringify(param)
+									}
+								}).done(function(temp) {
+									var res = JSON.parse(temp);
+									
+									if(res.RetNo == "0") {
+		
+									}
+								})
+								});
+					}
+				}
+			
+				var btns = $('.btn.btn-sm.btn-danger');
+			
+				for(var i = 0; i < btns.length; ++i) {
+					btns[i].onclick = function() {
+					
+						var param = {
+							"UserID": UserID,
+							"TradeAcc": TradeAcc,
+							"BrokerID": BrokerID,
+							"TradePwd": TradePwd,
+							"StrategyOrderID": $(this).parent().parent().parent().prop("id"),
+							"ClientInfo": ClientInfo,
+							"Option": "remove",
+							"OrderOpt": "closeall",
+							"Price": "14235.00",
+							"Volume": "12"
+						}
+						sweetAlert({
+							  title: "客户,您好！",
+							  text: "确定要撤销此委托单!",
+							  type: "warning",
+							  showCancelButton: true,
+							  confirmButtonColor: "#DD6B55",
+							  cancelButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  cancelButtonText: "取消",
+							  closeOnConfirm: true
+					}, function(){
+						
+								
+								$.ajax({
+									type: "post",
+									url: "../restapi/strategy_order_opt_return.action",
+									data: {
+										"param": JSON.stringify(param)
+									}
+								}).done(function(temp) {
+									var res = JSON.parse(temp);
+								
+									if(res.RetNo == "0") {
+		
+									}
+								})
+								});
+		   
+					}
+				}
+
+			})
+		}
+		var UserID;
+		var	TradeAcc;
+		var TradePwd;
+		var BrokerID;
+		var ClientInfo;
+
+		$.ajax({
+			type: "POST",
+			url: "../restapi/future_login_return.action"
+		}).done(function(temp){
+
+			 var res = JSON.parse(temp);
+			UserID = res.UserID;
+			TradeAcc = res.TradeAcc;
+			TradePwd = res.TradePwd;
+			BrokerID = res.BrokerID;
+			ClientInfo = res.ClientInfo;
+			apiconnection()
+
+			//------------------------------------------------------------
+			}).fail(function(error){	
+				swal("取到信息");	
+			})	
+		
+
+		$("body").everyTime("2s","快照qry_quotesnapshot",function() {
+			
+			apiconnection()
+			
+		}, 0, true) 
+		
+		 
+	</script>
+	<script type="text/javascript" src="../js/login.js"></script>
+	<script>
+		  $(document).ready(function() {
+		  		    
+		    $("#log").niceScroll({cursorborder:"",cursorcolor:"#00F",boxzoom:true}); // First scrollable DIV
+		  });
+		</script>
+</html>

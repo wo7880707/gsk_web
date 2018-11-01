@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<script type="text/javascript" src="../sweet/js/sweet-alert.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sweet/css/sweet-alert.css"/>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<!--<link href="../css/ALL.css" rel="stylesheet">-->
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+		<script type="text/javascript" src="../js/echarts.js"></script>
+		<script type="text/javascript" src="../js/init_v3.js"></script>
+	</head>
+	
+	<body style="background-color: lightblue; overflow:-Scroll;overflow-y:hidden">
+		<!--1.第一行  显示框-->
+		<div class="container-fluid" style="background-color: #808080; ">
+			<div class="row" style=" height: 60px; background-color: #5BC0DE;" id = "bb1">
+			</div>
+			<!--2.功能框-->
+			<div class="row" style="line-height: 50px; background-color: #FFFFFF; margin-left: -15px; "id = "bb2">
+			</div>
+			<!--3.显示K线-->
+			<div class="row" style="border: solid 1px red;">
+				<div class="col-lg-12 col-md-12 col-sm-12" id="Kline" style="background-color: lightblue;padding-left: 0px; padding-right: 0px;">
+				</div>
+			</div>
+
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->
+		<div class="modal" id="aa">
+			<div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<p class="page-header" style="margin-left: 15px; font-size : 20px; color : lightcoral; font-weight : 600;margin-right: 15px;">
+					尊贵的客户，您好！
+				</p>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table style="width: 85%; margin-left: 15%; font-size: 18px;">
+						<tr class="success">
+							<td>姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_Name"></span></td>
+							<td>用户类型&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_UserType"></span></td>
+						</tr>
+						<tr class="success">
+							<td>电 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_Telephone"></span></td>
+							<td>邮 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_EmailAddress"></span></td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="table-responsive" style="margin-top: 30px;" align = "center">
+					<table id="login_detail_Indices" class="table-bordered table-striped" style="width: 97%;" >
+						<thead>
+							<td> 指标类型</td>
+							<td> 指标订阅到期日</td>
+							<td> 状态</td>
+						</thead>
+					</table>
+				</div>
+				<p style="margin-top: 20px;margin-left: 15px; font-size : 17px; ">
+					温馨提示 ：如有任何问题请联系杠上开期货交易决策系统客服 !
+				</p>
+				<p class="text-right " style="margin-right: 20px;"><button class="btn btn-info " onclick='$("#aa").modal("hide")'>关闭</button></p>
+			</div>
+		</div>
+		<div class="modal" id="loading" style="margin-top:110px">
+			<div align="center" class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="  margin-top:340px;">
+			<img style="height: 35px; width: 550px; padding-right: 200px; " src="../img/load.gif" />
+			<span style="display: block; margin-top: 18px; font-family: '微软雅黑';font-size: 21px;color: #337AB7; padding-right: 200px;">Load . . . . . . . . . . . . . . . .</span>
+			</div>
+		</div>
+		<!--浮动的表格-->
+		<div id = "table_position" style=" right: 55px;z-index: 1000; height: 100px; width: 1000px; background-color: ; "> 
+				<div id = "table_div" style = "display : none;" class="col-lg-10  col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1" >
+					<div class="table-responsive">
+						<table id="table_data" class="table table-condensed table-bordered" style = "color : white;"   >
+							<thead style = "font-size : 18px;" >
+								<td>合约</td>
+								<td>策略</td>
+								<td>数量</td>
+								<td>期望收益</td>
+								<td>浮动收益</td>
+								<td>平仓盈亏</td>
+								<td>手续费</td>
+								<td>最新价</td>
+								<td>订单状态</td>
+								<td>策略单操作</td>
+						</thead>
+						</table>
+					</div>
+				</div>
+		</div>
+		<!--浮动的按钮-->
+		 <div id="func" style=" right: 3px;z-index: 1000; height: 100px; width: 130px; background-color: ; "> 
+		 		<center><button id="reset_show" class="btn btn-info" style="margin-top: 0px; width: 130px">重 新 加 载</button></center>
+				<center><button id="insert" class="btn btn-info" style="margin-top: 3px; width: 130px">报入委托单</button></center>
+		</div>
+	</body>
+	<script type="text/javascript">
+	$(window).resize(function(){
+			location.reload();     
+		}); 
+		$('#bb1').load("header_1floor.html",function() {
+			if(window.innerWidth <= 1100){
+				$('#xuanchuanzi').html("");
+			}
+			if(window.innerWidth <= 800){
+						$('#div1').prop("class","col-lg-2  col-md-2 col-sm-2 col-xs-2");
+						$('#div2').prop("class","col-lg-9  col-md-9 col-sm-9 col-xs-9");
+						$('#div3').prop("class","col-lg-1  col-md-1 col-sm-1 col-xs-1");
+						$('#xitongming').html("");
+						$('#username_button').html("");
+					}
+			if(window.innerWidth <= 1219){
+			
+					}		
+		});
+		$('#bb2').load("header_2floor.html",function() {
+  		//进入页面之后 给表格一个大小
+		var table_height = window.innerHeight;
+		$('#Kline').css("height",table_height - parseInt($("#bb1").css("height")) - parseInt($("#bb2").css("height")) + "px");
+		//定位按钮
+		$('#func').css({
+			"top": parseInt($("#bb1").css("height")) + parseInt($("#bb2").css("height")) + 2 + "px",
+			"position": "fixed"
+		});
+		//定位显示框
+		$('#table_position').css({
+			"top": parseInt($("#bb1").css("height")) + parseInt($("#bb2").css("height")) + 2 + "px",
+			"position": "fixed"
+		});
+});
+		//调整高度的Kline
+			//取到页面高端 然后减去上面的高度 剩下的高度复制给显示K线的DIV
+			$("#Kline").css("height",window.innerHeight - 110 +"");
+		//重新加载K线
+		$('#reset_show').click(function() {
+			//1.删除K线的内存
+				localStorage.setItem(contract + "_all_kline_x","")
+				localStorage.setItem(contract + "_all_kline_y","")
+				localStorage.setItem(contract + "_all_otvx","")
+			//2.重新刷新页面
+			location.reload();
+		})
+		$('#accountdetail').click(function() {
+			$('#aa').modal("show");
+		})
+		//
+		//-----------------------------------------------------------------------
+		//第一步：解析URL中的想要显示的合约     把合约的时间取出来  （需判断下本合约的行情时间）
+		var url = location.search;
+		var contract = url.split("=")[1];
+			//取合约时间
+			/*var all_contract_time = JSON.parse(localStorage.getItem("instrument_return")).TradeTimeRange;*/
+			
+		//-----------------------------------------------------------------------
+		//第二步：定义蜡烛图的颜色     X Y 和指标总数据               计算 5 10 20 50均线值的函数             日期转换的函数方法
+		 //颜色
+		var upColor = '#ec0000';
+		var upBorderColor = '#8A0000';
+		var downColor = '#00da3c';
+		var downBorderColor = '#008F28';
+
+		//-----总数据------
+			//K线  和 指标 总数据声明
+			//K线信号   总的数据
+		var myChart = echarts.init(document.getElementById('Kline'));
+		var all_kline = [];
+		var all_kline_x = [];
+		var all_kline_y = []
+		var all_kline_temp;
+			//指标信号 总的数据
+		var all_otvx = [];
+		//函数
+		function calculateMA(dayCount) {
+			    var result = [];
+			    for (var i = 0, len = all_kline_y.length; i < len; i++) {
+			        if (i < dayCount) {
+			            result.push('-');
+			            continue;
+			        }
+			        var sum = 0;
+			        for (var j = 0; j < dayCount; j++) {
+			            sum += all_kline_y[i - j][1];
+			        }
+			        result.push(sum / dayCount);
+			    }
+			    return result;
+		} 
+		//提供一个公开的函数方法：参数为Date（）类型   return返回值为Date参数的    “2017-06-07 09:00:00” 可传回参数的类型
+		function change_date(date){
+			//年 月 日 小时 分钟 秒
+			var year_now = date.getFullYear();
+			var month_now = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1):(date.getMonth() + 1);
+			var day_now = date.getDate() < 10 ? "0" + date.getDate():date.getDate();
+			var hour_now = date.getHours() < 10 ? "0" + date.getHours():date.getHours();
+			var minute_now = date.getMinutes() < 10 ? "0" + date.getMinutes():date.getMinutes();
+			var second_now = date.getSeconds() < 10 ? "0" + date.getSeconds():date.getSeconds();
+			//现在的时间------------------------------------
+			var End = year_now + "-" + month_now + "-" + day_now + " " + hour_now + ":" + minute_now + ":" + second_now;
+			return End;
+		}
+		//减一分钟
+		function change_date_oneminute(date){
+			//年 月 日 小时 分钟 秒
+			var year_now = date.getFullYear();
+			var month_now = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1):(date.getMonth() + 1);
+			var day_now = date.getDate() < 10 ? "0" + date.getDate():date.getDate();
+			var hour_now = date.getHours() < 10 ? "0" + date.getHours():date.getHours();
+			var minute_now = (date.getMinutes() - 1 ) < 10 ? "0" + (date.getMinutes() - 1 ):(date.getMinutes() - 1 );
+			var second_now = date.getSeconds() < 10 ? "0" + date.getSeconds():date.getSeconds();
+			//现在的时间------------------------------------
+			var End = year_now + "-" + month_now + "-" + day_now + " " + hour_now + ":" + minute_now + ":" + second_now;
+			return End;
+		}
+		//-----------------------------------------------------------------------
+		//第三步：显示出现一个K线显示的框子 不然不好看
+		var myChart = echarts.init(document.getElementById('Kline'));
+		option = {
+				//背景颜色
+				backgroundColor: 'lightblue',
+				//标题  还可以有副标题 标题链接
+			    title: {
+			        text: contract,
+			        left: 0,
+			        //link:""
+			    },
+			    //提示框组件   出现标尺和刻度线
+			    tooltip: {
+			        trigger: 'axis',
+			        axisPointer: {
+			            type: 'cross'
+			        }
+			    },
+			    //图例组件
+			    /*legend:  {
+			        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+			    }, */
+			    //K线图像部分 可设置边框  左右上下间距
+			    grid: {
+			    	//show:true,
+			    	//borderColor:"red",
+			    	top : '10%',
+			        left: '10%',
+			        right: '10%',
+			        bottom: '15%'
+			    },
+			    //X轴数据类型和数据
+			    xAxis: {
+			    	//category坐标抽类型
+			        type: 'category',
+			        data: "",
+			        scale: true,
+			        boundaryGap : false,
+			        axisLine: {onZero: false},
+			        splitLine: {show: false},
+			        splitNumber: 20,
+			        min: 'dataMin',
+			        max: 'dataMax'
+			    },
+			    //底下显示的呢
+			    //Y轴数据类型和数据
+			    yAxis: {
+			        scale: true,
+			        splitArea: {
+			            show: true
+			        }
+			    },
+			    //区域缩放   滚轴
+			    dataZoom: [
+			        {
+			            type: 'inside',
+			            start: 0,
+			            end: 100
+			        },
+			        {
+			            show: true,
+			            type: 'slider',
+			            y: '90%',
+			            start: 0,
+			            end: 100
+			        }
+			    ],
+			    
+			    series: [
+			        {
+			            name: '日K',
+			            type: 'candlestick',
+			            data: "",
+						//折线拐点标志
+			            itemStyle: {
+			                normal: {
+			                    color: upColor,
+			                    color0: downColor,
+			                    borderColor: upBorderColor,
+			                    borderColor0: downBorderColor
+			                }
+			            },
+			            //图标标注
+			            markPoint:{
+			            	//symbol: 'image://img/向下绿箭头.jpg',
+			            	//symbol: 'roundRect',
+			            	animation:false,
+			            	symbolSize:[25,35],
+			                label: {
+			                    normal: {
+			                        formatter: function (param) {
+			                            return param != null ? Math.round(param.value) : '';
+			                        }
+			                    }
+			                },
+			                data:all_otvx,
+			                tooltip: {
+			                    formatter: function (param) {
+			                        return param.name + '<br>' + (param.data.coord || '');
+			                    }
+			                }
+			            },
+			        },
+			            {
+				            name: 'MA5',
+				            type: 'line',
+				            /* data: calculateMA(5), */
+				            smooth: true,
+				            lineStyle: {
+				                normal: {opacity: 0.5}
+				            }
+				        },
+				        {
+				            name: 'MA10',
+				            type: 'line',
+				            /* data: calculateMA(10), */
+				            smooth: true,
+				            lineStyle: {
+				                normal: {opacity: 0.5}
+				            }
+				        },
+				        {
+				            name: 'MA20',
+				            type: 'line',
+				            /* data: calculateMA(20), */
+				            smooth: true,
+				            lineStyle: {
+				                normal: {opacity: 0.5}
+				            }
+				        },
+				        {
+				            name: 'MA30',
+				            type: 'line',
+				           /*  data: calculateMA(30), */
+				            smooth: true,
+				            lineStyle: {
+				                normal: {opacity: 0.5}
+				            }
+				        },			
+			    ]
+	};
+		myChart.setOption(option);
+		//-----------------------------------------------------------------------
+		//第四步：进度条显示
+		$('#loading').modal("show");
+		//-----------------------------------------------------------------------
+		//第五步：根据合约查询指标信号   方式1：查询一个时间段内的行情  （当天的行情）
+		//得到prama参数
+		//取到今天的当前时间
+		var date = new Date();
+		var End = change_date(date);
+		//今天的时间 
+		var start_date = new Date();
+		//start_date.setDate(start_date.getDate() - 2);
+		//拼接成两天前09：00：00的时间
+		//获取当前年
+		var year_start = start_date.getFullYear();
+		//获取当前月
+		var month_start = (start_date.getMonth() + 1) < 10 ? "0" + (start_date.getMonth() + 1) : (start_date.getMonth() + 1);
+		//获取当前日
+		var day_start = start_date.getDate() < 10 ? "0" + start_date.getDate() : start_date.getDate();
+		//两天前9点的时间------------------------------------
+		var Start = year_start + "-" + month_start + "-" + day_start + " 09:00:00";
+		//-------------------------------------------------------------------------------------------
+		//第六步：判断是否有存储值
+		//1.如果有值  而且第一个值是两天前9点的 就取到最后一个值     ———————从最后一个值查到现在
+		//2.如果有值  但是第一个不是前两天9点的 或者 没有值     ——————就直接起始时间查询
+		//查询K线 指标数据参数值
+		var param;
+		if(localStorage.getItem(contract + "_all_kline_x")!= null&&localStorage.getItem(contract + "_all_kline_x")!= "" && JSON.parse(localStorage.getItem(contract + "_all_kline_x"))[0] == Start ){
+			//符合要求 把数据放入 X  Y  轴数据里  然后查询数据最后的时间到现在时间的数据
+			all_kline_x = JSON.parse(localStorage.getItem(contract + "_all_kline_x"));
+			all_kline_y = JSON.parse(localStorage.getItem(contract + "_all_kline_y"));
+			all_otvx = JSON.parse(localStorage.getItem(contract + "_all_otvx"));
+			param = {
+			"IndexID": "OTVX,KLINE",
+			"ContractID": contract,
+			"QryType": "1",
+			"ResoType": "1",
+			"Start": all_kline_x[all_kline_x.length-1][0],
+			"End": End
+			}
+			if(date.getHours() >= 9){
+			//查询是否有此合约下的localstorage    
+			//有  而且 符合时间的要求  就存储到总的数据中 
+			//没有  就直接去服务器查询（这样做是为了更好的1.快速读取数据2.减少服务器内存）
+			//查询服务器返回指标信号
+			$.ajax({
+				type: "post",
+				url: "../restapi/qry_index_return.action",
+				//async:false,
+				data: {
+					"param": JSON.stringify(param)
+				}
+			}).done(function(temp) {
+				//生成带有指标的K线
+				var res = JSON.parse(temp);
+				//切割数据----------------------------------------------------------
+				//K线数据 处理
+				if(res.RetNo != "0" && res.RetInfo.ErrNo == "-3"){
+					$('#loading').modal("hide");
+					swal({
+						  title: "客户，您好！",
+						  text: "无法连接 TMS服务器",
+						  type: "error",
+						  showCancelButton: false,
+						  confirmButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  closeOnConfirm: true  
+					}, function(){
+						location.href = "../welcome.html"
+						});
+						
+				}else{
+				var data_kline = res.KLINE;
+				for (var i = 0; i < res.KLINE.length; i++) {
+					//K线信号数据
+					var kline_temp1 =  res.KLINE[i].Data.split(",");
+					var kline_temp_x = [kline_temp1[0].split(".")[0]];
+					var kline_temp_y = [Number(kline_temp1[2]),Number(kline_temp1[5]),Number(kline_temp1[4]),Number(kline_temp1[3])];
+					//all_kline.push(kline_temp2);
+					//如果要添加的kline_temp_x和之前是不是一样的     防止加重复了
+					if(!(kline_temp_x.toString() == all_kline_x[all_kline_x.length - 1].toString())){
+						all_kline_x.push(kline_temp_x);
+						all_kline_y.push(kline_temp_y);
+					}			
+				}
+				//存储K线数据  以供下次直接读取
+				localStorage.setItem(contract + "_all_kline_x",JSON.stringify(all_kline_x))
+				localStorage.setItem(contract + "_all_kline_y",JSON.stringify(all_kline_y))
+				//指标数据 处理
+				var data_otvx = res.OTVX;
+				var a_max = {	
+							name: 'highest value',
+			                type: 'max' ,
+			                valueDim: 'highest'}
+				var a_min = {		
+							name: 'lowest value',
+			                type: 'min',
+			                valueDim: 'lowest'}
+				all_otvx.push(a_max);
+				all_otvx.push(a_min);
+				for (var i = 0; i < res.OTVX.length; i++) {
+					//指标信号数据
+					var otvx_temp1 =  res.OTVX[i].Data.split(",");
+					//对比看第二个数据是 0 1 3
+					if(otvx_temp1[2] == "1"|| otvx_temp1[3] == "1"){
+						//买开
+						//一个markpoint对象
+						//var temp_1 = {"symbol": 'image://../img/up.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[9])  + ""],"value": Number(otvx_temp1[9]) };
+						var temp_1 = {"symbol": 'image://../img/up.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[9])  + ""],"value": Number(otvx_temp1[9])}; 
+						//判断信号指标最后一位的日期
+						 if(all_otvx[all_otvx.length - 1].coord == undefined || all_otvx[all_otvx.length - 1].coord[0] != "" + otvx_temp1[0].split(".")[0] ){
+							all_otvx.push(temp_1);
+						} 
+						//放进数组里
+						//all_otvx.push(temp_1);
+					}else if(otvx_temp1[2] == "3"|| otvx_temp1[3] == "3"){
+						//卖开
+						//一个markpoint对象
+						var temp_2 = {"symbol": 'image://../img/down.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[8])  + ""],"value": Number(otvx_temp1[8]) };
+						/* var temp_2 = {"symbol": 'image://../img/down.png',"coord": ["" + otvx_temp1[0].split(".")[0], otvx_temp1[8]],"value": Number(otvx_temp1[8])}; */
+						//判断信号指标最后一位的日期
+						 if(all_otvx[all_otvx.length - 1].coord == undefined || all_otvx[all_otvx.length - 1].coord[0] != "" + otvx_temp1[0].split(".")[0] ){
+							all_otvx.push(temp_2);
+						} 
+						//放进数组里
+						//all_otvx.push(temp_2);
+					}
+				}
+				//存储指标数据  以供下次直接读取
+				localStorage.setItem(contract + "_all_otvx",JSON.stringify(all_otvx))
+				/*
+				k线： 开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+				数据：开盘价    最高价  最低价   收盘价
+				 {
+					"Data": "2017-10-26 10:13:00.000,pp1801,8944.00,8948.00,8935.00,8938.00,3176,433710,268906"
+				}*/
+				//指标数据
+				//var data_otvx = res.OTVX;
+				/*{0：无行情		1：买开         2：买平    3：卖开   4：卖平
+					"Data": "2017-10-26 11:29:00.000,pp1801,0,0,1508988540,0,8969.00,8972.00,8976.00,8966.00,1618,364666,417826,9.80,9.84,8995.00,8952.00,135"
+				}*/
+			//-------------------------------------------------------------------------------------------
+			//第七步：显示一下到目前为止的K线和指标数据
+			/* var myChart = echarts.init(document.getElementById('Kline')); */
+			// 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+			option = {
+					//背景颜色
+					backgroundColor: 'lightblue',
+					//标题  还可以有副标题 标题链接
+				    title: {
+				        text: contract,
+				        left: 0,
+				        //link:""
+				    },
+				    //提示框组件   出现标尺和刻度线
+				    tooltip: {
+				        trigger: 'axis',
+				        axisPointer: {
+				            type: 'cross'
+				        }
+				    },
+				    //图例组件
+				    /* legend: {
+				        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+				    }, */
+				    //K线图像部分 可设置边框  左右上下间距
+				    grid: {
+				    	//show:true,
+				    	//borderColor:"red",
+				    	top : '10%',
+				        left: '10%',
+				        right: '10%',
+				        bottom: '15%'
+				    },
+				    //X轴数据类型和数据
+				    xAxis: {
+				    	//category坐标抽类型
+				        type: 'category',
+				        data: all_kline_x,
+				        scale: true,
+				        boundaryGap : false,
+				        axisLine: {onZero: false},
+				        splitLine: {show: false},
+				        splitNumber: 20,
+				        min: 'dataMin',
+				        max: 'dataMax'
+				    },
+				    //底下显示的呢
+				    //Y轴数据类型和数据
+				    yAxis: {
+				        scale: true,
+				        splitArea: {
+				            show: true
+				        }
+				    },
+				    //区域缩放   滚轴
+				    dataZoom: [
+				        {
+				            type: 'inside',
+				            start: 0,
+				            end: 100
+				        },
+				        {
+				            show: true,
+				            type: 'slider',
+				            y: '90%',
+				            start: 0,
+				            end: 100
+				        }
+				    ],
+				    
+				    series: [
+				        {
+				            name: '日K',
+				            type: 'candlestick',
+				            data: all_kline_y,
+							//折线拐点标志
+				            itemStyle: {
+				                normal: {
+				                    color: upColor,
+				                    color0: downColor,
+				                    borderColor: upBorderColor,
+				                    borderColor0: downBorderColor
+				                }
+				            },
+				            //图标标注
+				            markPoint:{
+				            	//symbol: 'image://img/向下绿箭头.jpg',
+				            	//symbol: 'roundRect',
+				            	animation:false,
+				            	symbolSize:[25,35],
+				                label: {
+				                    normal: {
+				                        formatter: function (param) {
+				                            return param != null ? Math.round(param.value) : '';
+				                        }
+				                    }
+				                },
+				                data:all_otvx,
+				                tooltip: {
+				                    formatter: function (param) {
+				                        return param.name + '<br>' + (param.data.coord || '');
+				                    }
+				                }
+				            },
+				            
+				        },
+				        	
+				    ]
+				};
+				$('#loading').modal("hide");
+				myChart.setOption(option);
+				$(window).resize(function(){
+			        myChart.resize();    
+			    }); 
+				}
+			})
+			}else{
+				$('#loading').modal("hide");
+			}
+		}else{
+			//不符合要求 完全重新查询数据
+			param = {
+			"IndexID": "OTVX,KLINE",
+			"ContractID": contract,
+			"QryType": "1",
+			"ResoType": "1",
+			"Start": Start,
+			"End": End
+			}
+
+		//查询是否有此合约下的localstorage    
+		//有  而且 符合时间的要求  就存储到总的数据中 
+		//没有  就直接去服务器查询（这样做是为了更好的1.快速读取数据2.减少服务器内存）
+		//查询服务器返回指标信号
+		if(date.getHours() >= 9){
+		$.ajax({
+			type: "post",
+			url: "../restapi/qry_index_return.action",
+			//async:false,
+			data: {
+				"param": JSON.stringify(param)
+			}
+		}).done(function(temp) {
+			//生成带有指标的K线
+			var res = JSON.parse(temp);
+			//切割数据----------------------------------------------------------
+			//K线数据 处理
+			
+			if(res.RetNo != "0" && res.RetInfo.ErrNo == "-3"){
+				swal({
+					  title: "客户，您好！",
+					  text: "无法连接 TMS服务器",
+					  type: "error",
+					  showCancelButton: false,
+					  confirmButtonColor: "#DD6B55",
+					  confirmButtonText: "确定",
+					  closeOnConfirm: true  
+				}, function(){
+					location.href = "../welcome.html"
+					});
+			}else{
+			var data_kline = res.KLINE;
+			for (var i = 0; i < res.KLINE.length; i++) {
+				//K线信号数据
+				var kline_temp1 =  res.KLINE[i].Data.split(",");
+				var kline_temp_x = [kline_temp1[0].split(".")[0]];
+				var kline_temp_y = [Number(kline_temp1[2]),Number(kline_temp1[5]),Number(kline_temp1[4]),Number(kline_temp1[3])];
+				//all_kline.push(kline_temp2);
+				//如果要添加的kline_temp_x和之前是不是一样的     防止加重复了
+					all_kline_x.push(kline_temp_x);
+					all_kline_y.push(kline_temp_y);
+			
+			}
+			//存储K线数据  以供下次直接读取
+			localStorage.setItem(contract + "_all_kline_x",JSON.stringify(all_kline_x))
+			localStorage.setItem(contract + "_all_kline_y",JSON.stringify(all_kline_y))
+			//指标数据 处理
+			var data_otvx = res.OTVX;
+			var a_max = {	
+						name: 'highest value',
+		                type: 'max' ,
+		                valueDim: 'highest'}
+			var a_min = {		
+						name: 'lowest value',
+		                type: 'min',
+		                valueDim: 'lowest'}
+			all_otvx.push(a_max);
+			all_otvx.push(a_min);
+			for (var i = 0; i < res.OTVX.length; i++) {
+				//指标信号数据
+				var otvx_temp1 =  res.OTVX[i].Data.split(",");
+				//对比看第二个数据是 0 1 3
+				if(otvx_temp1[2] == "1"|| otvx_temp1[3] == "1"){
+					//买开
+					//一个markpoint对象
+					//var temp_1 = {"symbol": 'image://../img/up.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[9])  + ""],"value": Number(otvx_temp1[9]) };
+					var temp_1 = {"symbol": 'image://../img/up.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[9])  + ""],"value": Number(otvx_temp1[9])};
+					//判断信号指标最后一位的日期
+					 if(all_otvx[all_otvx.length - 1].coord == undefined || all_otvx[all_otvx.length - 1].coord[0] != "" + otvx_temp1[0].split(".")[0] ){
+						all_otvx.push(temp_1);
+					} 
+					//放进数组里
+					//all_otvx.push(temp_1);
+				}else if(otvx_temp1[2] == "3"|| otvx_temp1[3] == "3"){
+					//卖开
+					//一个markpoint对象
+					var temp_2 = {"symbol": 'image://../img/down.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[8])  + ""],"value": Number(otvx_temp1[8]) };
+					/* var temp_2 = {"symbol": 'image://../img/down.png',"coord": ["" + otvx_temp1[0].split(".")[0], otvx_temp1[8]],"value": Number(otvx_temp1[8])}; */
+					//判断信号指标最后一位的日期
+					 if(all_otvx[all_otvx.length - 1].coord == undefined || all_otvx[all_otvx.length - 1].coord[0] != "" + otvx_temp1[0].split(".")[0] ){
+						all_otvx.push(temp_2);
+					} 
+					//放进数组里
+					//all_otvx.push(temp_2);
+				}
+			}
+			//存储指标数据  以供下次直接读取
+			localStorage.setItem(contract + "_all_otvx",JSON.stringify(all_otvx))
+			/*
+			k线： 开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+			数据：开盘价    最高价  最低价   收盘价
+			 {
+				"Data": "2017-10-26 10:13:00.000,pp1801,8944.00,8948.00,8935.00,8938.00,3176,433710,268906"
+			}*/
+			//指标数据
+			//var data_otvx = res.OTVX;
+			/*{0：无行情		1：买开         2：买平    3：卖开   4：卖平
+				"Data": "2017-10-26 11:29:00.000,pp1801,0,0,1508988540,0,8969.00,8972.00,8976.00,8966.00,1618,364666,417826,9.80,9.84,8995.00,8952.00,135"
+			}*/
+		//-------------------------------------------------------------------------------------------
+		//第七步：显示一下到目前为止的K线和指标数据
+		/* var myChart = echarts.init(document.getElementById('Kline')); */
+		// 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+		option = {
+				//背景颜色
+				backgroundColor: 'lightblue',
+				//标题  还可以有副标题 标题链接
+			    title: {
+			        text: contract,
+			        left: 0,
+			        //link:""
+			    },
+			    //提示框组件   出现标尺和刻度线
+			    tooltip: {
+			        trigger: 'axis',
+			        axisPointer: {
+			            type: 'cross'
+			        }
+			    },
+			    //图例组件
+			    /* legend: {
+			        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+			    }, */
+			    //K线图像部分 可设置边框  左右上下间距
+			    grid: {
+			    	//show:true,
+			    	//borderColor:"red",
+			    	top : '10%',
+			        left: '10%',
+			        right: '10%',
+			        bottom: '15%'
+			    },
+			    //X轴数据类型和数据
+			    xAxis: {
+			    	//category坐标抽类型
+			        type: 'category',
+			        data: all_kline_x,
+			        scale: true,
+			        boundaryGap : false,
+			        axisLine: {onZero: false},
+			        splitLine: {show: false},
+			        splitNumber: 20,
+			        min: 'dataMin',
+			        max: 'dataMax'
+			    },
+			    //底下显示的呢
+			    //Y轴数据类型和数据
+			    yAxis: {
+			        scale: true,
+			        splitArea: {
+			            show: true
+			        }
+			    },
+			    //区域缩放   滚轴
+			    dataZoom: [
+			        {
+			            type: 'inside',
+			            start: 0,
+			            end: 100
+			        },
+			        {
+			            show: true,
+			            type: 'slider',
+			            y: '90%',
+			            start: 0,
+			            end: 100
+			        }
+			    ],
+			    
+			    series: [
+			        {
+			            name: '日K',
+			            type: 'candlestick',
+			            data: all_kline_y,
+						//折线拐点标志
+			            itemStyle: {
+			                normal: {
+			                    color: upColor,
+			                    color0: downColor,
+			                    borderColor: upBorderColor,
+			                    borderColor0: downBorderColor
+			                }
+			            },
+			            //图标标注
+			            markPoint:{
+			            	//symbol: 'image://img/向下绿箭头.jpg',
+			            	//symbol: 'roundRect',
+			            	animation:false,
+			            	symbolSize:[25,35],
+			                label: {
+			                    normal: {
+			                        formatter: function (param) {
+			                            return param != null ? Math.round(param.value) : '';
+			                        }
+			                    }
+			                },
+			                data:all_otvx,
+			                tooltip: {
+			                    formatter: function (param) {
+			                        return param.name + '<br>' + (param.data.coord || '');
+			                    }
+			                }
+			            },
+			            
+			        },
+			       
+			    ]
+			};
+			$('#loading').modal("hide");
+			myChart.setOption(option);
+			$(window).resize(function(){
+		        myChart.resize();    
+		    }); 
+			}
+		})/*.fail(function(error) {
+			$('#loading').modal("hide");
+			//swal("查询指标信号调用错误");
+			alert("查询指标信号调用错误");
+		}) */
+		}else{
+			$('#loading').modal("hide");
+		}
+		}
+		//-------------------------------------------------------------------------------------------
+		//第八步：持续监控显示K线情况   （不是最后的分钟数据，数据显示再删除）
+		param = {
+			"IndexID": "OTVX,KLINE",
+			"ContractID": contract,
+			"QryType": "0",
+			"ResoType": "1",
+			"Start": Start,
+			"End": End
+			}
+		$("body").everyTime("3s","K线数据",function(){
+			var date_3s = new Date();
+		  if(date_3s.getHours() >= 9){
+			//定义一个开关    1 :最后删除   0: 不删除
+			var open_close = 1;
+			//查询指标信号
+			$.ajax({
+				type: "post",
+				url: "../restapi/qry_index_return.action",
+				data: {
+					"param": JSON.stringify(param)
+				}
+			}).done(function(temp) {
+				//生成带有指标的K线
+				var res = JSON.parse(temp);
+				//切割数据
+				//K线数据 处理
+				if(res.RetNo != "0" && res.RetInfo.ErrNo == "-3"){
+					swal({
+						  title: "客户，您好！",
+						  text: "无法连接 TMS服务器",
+						  type: "error",
+						  showCancelButton: false,
+						  confirmButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  closeOnConfirm: true  
+					}, function(){
+						location.href = "../welcome.html"
+						});
+				}else{
+				var data_kline = res.KLINE;
+				for (var i = 0; i < res.KLINE.length; i++) {
+					var kline_temp1 =  res.KLINE[i].Data.split(",");
+					var kline_temp_x = [kline_temp1[0].split(".")[0]]
+					var kline_temp_y = [Number(kline_temp1[2]),Number(kline_temp1[5]),Number(kline_temp1[4]),Number(kline_temp1[3])]
+					//如果要添加的kline_temp_x和之前是不是一样的
+					if(kline_temp_x.toString() == ""||kline_temp_x.toString() == all_kline_x[(all_kline_x.length - 1) == -1 ? 0 : (all_kline_x.length - 1)]){
+						open_close = 0 ;
+					}else{
+						all_kline_x.push(kline_temp_x);
+						all_kline_y.push(kline_temp_y);
+					} 
+				}
+				//指标数据 处理
+				
+				var data_otvx = res.OTVX;
+				for (var i = 0; i < res.OTVX.length; i++) {
+					//指标信号数据
+					var otvx_temp1 =  res.OTVX[i].Data.split(",");
+					//对比看第二个数据是 0 1 3
+					if(otvx_temp1[2] == "1"|| otvx_temp1[3] == "1"){
+						//买开
+						//一个markpoint对象
+						//var temp_1 = {"symbol": 'image://../img/up.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[9])  + ""],"value": Number(otvx_temp1[9]) };
+						var temp_1 = {"symbol": 'image://../img/up.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[9])  + ""],"value": Number(otvx_temp1[9])};
+						//判断信号指标最后一位的日期    == undefined说明没有值或者只有min 和   max
+						 if(all_otvx[all_otvx.length - 1].coord == undefined || all_otvx[all_otvx.length - 1].coord[0] != "" + otvx_temp1[0].split(".")[0] ){
+							all_otvx.push(temp_1);
+						} 
+						//放进数组里
+						//all_otvx.push(temp_1);
+					}else if(otvx_temp1[2] == "3"|| otvx_temp1[3] == "3"){
+						//卖开
+						//一个markpoint对象
+						var temp_2 = {"symbol": 'image://../img/down.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[8])  + ""],"value": Number(otvx_temp1[8]) };
+						/* var temp_2 = {"symbol": 'image://../img/down.png',"coord": ["" + otvx_temp1[0].split(".")[0], otvx_temp1[8]],"value": Number(otvx_temp1[8])}; */
+						//判断信号指标最后一位的日期
+						 if(all_otvx[all_otvx.length - 1].coord == undefined || all_otvx[all_otvx.length - 1].coord[0] != "" + otvx_temp1[0].split(".")[0] ){
+							all_otvx.push(temp_2);
+						} 
+						//放进数组里
+						//all_otvx.push(temp_2);
+					}
+				}
+				/* var myChart = echarts.init(document.getElementById('Kline')); */
+			// 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)	
+			option = {
+				backgroundColor: 'lightblue',
+			    title: {
+			        text: contract,
+			        left: 0
+			    },
+			    tooltip: {
+			        trigger: 'axis',
+			        axisPointer: {
+			            type: 'cross'
+			        }
+			    },
+			    /*legend:  {
+			        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+			    }, */
+			    grid: {
+			    	top : '10%',
+			        left: '10%',
+			        right: '10%',
+			        bottom: '15%'
+			    },
+			    xAxis: {
+			        type: 'category',
+			        data: all_kline_x,
+			        scale: true,
+			        boundaryGap : false,
+			        axisLine: {onZero: false},
+			        splitLine: {show: false},
+			        splitNumber: 20,
+			        min: 'dataMin',
+			        max: 'dataMax'
+			    },
+			    yAxis: {
+			        scale: true,
+			        splitArea: {
+			            show: true
+			        }
+			    },
+			  /*   dataZoom: [
+			        {
+			            type: 'inside',
+			            start: 0,
+			            end: 100
+			        },
+			        {
+			            show: true,
+			            type: 'slider',
+			            y: '90%',
+			            start: 0,
+			            end: 100
+			        }
+			    ], */
+			    series: [
+			        {
+			            name: '日K',
+			            type: 'candlestick',
+			            data: all_kline_y,
+			            itemStyle: {
+			                normal: {
+			                    color: upColor,
+			                    color0: downColor,
+			                    borderColor: upBorderColor,
+			                    borderColor0: downBorderColor
+			                }
+			            },
+				        markPoint:{
+				        	animation:false,
+				        	symbolSize:[25,35],
+			            	data:all_otvx ,
+			                tooltip: {
+			                    formatter: function (param) {
+			                        return param.name + '<br>' + (param.data.coord || '');
+			                    }
+			                }
+				        }
+		            },
+			       
+			
+			    ]
+			};
+					$('#loading').modal("hide");
+				myChart.setOption(option);
+				//响应式K线
+					$(window).resize(function(){
+			                myChart.resize();    
+			            });
+		//-------------------------------------------------------------------------------------------
+		//第九步：数据删除  只删除K线的
+			if(open_close == 1){
+				all_kline_x.pop();
+				all_kline_y.pop();
+				//all_otvx.pop(); 
+			}
+			}
+			})
+		   }	
+		  
+		}, 0, true)
+		//-------------------------------------------------------------------------------------------
+		//第十步：其中一个线程：到每分钟的00秒， 就添加数据到K线中（添加之后不删除）
+		var temp_date ;
+		var temp_date_temp;
+		$("body").everyTime("1s","K线数据",function(){
+			var date_1s = new Date();
+			if(date_1s.getHours() >= 9){
+			//定义一个开关    1 :最后删除   0: 不删除
+			var close_open = 1;
+				temp_date = new Date();
+				if(temp_date.getSeconds() == "0"){
+						//就加入到数据中
+						//查询上一分钟最终的K线
+						var	param_add = {
+							"IndexID": "OTVX,KLINE",
+							"ContractID": contract,
+							"QryType": "1",
+							"ResoType": "1",
+							"Start": change_date_oneminute(temp_date),
+							"End": change_date(temp_date)
+							}
+						//2.查找最后一位的数据
+						$.ajax({
+							type: "post",
+							url: "../restapi/qry_index_return.action",
+							//async:false,
+							data: {
+								"param": JSON.stringify(param_add)
+							}
+						}).done(function(temp) {
+								//3.添加到总的数据中
+								//生成带有指标的K线
+								var res = JSON.parse(temp);
+								//切割数据----------------------------------------------------------
+								//K线数据 处理
+								if(res.RetNo != "0" && res.RetInfo.ErrNo == "-3"){
+									swal({
+										  title: "客户，您好！",
+										  text: "无法连接 TMS服务器",
+										  type: "error",
+										  showCancelButton: false,
+										  confirmButtonColor: "#DD6B55",
+										  confirmButtonText: "确定",
+										  closeOnConfirm: true  
+									}, function(){
+										location.href = "../welcome.html"
+										});
+										
+								}else{
+								if(res.RetNo == "0"){
+									var data_kline = res.KLINE;
+									for (var i = 0; i < res.KLINE.length; i++) {
+										//K线信号数据
+										var kline_temp1 =  res.KLINE[i].Data.split(",");
+										var kline_temp_x = [kline_temp1[0].split(".")[0]];
+										var kline_temp_y = [Number(kline_temp1[2]),Number(kline_temp1[5]),Number(kline_temp1[4]),Number(kline_temp1[3])];
+										//all_kline.push(kline_temp2);
+										//如果要添加的kline_temp_x和之前是不是一样的     防止加重复了
+										if(!(kline_temp_x.toString() == ""||kline_temp_x.toString() == all_kline_x[all_kline_x.length - 1])){
+											all_kline_x.push(kline_temp_x);
+											all_kline_y.push(kline_temp_y);
+										}												
+									}
+								}
+								localStorage.setItem(contract + "_all_kline_x",JSON.stringify(all_kline_x))
+								localStorage.setItem(contract + "_all_kline_y",JSON.stringify(all_kline_y))
+								/* //指标数据 处理
+								var data_otvx = res.OTVX;
+								var a_max = {
+											name: 'highest value',
+							                type: 'max' ,
+							                valueDim: 'highest'}
+								var a_min = {		
+											name: 'lowest value',
+							                type: 'min',
+							                valueDim: 'lowest'}
+								all_otvx.push(a_max);
+								all_otvx.push(a_min); */
+								if(res.RetNo == "0"){							
+								for (var i = 0; i < res.OTVX.length; i++) {
+									//指标信号数据
+									var otvx_temp1 =  res.OTVX[i].Data.split(",");
+									//对比看第二个数据是 0 1 3
+									if(otvx_temp1[2] == "1"|| otvx_temp1[3] == "1"){
+										//买开
+										//一个markpoint对象
+										//var temp_1 = {"symbol": 'image://../img/up.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[9])  + ""],"value": Number(otvx_temp1[9]) };
+										var temp_1 = {"symbol": 'image://../img/up.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[9])  + ""],"value": Number(otvx_temp1[9])};
+										//判断信号指标最后一位的日期
+										 if(all_otvx[all_otvx.length - 1].coord == undefined || all_otvx[all_otvx.length - 1].coord[0] != "" + otvx_temp1[0].split(".")[0] ){
+											all_otvx.push(temp_1);
+										} 
+										//放进数组里
+										//all_otvx.push(temp_1);
+									}else if(otvx_temp1[2] == "3"|| otvx_temp1[3] == "3"){
+										//卖开
+										//一个markpoint对象
+										var temp_2 = {"symbol": 'image://../img/down.png',"coord": ["" + otvx_temp1[0].split(".")[0], Number(otvx_temp1[8])  + ""],"value": Number(otvx_temp1[8]) };
+										/* var temp_2 = {"symbol": 'image://../img/down.png',"coord": ["" + otvx_temp1[0].split(".")[0], otvx_temp1[8]],"value": Number(otvx_temp1[8])}; */
+										//判断信号指标最后一位的日期
+										 if(all_otvx[all_otvx.length - 1].coord == undefined || all_otvx[all_otvx.length - 1].coord[0] != "" + otvx_temp1[0].split(".")[0] ){
+											all_otvx.push(temp_2);
+										} 
+										//放进数组里
+										//all_otvx.push(temp_2);
+									}
+								}
+								}
+								localStorage.setItem(contract + "_all_otvx",JSON.stringify(all_otvx))
+								/* var myChart = echarts.init(document.getElementById('Kline')); */
+								option = {
+										//背景颜色
+										backgroundColor: 'lightblue',
+										//标题  还可以有副标题 标题链接
+									    title: {
+									        text: contract,
+									        left: 0,
+									        //link:""
+									    },
+									    //提示框组件   出现标尺和刻度线
+									    tooltip: {
+									        trigger: 'axis',
+									        axisPointer: {
+									            type: 'cross'
+									        }
+									    },
+									    //图例组件
+									    /*legend:  {
+									        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+									    }, */
+									    //K线图像部分 可设置边框  左右上下间距
+									    grid: {
+									    	//show:true,
+									    	//borderColor:"red",
+									    	top : '10%',
+									        left: '10%',
+									        right: '10%',
+									        bottom: '15%'
+									    },
+									    //X轴数据类型和数据
+									    xAxis: {
+									    	//category坐标抽类型
+									        type: 'category',
+									        data: all_kline_x,
+									        scale: true,
+									        boundaryGap : false,
+									        axisLine: {onZero: false},
+									        splitLine: {show: false},
+									        splitNumber: 20,
+									        min: 'dataMin',
+									        max: 'dataMax'
+									    },
+									    //底下显示的呢
+									    //Y轴数据类型和数据
+									    yAxis: {
+									        scale: true,
+									        splitArea: {
+									            show: true
+									        }
+									    },
+									    //区域缩放   滚轴
+									  /*   dataZoom: [
+									        {
+									            type: 'inside',
+									            start: 0,
+									            end: 100
+									        },
+									        {
+									            show: true,
+									            type: 'slider',
+									            y: '90%',
+									            start: 0,
+									            end: 100
+									        }
+									    ], */
+									    
+									    series: [
+									        {
+									            name: '日K',
+									            type: 'candlestick',
+									            data: all_kline_y,
+												//折线拐点标志
+									            itemStyle: {
+									                normal: {
+									                    color: upColor,
+									                    color0: downColor,
+									                    borderColor: upBorderColor,
+									                    borderColor0: downBorderColor
+									                }
+									            },
+									            //图标标注
+									            markPoint:{
+									            	//symbol: 'image://img/向下绿箭头.jpg',
+									            	//symbol: 'roundRect',
+									            	animation:false,
+									            	symbolSize:[25,35],
+									                label: {
+									                    normal: {
+									                        formatter: function (param) {
+									                            return param != null ? Math.round(param.value) : '';
+									                        }
+									                    }
+									                },
+									                data:all_otvx,
+									                tooltip: {
+									                    formatter: function (param) {
+									                        return param.name + '<br>' + (param.data.coord || '');
+									                    }
+									                }
+									            },
+									        },
+									       
+									
+									    ]
+							};
+							myChart.setOption(option);
+							$(window).resize(function(){
+						        myChart.resize();    
+						   }); 
+								}
+								})/*.fail(function(error) {
+							//swal("查询指标信号调用错误");
+							alert("查询指标信号调用错误");
+							}) */
+							
+						}
+						//5.再循环
+						}
+						}, 0, true)  
+	//insert跳到报单页面
+	$("#insert").click(function(){
+		//判断期货账户是否登录
+    	if($("#future_login").html() == "期货账号注销"){
+    		location.href = "add_strategy_orders.html?contract="+contract;
+    	}else{
+    		sweetAlert({
+			  title: "客户,您好！",
+			  text: "需要您先登录期货账号哟:)",
+			  type: "warning",
+			  
+			  confirmButtonColor: "#DD6B55",
+			  confirmButtonText: "确定",
+			  cancelButtonText: "取消",
+			  showCancelButton: true,
+			  closeOnConfirm: false
+			}, function(){
+				location.href = "login_trade_acc.html";
+			});
+    	}
+	})
+	//---------------------------------------------------------------------------------------------------------
+	 //去服务器取值
+	 	//开关
+	 	var logined = "0"
+		//准备向api发送的参数
+		var UserID;
+		var	TradeAcc;
+		var TradePwd;
+		var BrokerID;
+		var ClientInfo;
+		//取出期货账户登录信息
+		//是否有期货登录
+		$.ajax({
+			type: "POST",
+			url: "../restapi/future_login_return.action",
+			async: false
+		}).done(function(temp){
+			if(!(temp == null || temp == "")){
+				logined = "1";
+				//res为用户信息
+				 var res = JSON.parse(temp);
+				UserID = res.UserID;
+				TradeAcc = res.TradeAcc;
+				TradePwd = res.TradePwd;
+				BrokerID = res.BrokerID;
+				ClientInfo = res.ClientInfo;
+				//进入页面先显示一次----------------------------------------------
+				param_2 = {
+					"UserID": UserID,
+					"TradeAcc": TradeAcc,
+					"TradePwd":TradePwd,								// 交易密码（暂定不使用）
+					"BrokerID":BrokerID,								// 经纪公司代码
+					"LastIndex": "10000"
+				}
+		$.ajax({
+			type: "post",
+			url: "../restapi/qry_base_info_return.action",
+			data: {
+				"param": JSON.stringify(param_2)
+			}
+		}).done(function(temp) {
+			var res = JSON.parse(temp);
+			var up = "red";
+			var down = "green";
+			var enable = "enable";
+			var disable = "disable";
+			var disabled = "disabled";
+			if(res.RetNo == "0") {
+				//在表格中显示
+				$('#table_data').empty();
+				//不等于0 就遍历出来
+				/* if(res.TurnoverInfo.length != "0"){ */
+				$('#table_data').append('<thead style = "font-size : 10px; color : ;"><tr align = "center"  valign = "center"><td>合约</td><td>策略</td><td>数量</td><td>期望收益</td><td>浮动收益</td><td>平仓盈亏</td><td>手续费</td><td>最新价</td><td>策略单状态</td><td>策略单操作</td></tr></thead>');
+				for(var i = 0; i < res.TurnoverInfo.length; i++) {
+				if(res.TurnoverInfo[i].ContractID == contract){
+					//显示table  隐藏报入
+							$("#table_div").css("display","block");
+							/* $("#insert").css("display","none"); */
+					//序号
+					var s0 = i + 1;
+					//策略单编号
+					var s00 = res.TurnoverInfo[i].ContractID;
+					
+					//策略单ID
+					var sID = res.TurnoverInfo[i].StrategyOrderID;
+					//取到合约品种
+					var s1 = res.TurnoverInfo[i].ContractName;
+					//浮动收益
+					var s5 = res.TurnoverInfo[i].FloatTurnover;
+					//期望收益
+					var s4 = res.TurnoverInfo[i].ExpectTurnover;
+					//状态
+					var s9 = res.TurnoverInfo[i].OrderState;
+					//策略
+					var s2 = res.TurnoverInfo[i].Name;
+					//数量
+					var s3 = "0";
+					if(res.TurnoverInfo[i].LongPosi != "0"){
+						s3 = "多" + res.TurnoverInfo[i].LongPosi ;
+					}else if(res.TurnoverInfo[i].ShortPosi != "0"){
+						s3 = "空" + res.TurnoverInfo[i].ShortPosi ;
+					}
+					//平仓盈亏
+					var s6 = res.TurnoverInfo[i].CloseProfit;
+					//手续费
+					var s7 = res.TurnoverInfo[i].Commission;
+					//最新价
+					var s8 = res.TurnoverInfo[i].LastPrice;
+					//判断显示
+					var show_parse = s9 != enable ? "disabled" : "enabled";
+					var show_recover = s9 != disable ? "disabled" : "enabled";
+					
+					if(s5 > 0 ){
+						$('#table_data').append('<thead style = "color : #F08080; " id = "' + sID + '"><tr style = "height : 40px; " align = "center"  valign = "middle"><td>' + s1 + '</td><td>' + s2 + '</td><td>' + s3 + '</td><td>' + s4 + '</td><td>' +s5 + '</td><td>' + s6 + '</td><td>' + s7 + '</td><td>' + s8 + '</td><td>' + option_change(s9) + '</td><td><button class="btn btn-sm btn-warning"  ' + show_parse + ' >暂停</button> &nbsp;<button class="btn btn-sm btn-info" style = "margin-left = 20px;" ' + show_recover  + '>恢复</button> &nbsp;<button class="btn btn-sm btn-danger" style = "margin-left = 10px;" >撤销</button></td></tr></thead>');
+					}else if(s5 < 0){
+						$('#table_data').append('<thead style = "color : #00DA3C; " id = "' + sID + '"><tr style = "height : 40px;" align = "center"  valign = "middle"><td>' + s1 + '</td><td>' + s2 + '</td><td>' + s3 + '</td><td>' + s4 + '</td><td>' +s5 + '</td><td>' + s6 + '</td><td>' + s7 + '</td><td>' + s8 + '</td><td>' + option_change(s9) + '</td><td><button class="btn btn-sm btn-warning" ' + show_parse  + ' >暂停</button> &nbsp;<button class="btn btn-sm btn-info" style = "margin-left = 20px;"  ' + show_recover  + '>恢复</button> &nbsp;<button class="btn btn-sm btn-danger" style = "margin-left = 10px;" >撤销</button></td></tr></thead>');
+					}else{
+						$('#table_data').append('<thead  id = "' + sID + '"><tr style = "height : 40px; " align = "center"  valign = "middle"><td>' + s1 + '</td><td>' + s2 + '</td><td>' + s3 + '</td><td>' + s4 + '</td><td>' +s5 + '</td><td>' + s6 + '</td><td>' + s7 + '</td><td>' + s8 + '</td><td>' + option_change(s9) + '</td><td><button class="btn btn-sm btn-warning"  ' + show_parse + '  >暂停</button> &nbsp;<button class="btn btn-sm btn-info" style = "margin-left = 20px;"  ' + show_recover  + ' >恢复</button> &nbsp;<button class="btn btn-sm btn-danger" style = "margin-left = 10px;" >撤销</button></td></tr></thead>');
+					}
+					break;
+				}else{
+					//没有相同合约
+				}
+					 
+					 
+				}
+			}else if(res.RetNo != "0" && res.RetInfo.ErrNo == "-3"){
+				swal({
+					  title: "客户，您好！",
+					  text: "无法连接 TMS服务器",
+					  type: "error",
+					  showCancelButton: false,
+					  confirmButtonColor: "#DD6B55",
+					  confirmButtonText: "确定",
+					  closeOnConfirm: true  
+				}, function(){
+					location.href = "../welcome.html"
+					});
+			}else {
+				swal("查询委托单接口返回值不等于0");
+			}
+  			//取到所有的button，给她一个暂停命令（在查到表格之后绑定事件）
+			var btns = $('.btn.btn-sm.btn-warning');
+			//循环遍历所有的按钮，一个一个添加事件绑定  
+			for(var i = 0; i < btns.length; ++i) {
+				btns[i].onclick = function() {
+					//1.点击的是暂停		
+					//暂停的参数
+					var param = {
+						"UserID": UserID,
+						"TradeAcc": TradeAcc,
+						"BrokerID": BrokerID,
+						"TradePwd": TradePwd,
+						"StrategyOrderID": $(this).parent().parent().parent().prop("id"),
+						"ClientInfo": ClientInfo,
+						"Option": "disable",
+						"OrderOpt": "closeall",
+						"Price": "3800.00",
+						"Volume": "5"
+					}
+					sweetAlert({
+						  title: "客户,您好！",
+						  text: "确定要暂停此委托单！",
+						  type: "warning",
+						  showCancelButton: true,
+						  confirmButtonColor: "#DD6B55",
+						  cancelButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  cancelButtonText: "取消",
+						  closeOnConfirm: true
+				}, function(){
+
+							//调用API暂停
+							$.ajax({
+								type: "post",
+								url: "../restapi/strategy_order_opt_return.action",
+								data: {
+									"param": JSON.stringify(param)
+								}
+							}).done(function(temp) {
+								var res = JSON.parse(temp);
+								//成功 RetNo返回值为0
+								if(res.RetNo == "0") {
+								}
+							})
+							});
+	   
+				}
+			}
+			//取到所有的button，给她一个恢复命令（在查到表格之后绑定事件）
+			var btns = $('.btn.btn-sm.btn-info');
+			//循环遍历所有的按钮，一个一个添加事件绑定  
+			for(var i = 0; i < btns.length; ++i) {
+				btns[i].onclick = function() {
+					//恢复
+					//删除的参数
+					var param = {
+						"UserID": UserID,
+						"TradeAcc": TradeAcc,
+						"BrokerID": BrokerID,
+						"TradePwd": TradePwd,
+						"StrategyOrderID": $(this).parent().parent().parent().prop("id"),
+						"ClientInfo": ClientInfo,
+						"Option": "enable",
+						"OrderOpt": "",
+						"Price": "",
+						"Volume": ""
+					}
+				
+					sweetAlert({
+						  title: "客户,您好！",
+						  text: "确定要恢复此委托单！",
+						  type: "warning",
+						  showCancelButton: true,
+						  confirmButtonColor: "#DD6B55",
+						  cancelButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  cancelButtonText: "取消",
+						  closeOnConfirm: true
+				}, function(){
+
+							//调用API恢复
+							$.ajax({
+								type: "post",
+								url: "../restapi/strategy_order_opt_return.action",
+								data: {
+									"param": JSON.stringify(param)
+								}
+							}).done(function(temp) {
+								var res = JSON.parse(temp);
+								//成功 RetNo返回值为0
+								if(res.RetNo == "0") {
+	
+								}
+							})
+							});
+				}
+			}
+			//取到所有的button，给她一个撤销命令（在查到表格之后绑定事件）
+			var btns = $('.btn.btn-sm.btn-danger');
+			//循环遍历所有的按钮，一个一个添加事件绑定  
+			for(var i = 0; i < btns.length; ++i) {
+				btns[i].onclick = function() {
+					//1.点击的是撤销		
+					//删除的参数
+					var param = {
+						"UserID": UserID,
+						"TradeAcc": TradeAcc,
+						"BrokerID": BrokerID,
+						"TradePwd": TradePwd,
+						"StrategyOrderID": $(this).parent().parent().parent().prop("id"),
+						"ClientInfo": ClientInfo,
+						"Option": "remove",
+						"OrderOpt": "closeall",
+						"Price": "14235.00",
+						"Volume": "12"
+					}
+					sweetAlert({
+						  title: "客户,您好！",
+						  text: "确定要撤销此委托单!",
+						  type: "warning",
+						  showCancelButton: true,
+						  confirmButtonColor: "#DD6B55",
+						  cancelButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  cancelButtonText: "取消",
+						  closeOnConfirm: true
+				}, function(){
+					
+							//调用API删除
+							$.ajax({
+								type: "post",
+								url: "../restapi/strategy_order_opt_return.action",
+								data: {
+									"param": JSON.stringify(param)
+								}
+							}).done(function(temp) {
+								var res = JSON.parse(temp);
+								//成功 RetNo返回值为0
+								if(res.RetNo == "0") {
+	
+								}
+							})
+							});
+	   
+				}
+			}
+			})
+				//-----------------------------------------------------------
+			}
+			
+			}).fail(function(error){	
+				swal("取到信息");	
+			})	
+			//状态
+			function option_change(a){
+				var temp = {"enable":"正常","disable":"暂停","remove":"撤销","complete":"完成"};
+				return  temp[a];
+			} 
+			
+			function change_option(b){
+				var temp = {"正常":"enable","暂停":"disable","撤销":"remove","完成":"complete"};
+				return  temp[b];
+			}  
+		//全局变量  日志显示的信息
+		var log_date = "";
+		if(logined == "1"){
+		$("body").everyTime("3s","快照qry_quotesnapshot",function() {
+			
+			param_2 = {
+					"UserID": UserID,
+					"TradeAcc": TradeAcc,
+					"TradePwd":TradePwd,								// 交易密码（暂定不使用）
+					"BrokerID":BrokerID,								// 经纪公司代码
+					"LastIndex": "10000"
+				}
+		$.ajax({
+			type: "post",
+			url: "../restapi/qry_base_info_return.action",
+			data: {
+				"param": JSON.stringify(param_2)
+			}
+		}).done(function(temp) {
+			var res = JSON.parse(temp);
+			var up = "red";
+			var down = "green";
+			var enable = "enable";
+			var disable = "disable";
+			var disabled = "disabled";
+			if(res.RetNo == "0") {
+				//在表格中显示
+				$('#table_data').empty();
+				//不等于0 就遍历出来
+				/* if(res.TurnoverInfo.length != "0"){ */
+				$('#table_data').append('<thead style = "font-size : 10px; color : ;"><tr align = "center"  valign = "center"><td>合约</td><td>策略</td><td>数量</td><td>期望收益</td><td>浮动收益</td><td>平仓盈亏</td><td>手续费</td><td>最新价</td><td>策略单状态</td><td>策略单操作</td></tr></thead>');
+				for(var i = 0; i < res.TurnoverInfo.length; i++) {
+				if(res.TurnoverInfo[i].ContractID == contract){
+					//显示table  隐藏报入
+							$("#table_div").css("display","block");
+							/* $("#insert").css("display","none"); */
+					//序号
+					var s0 = i + 1;
+					//策略单编号
+					var s00 = res.TurnoverInfo[i].ContractID;
+					
+					//策略单ID
+					var sID = res.TurnoverInfo[i].StrategyOrderID;
+					//取到合约品种
+					var s1 = res.TurnoverInfo[i].ContractName;
+					//浮动收益
+					var s5 = res.TurnoverInfo[i].FloatTurnover;
+					//期望收益
+					var s4 = res.TurnoverInfo[i].ExpectTurnover;
+					//状态
+					var s9 = res.TurnoverInfo[i].OrderState;
+					//策略
+					var s2 = res.TurnoverInfo[i].Name;
+					//数量
+					var s3 = "0";
+					if(res.TurnoverInfo[i].LongPosi != "0"){
+						s3 = "多" + res.TurnoverInfo[i].LongPosi ;
+					}else if(res.TurnoverInfo[i].ShortPosi != "0"){
+						s3 = "空" + res.TurnoverInfo[i].ShortPosi ;
+					}
+					//平仓盈亏
+					var s6 = res.TurnoverInfo[i].CloseProfit;
+					//手续费
+					var s7 = res.TurnoverInfo[i].Commission;
+					//最新价
+					var s8 = res.TurnoverInfo[i].LastPrice;
+					//判断显示
+					var show_parse = s9 != enable ? "disabled" : "enabled";
+					var show_recover = s9 != disable ? "disabled" : "enabled";
+					
+					if(s5 > 0 ){
+						$('#table_data').append('<thead style = "color : #F08080; " id = "' + sID + '"><tr style = "height : 40px; " align = "center"  valign = "middle"><td>' + s1 + '</td><td>' + s2 + '</td><td>' + s3 + '</td><td>' + s4 + '</td><td>' +s5 + '</td><td>' + s6 + '</td><td>' + s7 + '</td><td>' + s8 + '</td><td>' + option_change(s9) + '</td><td><button class="btn btn-sm btn-warning"  ' + show_parse + ' >暂停</button> &nbsp;<button class="btn btn-sm btn-info" style = "margin-left = 20px;" ' + show_recover  + '>恢复</button> &nbsp;<button class="btn btn-sm btn-danger" style = "margin-left = 10px;" >撤销</button></td></tr></thead>');
+					}else if(s5 < 0){
+						$('#table_data').append('<thead style = "color : #00DA3C; " id = "' + sID + '"><tr style = "height : 40px;" align = "center"  valign = "middle"><td>' + s1 + '</td><td>' + s2 + '</td><td>' + s3 + '</td><td>' + s4 + '</td><td>' +s5 + '</td><td>' + s6 + '</td><td>' + s7 + '</td><td>' + s8 + '</td><td>' + option_change(s9) + '</td><td><button class="btn btn-sm btn-warning" ' + show_parse  + ' >暂停</button> &nbsp;<button class="btn btn-sm btn-info" style = "margin-left = 20px;"  ' + show_recover  + '>恢复</button> &nbsp;<button class="btn btn-sm btn-danger" style = "margin-left = 10px;" >撤销</button></td></tr></thead>');
+					}else{
+						$('#table_data').append('<thead  id = "' + sID + '"><tr style = "height : 40px; " align = "center"  valign = "middle"><td>' + s1 + '</td><td>' + s2 + '</td><td>' + s3 + '</td><td>' + s4 + '</td><td>' +s5 + '</td><td>' + s6 + '</td><td>' + s7 + '</td><td>' + s8 + '</td><td>' + option_change(s9) + '</td><td><button class="btn btn-sm btn-warning"  ' + show_parse + '  >暂停</button> &nbsp;<button class="btn btn-sm btn-info" style = "margin-left = 20px;"  ' + show_recover  + ' >恢复</button> &nbsp;<button class="btn btn-sm btn-danger" style = "margin-left = 10px;" >撤销</button></td></tr></thead>');
+					}
+					break;
+				}else{
+					//没有相同合约
+				}
+					 
+					 
+				}
+			}else if(res.RetNo != "0" && res.RetInfo.ErrNo == "-3"){
+				swal({
+					  title: "客户，您好！",
+					  text: "无法连接 TMS服务器",
+					  type: "error",
+					  showCancelButton: false,
+					  confirmButtonColor: "#DD6B55",
+					  confirmButtonText: "确定",
+					  closeOnConfirm: true  
+				}, function(){
+					location.href = "../welcome.html"
+					});
+			}else {
+				swal("查询委托单接口返回值不等于0");
+			}
+  			//取到所有的button，给她一个暂停命令（在查到表格之后绑定事件）
+			var btns = $('.btn.btn-sm.btn-warning');
+			//循环遍历所有的按钮，一个一个添加事件绑定  
+			for(var i = 0; i < btns.length; ++i) {
+				btns[i].onclick = function() {
+					//1.点击的是暂停		
+					//暂停的参数
+					var param = {
+						"UserID": UserID,
+						"TradeAcc": TradeAcc,
+						"BrokerID": BrokerID,
+						"TradePwd": TradePwd,
+						"StrategyOrderID": $(this).parent().parent().parent().prop("id"),
+						"ClientInfo": ClientInfo,
+						"Option": "disable",
+						"OrderOpt": "closeall",
+						"Price": "3800.00",
+						"Volume": "5"
+					}
+					sweetAlert({
+						  title: "客户,您好！",
+						  text: "确定要暂停此委托单！",
+						  type: "warning",
+						  showCancelButton: true,
+						  confirmButtonColor: "#DD6B55",
+						  cancelButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  cancelButtonText: "取消",
+						  closeOnConfirm: true
+				}, function(){
+
+							//调用API暂停
+							$.ajax({
+								type: "post",
+								url: "../restapi/strategy_order_opt_return.action",
+								data: {
+									"param": JSON.stringify(param)
+								}
+							}).done(function(temp) {
+								var res = JSON.parse(temp);
+								//成功 RetNo返回值为0
+								if(res.RetNo == "0") {
+								}
+							})
+							});
+	   
+				}
+			}
+			//取到所有的button，给她一个恢复命令（在查到表格之后绑定事件）
+			var btns = $('.btn.btn-sm.btn-info');
+			//循环遍历所有的按钮，一个一个添加事件绑定  
+			for(var i = 0; i < btns.length; ++i) {
+				btns[i].onclick = function() {
+					//恢复
+					//删除的参数
+					var param = {
+						"UserID": UserID,
+						"TradeAcc": TradeAcc,
+						"BrokerID": BrokerID,
+						"TradePwd": TradePwd,
+						"StrategyOrderID": $(this).parent().parent().parent().prop("id"),
+						"ClientInfo": ClientInfo,
+						"Option": "enable",
+						"OrderOpt": "",
+						"Price": "",
+						"Volume": ""
+					}
+				
+					sweetAlert({
+						  title: "客户,您好！",
+						  text: "确定要恢复此委托单！",
+						  type: "warning",
+						  showCancelButton: true,
+						  confirmButtonColor: "#DD6B55",
+						  cancelButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  cancelButtonText: "取消",
+						  closeOnConfirm: true
+				}, function(){
+
+							//调用API恢复
+							$.ajax({
+								type: "post",
+								url: "../restapi/strategy_order_opt_return.action",
+								data: {
+									"param": JSON.stringify(param)
+								}
+							}).done(function(temp) {
+								var res = JSON.parse(temp);
+								//成功 RetNo返回值为0
+								if(res.RetNo == "0") {
+	
+								}
+							})
+							});
+				}
+			}
+			//取到所有的button，给她一个撤销命令（在查到表格之后绑定事件）
+			var btns = $('.btn.btn-sm.btn-danger');
+			//循环遍历所有的按钮，一个一个添加事件绑定  
+			for(var i = 0; i < btns.length; ++i) {
+				btns[i].onclick = function() {
+					//1.点击的是撤销		
+					//删除的参数
+					var param = {
+						"UserID": UserID,
+						"TradeAcc": TradeAcc,
+						"BrokerID": BrokerID,
+						"TradePwd": TradePwd,
+						"StrategyOrderID": $(this).parent().parent().parent().prop("id"),
+						"ClientInfo": ClientInfo,
+						"Option": "remove",
+						"OrderOpt": "closeall",
+						"Price": "14235.00",
+						"Volume": "12"
+					}
+					sweetAlert({
+						  title: "客户,您好！",
+						  text: "确定要撤销此委托单!",
+						  type: "warning",
+						  showCancelButton: true,
+						  confirmButtonColor: "#DD6B55",
+						  cancelButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  cancelButtonText: "取消",
+						  closeOnConfirm: true
+				}, function(){
+					
+							//调用API删除
+							$.ajax({
+								type: "post",
+								url: "../restapi/strategy_order_opt_return.action",
+								data: {
+									"param": JSON.stringify(param)
+								}
+							}).done(function(temp) {
+								var res = JSON.parse(temp);
+								//成功 RetNo返回值为0
+								if(res.RetNo == "0") {
+	
+								}
+							})
+							});
+	   
+				}
+			}
+			})
+		}, 0, true)  
+		}else{
+			//没有登录
+		}
+	</script>
+	<script type="text/javascript" src="../js/login_v3.js"></script>
+</html>

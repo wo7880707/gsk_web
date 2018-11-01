@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<script type="text/javascript" src="../sweet/js/sweet-alert.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sweet/css/sweet-alert.css"/>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+		<script type="text/javascript" src="../js/init_v3.js"></script>
+		<script type="text/javascript" src="../js/function_table.js"></script>
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body style="background-color: gray;overflow-y:hidden;">
+		<!--1.第一行  显示框-->
+		<div class="container-fluid" style="background-color: #808080; ">
+			<div class="row" style=" height: 60px; background-color: #5BC0DE;" id = "bb1">
+
+			</div>
+			<!--2.功能框-->
+			<div class="row" style="line-height: 50px; background-color: #FFFFFF; margin-left: -15px; "id = "bb2">
+			</div>
+			<!--一根红线-->
+			<div id="redline" class="row" style="width : 99.9999% ;height: 2px; background-color: red; margin-right: 20px;">
+			<!--数据显示栏。。。。。。。。。。。。。。。。。。-->
+			</div>
+			<div class="row" style="background-color:#000000;" >
+				<!--不动的表头-->
+				<div  class="" id="table-cont_head"  style="width: 100%;">
+					<table id="show_quotesnapshot_head" class="table " style="color: #DCDC0A;  ">
+						<thead id="thea" style="color:#00DCDC; font-size:17px; font-weight: lighter; background-color:#000000 ; ">
+							<tr style="height: 40px; border-bottom: 1px solid  #FF3C3C !important; ">
+								<th class = "table_head" id = "table_head_0" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: center;" width=10px;></th>
+								<th class = "table_head"  id = "table_head_1" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: center;" width=60px;>序号</th>
+								<th class = "table_head"  id = "table_head_2" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: center;" width=100px;>合约代码</th>
+								<th class = "table_head"  id = "table_head_3" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;" width=120px;>合约名称</th>
+								<th class = "table_head"  id = "table_head_4" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">最新价</th>
+								<th class = "table_head"  id = "table_head_5" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">涨跌</th>
+								<th class = "table_head"  id = "table_head_6" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">涨跌幅</th>
+								<th class = "table_head"  id = "table_head_7" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">买盘价</th>
+								<th class = "table_head"  id = "table_head_8" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">卖盘价</th>
+								<th class = "table_head"  id = "table_head_9" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">成交量</th>
+								<th class = "table_head"  id = "table_head_10" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">开盘价</th>
+								<th class = "table_head"  id = "table_head_11" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">最高价</th>
+								<th class = "table_head"  id = "table_head_12" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">最低价</th>
+								<th class = "table_head"  id = "table_head_13" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">昨结算</th>
+								<th class = "table_head"  id = "table_head_14" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">昨收盘</th>	
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<!--数据表格-->
+				<div  class="" id="table-cont" >
+					<table id="show_quotesnapshot" class="table " style="color: #DCDC0A;  ">
+						<thead id="thea" style="color:#00DCDC; font-size:17px; font-weight: lighter; background-color:#000000 ; ">
+							<tr style="height: 40px; border-bottom: 1px solid  #FF3C3C !important; ">
+								<th id = "table_move_0" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: center;" width=10px;></th>
+								<th id = "table_move_1" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: center;" width=60px;>序号</th>
+								<th id = "table_move_2" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: center;" width=100px;>合约代码</th>
+								<th id = "table_move_3" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;" width=120px;>合约名称</th>
+								<th id = "table_move_4" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">最新价</th>
+								<th id = "table_move_5" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">涨跌</th>
+								<th id = "table_move_6" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">涨跌幅</th>
+								<th id = "table_move_7" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">买盘价</th>
+								<th id = "table_move_8" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">卖盘价</th>
+								<th id = "table_move_9" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">成交量</th>
+								<th id = "table_move_10" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">开盘价</th>
+								<th id = "table_move_11" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">最高价</th>
+								<th id = "table_move_12" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">最低价</th>
+								<th id = "table_move_13" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">昨结算</th>
+								<th id = "table_move_14" style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">昨收盘</th>	
+							</tr>
+						</thead>
+					</table>
+				</div>
+				
+			</div>
+		<div class="row" style=" height: 20px; width: 100%; background-color: darkgrey; position: fixed;bottom: 0px;" id = "footer">
+			</div>
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->  
+        <div class="modal" id="aa">
+			<div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<p class="page-header" style="margin-left: 15px; font-size : 20px; color : lightcoral; font-weight : 600;margin-right: 15px;">
+					尊贵的客户，您好！
+				</p>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table style="width: 85%; margin-left: 15%; font-size: 18px;">
+						<tr class="success">
+							<td>姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_Name"></span></td>
+							<td>用户类型&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_UserType"></span></td>
+						</tr>
+						<tr class="success">
+							<td>电 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_Telephone"></span></td>
+							<td>邮 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_EmailAddress"></span></td>
+						</tr>
+						<tr class="success">
+							<td>等 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_UserLevelName"></span></td>
+							<td>额 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_InvestLimit"></span></td>
+						</tr>
+					</table>
+				</div>
+				
+				<!--<div class="table-responsive" style="margin-top: 30px;" align = "center">
+					<table id="login_detail_Indices" class="table-bordered table-striped" style="width: 97%;" >
+						<thead>
+							<td> 指标类型</td>
+							<td> 指标订阅到期日</td>
+							<td> 状态</td>
+						</thead>
+					</table>
+				</div>-->
+				<p style="margin-top: 20px;margin-left: 15px; font-size : 17px; ">
+					温馨提示 ：如有任何问题请联系杠上开期货交易决策系统客服 !
+				</p>
+				<p class="text-right " style="margin-right: 20px;"><button class="btn btn-info " onclick='$("#aa").modal("hide")'>关闭</button></p>
+			</div>
+		</div>
+		<div id="back_up" onclick="$(window).scrollTop(0)" onmouseover=' style.border = "2px solid lightcoral"' onmouseout=' style.border = "2px solid yellow" ' style = "border-radius: 8px; border: 2px solid yellow; cursor:pointer;position: fixed;bottom:10px;right: 10px;display: none;font-family: "微软雅黑";font-size: 30px; color: yellow; z-index: 1000; "><span style = "color : white; font-weight :600; margin-right : 3px; margin-left : 3px; font-size: 15px;"> 顶端 </span></div>
+	</body>
+	<script type="text/javascript">
+	$(window).resize(function(){
+			location.reload();     
+		}); 
+		$('#bb1').load("header_1floor.html",function() {
+			if(window.innerWidth <= 1100){
+				$('#xuanchuanzi').html("");
+			}
+			if(window.innerWidth <= 800){
+						$('#div1').prop("class","col-lg-2  col-md-2 col-sm-2 col-xs-2");
+						$('#div2').prop("class","col-lg-9  col-md-9 col-sm-9 col-xs-9");
+						$('#div3').prop("class","col-lg-1  col-md-1 col-sm-1 col-xs-1");
+						$('#xitongming').html("");
+						$('#username_button').html("");
+					}
+			if(window.innerWidth <= 1219){
+			
+					}	
+		});
+		$('#bb2').load("header_2floor.html",function() {
+  		//进入页面之后 给表格一个大小
+		var table_height = window.innerHeight;
+		$('#table-cont').css("height",table_height - parseInt($("#bb1").css("height")) - parseInt($("#bb2").css("height"))  + "px");
+		//定位红线
+		$('#redline').css({
+			"width":window.innerWidth - 17 + "px",
+			"top": parseInt($("#bb1").css("height")) + parseInt($("#bb2").css("height")) + parseInt($('#thea').css("height")) + "px",
+			"position": "fixed"
+		});
+		//定位表头
+		$('#table-cont_head').css({
+			"top": parseInt($("#bb1").css("height")) + parseInt($("#bb2").css("height")) + "px",
+			"position": "fixed"
+		});
+
+});
+		//显示的框
+		var table_boder = "";		
+		var reg = /[a-z]+/gi;
+		var reg1 = /[0-9]+/gi;
+		var contracts_contrast = JSON.parse(localStorage.getItem("contracts_contrast"));
+		var contracts_exchange = JSON.parse(localStorage.getItem("contracts_exchange"));		
+/*		var contracts_contrast = {"pp":"PP","T":"T","TF":"TF","bb":"胶板","ni":"沪镍","RI":"早稻","i":"铁矿",
+								  "rb":"螺纹","y":"豆油","al":"沪铝","FG":"玻璃","v":"PVC","fu":"燃油料","jd":"鸡蛋",
+								  "ZC":"郑煤","jm":"焦煤","p":"棕榈","CF":"郑棉","c":"玉米","sn":"沪锡","RM":"菜粕",
+								  "WH":"郑麦","fb":"纤板","ru":"橡胶","OI":"郑油","pb":"沪铅","TA":"PTA","a":"豆一",
+								  "cs":"淀粉","SF":"硅铁","l":"塑料","au":"沪金","LR":"晚稻","zn":"沪锌","j":"焦炭",    
+								  "SM":"猛硅","m":"豆粕","bu":"沥青","SR":"白糖","MA":"郑醇","ag":"沪银","hc":"热卷",
+								  "cu":"沪铜","IH":"IH","IF":"IF","IC":"IC","JR":"粳稻","RS":"菜籽","AP":"苹果"}   
+		var contracts_exchange = {"IC":"CFFEX","IF":"CFFEX","IH":"CFFEX","TF":"CFFEX","T":"CFFEX",
+								  "bu":"SHFE","cu":"SHFE","al":"SHFE","zn":"SHFE","pb":"SHFE","ni":"SHFE",
+										"sn":"SHFE","au":"SHFE","ag":"SHFE","rb":"SHFE","hc":"SHFE","fu":"SHFE","ru":"SHFE",
+								  "m":"DCE","y":"DCE","a":"DCE","p":"DCE","c":"DCE","cs":"DCE","jd":"DCE","bb":"DCE",
+										"fb":"DCE","l":"DCE","v":"DCE","pp":"DCE","j":"DCE","jm":"DCE","i":"DCE",
+								  "SR":"CZCE","CF":"CZCE","CY":"CZCE","ZC":"CZCE","FG":"CZCE","TA":"CZCE","MA":"CZCE",
+										"WH":"CZCE","RI":"CZCE","LR":"CZCE","JR":"CZCE","RS":"CZCE","OI":"CZCE","RM":"CZCE",
+										"SF":"CZCE","SM":"CZCE","AP":"CZCE"}*/
+		
+		function change(contract){
+			var chinese  = contract.match(reg)[0];
+			var num  = contract.match(reg1)[0];
+			chinese = contracts_contrast[chinese];
+			return chinese + num;
+		}
+		
+		function which_exchange(contract){
+			
+			var english_contract  = contract.match(reg)[0];
+			return contracts_exchange[english_contract];
+		}
+		
+		function toDecimal2(x) {
+			var f = parseFloat(x);      
+			if (isNaN(f)) {   
+			 return false;     
+			}          
+			var f = Math.round(x*100)/100;  
+			var s = f.toString();       
+			var rs = s.indexOf('.');      
+			if (rs < 0) {   
+			 rs = s.length;      
+			 s += '.';   
+			            }       
+			while (s.length <= rs + 2) {   
+			 s += '0';       
+			}            
+			return s;   
+			}
+		//访问api方法
+		function apiconnection(){
+		//传参
+			var param_data = {
+				"resoType": "1",
+				"contracts": ""
+			}
+			$.ajax({
+				type: "post",
+				url: "../restapi_v3/qry_quotesnapshot_return.action",
+				data: {
+					"param": JSON.stringify(param_data)
+				}
+			}).done(function(temp) {
+				var res = JSON.parse(temp);
+				//预留BASE64编码的解码方法
+				//解码
+				//var msgDesc=$("#divId").html().replace(/(\s*)/g, "");  注意替换一下特殊字符
+				//$.base64.decode(res.Snapshots, 'utf8')  一定要注意引用 utf8务端加密方式一致。
+			if (res.retNo == "0") {
+					//在表格中显示
+					//$('#show_quotesnapshot').empty();
+					//$('#show_quotesnapshot').append('<thead id="thea" style="color:#00DCDC; border: 0px solid red ; font-size:17px;"><tr style="height: 50px;border: 0px solid red ; " ><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: center;" width=10px;></th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: center;" width=60px;>序号</th><th width=100px; style="border-bottom: 1px solid  #FF3C3C !important;font-weight: normal; text-align: center; ">合约代码</th><th style = "width : 140px; border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">合约名称</th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">最新价</th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">涨跌</th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">涨跌幅</th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">买盘价</th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">卖盘价</th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;"> 成交量</th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">开盘价</th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">最高价</th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">最低价</th><th style="border-bottom: 1px solid  #FF3C3C !important; font-weight: normal; text-align: right;">昨结算</th><th style="border-bottom: 1px solid  #FF3C3C !important;font-weight: normal; text-align: right; ">昨收盘</th></tr></thead>');
+					//$("#show_quotesnapshot  thead:not(:first)").empty();
+					$("#show_quotesnapshot  thead:not(:first)").remove();
+					//对象数组
+					var arr = res.snapshots;
+					//根据交易量排序
+					arr.sort(function(a,b){
+  					  return b.data.split(",")[10]-a.data.split(",")[10];    // -1 升序排列 
+					})				
+					var num = 0;
+					
+					var s3 = 0 ;
+					for (var i = 0; i < arr.length; i++) {
+						 //取到Date数据
+						var s1 = arr[i].data;
+						//分割数据
+						var s2 = s1.split(",");
+						if(which_exchange(s2[0]) == "CZCE"){
+						//序号
+						var s3 = s3 + 1;
+						var temp = '- - - -';
+						//合约代码
+						var a0 = s2[0]!=""?s2[0]:temp;
+						//var a0_change =change(s2[0])!=undefined?change(s2[0]):temp;
+						//空  期货公司
+						var a1 =s2[1]==""||s2[1]==undefined?temp:s2[1];
+						//最新价
+						var a2 =s2[2]==""||s2[2]==undefined?temp:s2[2];
+						//开盘价
+						var a3 =s2[3]==""||s2[3]==undefined?temp:s2[3];
+						//最高价
+						var a4 =s2[4]==""||s2[4]==undefined?temp:s2[4];
+						//最低价
+						var a5 =s2[5]==""||s2[5]==undefined?temp:s2[5];
+						//昨收盘价
+						var a6 =s2[6]==""||s2[6]==undefined?temp:s2[6];
+						//
+						var a7 =s2[7]==""||s2[7]==undefined?temp:s2[7];
+						//昨结算价
+						var a8 =s2[8]==""||s2[8]==undefined?temp:s2[8];
+						//
+						var a9 =s2[9]==""||s2[9]==undefined?temp:s2[9];
+						//成交量
+						var a10 =s2[10]==""||s2[10]==undefined?temp:s2[10];
+						//71031854123  不知道
+						var a11 =s2[11]==""||s2[11]==undefined?temp:s2[11];
+						//昨持仓量
+						var a12 =s2[12]==""||s2[12]==undefined?temp:s2[12];
+						//现持仓量
+						var a13 =s2[13]==""||s2[13]==undefined?temp:s2[13];
+						//买盘价
+						var a14 =s2[14]==""||s2[14]==undefined?temp:s2[14];
+						//买盘量
+						var a15 =s2[15]==""||s2[15]==undefined?temp:s2[15];
+						//卖盘价
+						var a16 =s2[16]==""||s2[16]==undefined?temp:s2[16];
+						//卖盘量
+						var a17 =s2[17]==""||s2[17]==undefined?temp:s2[17];
+						//涨跌
+						var up_down = Number(a2) - Number(a8);
+						//涨跌幅
+						var up_down_100 = toDecimal2(up_down / a8 * 100 ) + "%" ;
+
+						if(up_down < "0"){
+							$('#show_quotesnapshot').append('<thead style="font-size:15px;"><tr class="kline" style = "vertical-align: middle ; height : 40px;" ><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: center; color: #00DC00;">↓</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: center;" >' + s3 +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: center;">' + a0 +'</th><th style = "color : #DCDC0A; border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; "><a class = "all_a" id = "' + a0 + '" style = "cursor:pointer;color:#DCDC0A;text-decoration: none;">' + change(s2[0]) + '</a></th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; ">' +  a2  +'</th><th style = "color : #00DC00;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +   up_down.toFixed(2) +'</th><th style = "color : #00DC00;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  up_down_100  +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal;  text-align: right;">' +   a14 +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; ">' +  a16  +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; ">' +  a10  +'</th><th style = "color : #00DC00;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a3  +'</th><th style = "color : #00DC00;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a4  +'</th><th style = "color : #00DC00;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a5  +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a8  +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a6  +'</th></tr></thead>');
+						}else if(up_down > "0"){
+							$('#show_quotesnapshot').append('<thead style="font-size:15px;"><tr class="kline" style = "vertical-align: middle ; height : 40px;" ><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: center; color: #FF3C3C;">↑</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: center; " >' + s3 +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: center; ">' + a0 +'</th><th style = "color : #DCDC0A; border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; "><a class = "all_a" id = "' + a0 + '" style = "cursor:pointer;color:#DCDC0A;text-decoration: none;">' + change(s2[0]) + '</a></th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; ">' +  a2  +'</th><th style = "color : #FF3C3C;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +   up_down.toFixed(2) +'</th><th style = "color : #FF3C3C;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  up_down_100  +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal;  text-align: right;">' +   a14 +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; ">' +  a16  +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; ">' +  a10  +'</th><th style = "color : #FF3C3C;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a3  +'</th><th style = "color : #FF3C3C;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a4  +'</th><th style = "color : #FF3C3C;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a5  +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a8  +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a6  +'</th></tr></thead>');
+						}else {
+							$('#show_quotesnapshot').append('<thead style="font-size:15px;"><tr class="kline" style = "vertical-align: middle ; height : 40px;" ><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: center; color: #000000; ">↑</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: center;" >' + s3 +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: center;">' + a0 +'</th><th style = "color : #DCDC0A; border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; "><a class = "all_a" id = "' + a0 + '" style = "cursor:pointer;color:#DCDC0A;text-decoration: none;">' + change(s2[0]) + '</a></th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; ">' +  a2  +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +   up_down.toFixed(2) +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  up_down_100  +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal;  text-align: right;">' +   a14 +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; ">' +  a16  +'</th><th style="border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important; font-weight: normal; text-align: right; ">' +  a10  +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a3  +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a4  +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a5  +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a8  +'</th><th style = "color : #E7E7E7;border-bottom: 0px solid  #FF3C3C !important; border-top: 0px solid  #FF3C3C !important;  font-weight: normal; text-align: right;">' +  a6  +'</th></tr></thead>');
+						}
+						}
+
+					}
+									//给鼠标停留框添加显示边框
+						$("#" + table_boder).parent().parent().css({
+										       		"border-bottom":"1px solid yellow",
+										         	"border-top":"1px solid yellow",
+									                "border-right":"1px solid yellow",
+										            "border-left":"1px solid yellow"
+										      	})	
+						//红线
+						$('#redline').css({
+								"width": $('#show_quotesnapshot').css("width") ,
+								"top": parseInt($("#bb1").css("height")) + parseInt($("#bb2").css("height")) + parseInt($('#thea').css("height")) + "px",
+								"position": "fixed"
+							});
+						//定位表头
+						//1.先把表头每行宽赋值过来
+						var table_head = $('.table_head');
+						for (var i = 0; i < table_head.length; i++) {
+							var temp_width = $('#table_move_' + i).css("width");
+							$('#table_head_' + i).prop("width",temp_width) ;
+							var temp_headwidth =$('#table_head_' + i).css("width");
+						}
+						$('#table-cont_head').css({
+							"width": $('#show_quotesnapshot').css("width") ,
+							"top": parseInt($("#bb1").css("height")) + parseInt($("#bb2").css("height")) + "px",
+							"position": "fixed"
+						});
+				 	}else if(res.retNo != "0"){
+						swal({
+							  title: "客户，您好!",
+							  text: "服务器关闭了:)",
+							  type: "info",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							});
+					} else {
+					swal("行情快照接口返回值不等于0  没成功");
+					//alert("行情快照接口返回值不等于0  没成功");
+				}
+
+			//鼠标移入事件
+				$(".kline").mouseover(function(){
+					//把其他的全变成没有边框
+					$(".kline").css({
+									"border-bottom":"0px solid yellow",
+									"border-top":"0px solid yellow",
+									"border-right":"0px solid yellow",
+									"border-left":"0px solid yellow"
+									})		
+					 var contract = $(this).children().first().next().next().html();
+					 $(this).css("border-bottom","1px solid yellow");
+					 $(this).css("border-top","1px solid yellow");
+					 $(this).css("border-right","1px solid yellow");
+					 $(this).css("border-left","1px solid yellow");
+					  //把这个行的id传给显示的边框
+					 table_boder = contract;
+					 
+				})
+				//鼠标移出事件
+				$(".kline").mouseout(function(){
+					 var contract = $(this).children().first().next().next().html();
+					 $(this).css("border-bottom","0px solid #000000");
+					 $(this).css("border-top","0px solid #000000");
+					 $(this).css("border-right","0px solid #000000");
+					 $(this).css("border-left","0px solid #000000");
+					 table_boder = "";
+				})
+
+				//表单双击事件
+				$(".kline").dblclick(function(){
+					var contract = $(this).children().first().next().next().html();
+					location.href = "kline.html?contract="+contract;
+				})	
+				//托管单击事件
+				$(".all_a").click(function(){
+					var contract = $(this).prop("id");
+
+					    	//判断期货账户是否登录
+					    	if($("#future_login").html() == "期货账号注销"){
+					    		location.href = "add_strategy_orders.html?contract="+contract;
+					    	}else{
+					  			sweetAlert({
+								  title: "客户,您好！",
+								  text: "需要您先登录期货账号哟:)",
+								  type: "warning",
+								  
+								  confirmButtonColor: "#DD6B55",
+								  confirmButtonText: "确定",
+								  cancelButtonText: "取消",
+								  showCancelButton: true,
+								  closeOnConfirm: false
+								}, function(){
+									location.href = "login_trade_acc.html";
+								});
+					    	}
+				})
+			})		
+}
+		//调用api一次
+			apiconnection();
+ 		  $("body").everyTime("3s","快照qry_quotesnapshot",function() {
+			apiconnection();
+		}, 0, true)   
+
+	</script>
+	<script type="text/javascript" src="../js/login_v3.js"></script>
+	<script>
+
+			$(window).scroll(function(){
+				if($(this).scrollTop() >= 450){
+					$("#back_up").show()
+				}else{
+					$("#back_up").hide()
+				}
+			})
+	</script>
+</html>

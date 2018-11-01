@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../css/ALL.css" rel="stylesheet">
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+
+		<script type="text/javascript" src="../js/init.js"></script>	
+	</head>
+	<body style="background-color: lightblue;">
+		<!--1.第一行  显示框-->
+		<div class="container-fluid" style="background-color: #808080; ">
+			<div class="row" style="line-height: 50px; ">
+				<div class = "col-lg-8  col-md-8 col-sm-8" style="padding-left: 0px; ">	
+					<img src="../img/g.png" style="margin: 0px; padding: 0px; border: solid 0px white;"/>
+					<span class="text-left" style="color: #FFFFFF; font-size: 18px; font-weight: 500; margin-left: 30px;">杠上开期货决策系统</span>							
+					<span class="text-left" style="color: #FFFFFF;font-size: 14px; margin-left: 30px;">杠上开服务器2</span>		
+					<span class="text-left" style="color: #FFFFFF;font-size: 14px; margin-left: 30px;">主力合约</span>
+				</div>
+				<div class = "col-lg-3  col-md-3 col-sm-3 col-lg-offset-1 col-md-offset-1 col-sm-offset-1" align="right">
+					<span  style="color: #FFFFFF;font-size: 14px;">欢迎您！
+					<span  id="username" style="color: #FFFFFF;font-size: 14px;margin-right: 30px;">dasdads</span></span>
+				</div>
+			</div>
+		<!--2.功能框-->
+			<div class="row" style="line-height: 60px; background-color: #FFFFFF; margin-left: -15px;">
+				
+				<div class= "col-lg-7 col-md-7 col-sm-7" style="padding-left: 0px; padding-right: 0px;">
+					<a href="main.html">
+					<button type="button" class="btn btn-default " style="height: 40px; margin-left: 5px;">
+  					<span class="glyphicon glyphicon-th-list" style="color: blue;"></span>
+					</button>
+					</a>							
+					<span  style=" margin-left:35px; color: #FFFFFF; font-size: 14px; "><a style="cursor: pointer; ">中金所CFFEX</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px;"><a style="cursor: pointer; ">上期所SHFE</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px;"><a style="cursor: pointer; ">大商所DCE</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px;"><a style="cursor: pointer; ">郑商所CZCE</a></span>
+							
+											
+				</div>
+				<div class= "col-lg-5  col-md-5 col-sm-5 " align="right" style="padding-left: 0px; ">				
+					<span  style="color: #FFFFFF; font-size: 14px; margin-left: 0px;"><a style="cursor: pointer; ">期货账号登录</a></span>		
+					<span class="dropdown" style="color: #FFFFFF;font-size: 14px; margin-left: 10px; display: inline-block;">						
+						<a class="dropdown-toggle" data-toggle="dropdown" role= "button" style="cursor: pointer; ">委托单
+							<span class="badge" style="background-color: lightgreen;width: 18px; position:relative;left:-6px ; top: -9px;">
+								7
+							</span>
+						</a>
+						<ul class="dropdown-menu"  >
+      						<li><a href = "">所有委托单</a></li>
+      						<li><a href = "">增加委托单</a></li>
+    					</ul>
+					</span>	
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 2px;"><a id = "accountdetail" style="cursor: pointer; ">账户信息</a></span>		
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px; margin-right: 30px;"><a style="cursor: pointer; ">注销登录</a></span>		
+				</div>
+			</div>			
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->  
+        <div class="modal" id="aa" >  
+            <div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">  
+                <p class="page-header">尊贵的客户，您好！</p>    
+              
+                <div class="table-responsive" style="margin-top: 30px;">
+                <table  style="width: 85%; margin-left: 15%; ">              	
+                	<tr class="success">	
+                		<td >姓名:<span>szq</span></td>
+                		<td>用户类型:<span>正式用户</span></td>
+                	</tr>
+                	<tr class="success">
+                		<td>电话:<span>15104569010</span></td>
+                		<td>邮箱:<span>343428475@qq.com</span></td>
+                	</tr>
+                </table>
+                </div>
+                <div class="table-responsive" style="margin-top: 30px;">
+                <table class="table-bordered" style="width: 100%;">
+                	<thead>
+                		<td>指标类型</td>
+                		<td>指标订阅到期日</td>
+                		<td>状态</td>
+                	</thead>
+                	<tr>
+                		<td>白盘</td>
+                		<td>2017年4月21日</td>
+                		<td>正常</td>
+                	</tr>
+                	<tr>
+                		<td>白盘指标</td>
+                		<td>2018年4月21日</td>
+                		<td>正常</td>
+                	</tr>
+                </table>
+                </div>
+                <p style="margin-top: 20px;">注：如有任何问题请联系杠上开期货交易决策系统客服!  
+                </p>     
+                <p class="text-right"><button class="btn btn-info"  
+                 onclick='$("#aa").modal("hide")'>关闭</button></p>  
+            </div>  
+        </div>  
+	</body>
+	<script type="text/javascript">
+		//      这一句代码是调用了bootstrap的函数,直接传入ID即可使用.  
+        $('#aa').modal("show") ;
+        $('#accountdetail').click(function(){
+        	$('#aa').modal("show") ;
+        })
+	</script>
+</html>

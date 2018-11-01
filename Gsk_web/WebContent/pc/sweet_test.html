@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script type="text/javascript" src="../sweet/js/sweet-alert.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sweet/css/sweet-alert.css"/>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../css/ALL.css" rel="stylesheet">
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+		<title></title>
+			
+
+
+	</head>
+
+	<body>
+		<button style="width: 100px;height: 100px;" id="i" onclick="a()"></button>
+		<button style="width: 100px;height: 100px;" id="i" onclick="a2()"></button>
+		<button style="width: 100px;height: 100px;" id="i" onclick="a3()"></button>
+		<button style="width: 100px;height: 100px;" id="i" onclick="a4()"></button>
+	</body>
+	<script type="text/javascript">
+		function a(){
+			sweetAlert("Oops...", "Something went wrong!", "error");
+		}
+		function a2(){
+			sweetAlert("Hello world!");
+		}
+		function a3(){
+			sweetAlert({
+				  title: "Are you sure?",
+				  text: "You will not be able to recover this imaginary file!",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonColor: "#DD6B55",
+				  confirmButtonText: "Yes, delete it!",
+				  closeOnConfirm: false
+				}, function(){
+				  swal("Deleted!",
+				  "Your imaginary file has been deleted.",
+				  "success");
+				});
+		}
+		function a4(){
+			sweetAlert("Oops...", "Something went wrong!", "error");
+		}
+	</script>
+
+
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<script type="text/javascript" src="../sweet/js/sweet-alert.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sweet/css/sweet-alert.css"/>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap-select.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+		<script type="text/javascript" src="../js/init.js"></script>
+	</head>
+	<body style="background-color: lightblue; ">
+		<!--1.第一行  显示框-->
+		<div class="container-fluid" style="background-color: #808080; "  >
+			<div class="row" style=" height: 60px; background-color: #5BC0DE;" id = "bb1">
+			</div>
+			<!--2.功能框-->
+			<div class="row" style="line-height: 50px; background-color: #FFFFFF; margin-left: -15px; "id = "bb2">
+			</div>
+		<!--3.登录界面-->
+				<div id = "login_div" class="row" style="background-color: lightblue;" >
+					<div class="col-lg-4  col-md-4 col-sm-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4" style="margin-top: 5%;">
+						<div style="text-align: center;" >
+						<h3 id = "welcome" style="color: #6495ED; font-size : 35px">交 易 账 号 登 录</h3>
+						</div>
+						<form class="form-horizontal" role="form" style="margin-top: 40px;">
+							<div class="form-group"  >	
+								<select style = "background-color: red;" class="selectpicker form-control"  id="future_login_list" title="请选择期货公司......"  >						
+							    </select>
+							</div> 
+			                <div class="form-group" >					
+								<input type="text" class="form-control" id="username_login" placeholder="请输入账号......" >	
+							</div> 
+							<div class="form-group" >	
+							<div class="input-group" >
+								<input type="password" class="form-control" id="password" placeholder="请输入密码......" aria-describedby="password_show" >
+								<span class="input-group-addon glyphicon glyphicon-eye-open" id="password_show" style=" cursor:pointer; top : 0px;"></span>
+							</div>
+							</div>
+							<!--<div class="form-group" >
+								<div >
+		                    <input type="checkbox" value="" id="c" /> <label class="control-label" for="c" style="cursor:pointer; ">请记住我</label>
+		                    	</div>
+		                	</div>-->
+		               		<div class="form-group" >
+		                    	<input onclick="login()" type="button" value="登录" style="font-size: 18px; letter-spacing: 10px; height: 40px; width: 100%; border: none; border-radius: 6px; background-color: cornflowerblue;color:white" />
+		                	</div>
+		                	<div class="form-group" >
+		                    	<div id = "register" >
+		                    	<div style="text-align: right; float: right; ">
+                    				<div id = "forget_password" class="btn-group">
+									</div>
+                    			</div>
+                    			</div>
+		                      	
+		                	</div>
+                		</form>        
+					</div>
+				</div>
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->  
+        <div class="modal" id="aa">
+			<div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<p class="page-header" style="margin-left: 15px; font-size : 20px; color : lightcoral; font-weight : 600;margin-right: 15px;">
+					尊贵的客户，您好！
+				</p>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table style="width: 85%; margin-left: 15%; font-size: 18px;">
+						<tr class="success">
+							<td>姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_Name"></span></td>
+							<td>用户类型&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_UserType"></span></td>
+						</tr>
+						<tr class="success">
+							<td>电 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_Telephone"></span></td>
+							<td>邮 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_EmailAddress"></span></td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="table-responsive" style="margin-top: 30px;" align = "center">
+					<table id="login_detail_Indices" class="table-bordered table-striped" style="width: 97%;" >
+						<thead>
+							<td> 指标类型</td>
+							<td> 指标订阅到期日</td>
+							<td> 状态</td>
+						</thead>
+					</table>
+				</div>
+				<p style="margin-top: 20px;margin-left: 15px; font-size : 17px; ">
+					温馨提示 ：如有任何问题请联系杠上开期货交易决策系统客服 !
+				</p>
+				<p class="text-right " style="margin-right: 20px;"><button class="btn btn-info " onclick='$("#aa").modal("hide")'>关闭</button></p>
+			</div>
+		</div>
+		<div class="modal" id="loading" style="margin-top:110px">
+			<div align="center" class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="  margin-top:280px;">
+			
+			<img style="height: 65px; width: 95px; padding-right: 30px;" src="../img/load_3.gif" />
+			<span style="display: block; margin-top: 18px; font-family: '微软雅黑';font-size: 21px;color: #337AB7; padding-right: 30px;">Load . . . . . .</span>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript"> 
+	//实现密码显示
+	$("#password_show").mouseover(function(){
+		$("#password").prop("type","text");
+	})
+	$("#password_show").mouseout(function(){
+		$("#password").prop("type","password");
+	})
+
+	$("#login_div").css("height",window.innerHeight - 110 +"");
+
+		var all_companys = JSON.parse(localStorage.getItem("futures_company_return")).ServerInfo;
+		for (var j = 0; j < all_companys.length; j++) {
+			$("#future_login_list").append('<option id = "' + all_companys[j].BrokerID + '" value = "' + all_companys[j].BrokerID + '" style = "" >' + all_companys[j].Title + '</option>')				
+		}
+		//回车登录
+		$(document).keyup(function(event){
+				  if (event.keyCode ==13) {
+				   	//并且sweet-alert没显示
+				   	if ($('.sweet-overlay').css("display") != "block" ){
+				   		login();
+				   	}
+				  }
+				});
+        function login(){
+
+			$('#loading').modal("show");
+			if($("#future_login_list").val() == "" ){
+				$('#loading').modal("hide");
+						swal({
+							  title: "客户，您好！",
+							  text: "请选择期货公司！",
+							  type: "error",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							})
+			}else if($("#username_login").val() == ""){
+				$('#loading').modal("hide");
+						swal({
+							  title: "客户，您好！",
+							  text: "账号不能为空！",
+							  type: "error",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							})
+			}else if($("#password").val() == ""){
+				$('#loading').modal("hide");
+						swal({
+							  title: "客户，您好！",
+							  text: "密码不能为空！",
+							  type: "error",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							})
+			}else{
+
+        		var UserID;
+        		$.ajax({
+						type: "POST",
+						url:"../restapi/user_login_return.action",
+						async: false
+					}).done(function(temp) {
+						var res = JSON.parse(temp);
+						UserID = res.UserInfo.ID;
+					}).fail(function(error){	
+
+						$('#loading').modal("hide");	
+
+							alert("取到UserID");
+				})	
+
+        		var BrokerID = $("#future_login_list").val();
+
+        		var FuturesCompany = $("#" + BrokerID).html();
+
+        		var ClientInfo = "web";
+        		
+        		var login_data = {"UserID":UserID,"TradeAcc":$("#username_login").val(),"TradePwd":$("#password").val(),"BrokerID":BrokerID,"FuturesCompany":FuturesCompany,"ClientInfo":ClientInfo};			
+				$.ajax({
+					type: "POST",
+					url: "../restapi/future_login.action",
+					data:{"param":JSON.stringify(login_data)}
+				}).done(function(temp) {
+					var res = JSON.parse(temp);
+
+					$('#loading').modal("hide");	
+
+					 if(res.RetNo == "连接超时请重新登录"){
+					 	swal({
+							  title: "客户，您好！",
+							  text: "连接超时请重新登录！",
+							  type: "error",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							})
+						 
+
+					}else if (res.RetInfo.ErrNo == "0"){
+						swal({
+							  title: "客户，您好！",
+							  text: "恭喜您，登录成功！",
+							  type: "success",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  cancelButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							},
+							function(){
+								location.href = "show_strategy_orders.html"
+							});
+					}else{
+						swal({
+							  title: "客户，您好！",
+							  text: res.RetInfo.Message + "",
+							  type: "error",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							})
+					}
+				}).fail(function(error){	
+
+					$('#loading').modal("hide");	
+
+					swal({
+						  title: "客户，您好!",
+						  text: "很抱歉，登录超时，请重试 ！",
+						  type: "error",
+						  showCancelButton: false,
+						  confirmButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  closeOnConfirm: false
+						});
+			})	
+			}
+        } 
+     
+		</script>
+	<script type="text/javascript" src="../js/login.js"></script>
+		<script type="text/javascript">
+		$('#bb1').load("header_1floor.html",function() {
+			if(window.innerWidth <= 1100){
+				$('#xuanchuanzi').html("");
+			}
+			if(window.innerWidth <= 800){
+						$('#div1').prop("class","col-lg-2  col-md-2 col-sm-2 col-xs-2");
+						$('#div2').prop("class","col-lg-9  col-md-9 col-sm-9 col-xs-9");
+						$('#div3').prop("class","col-lg-1  col-md-1 col-sm-1 col-xs-1");
+						$('#xitongming').html("");
+						$('#username_button').html("");
+					}
+			if(window.innerWidth <= 1219){
+			
+					}		
+			});
+		$('#bb2').load("header_2floor.html");
+	</script>
+</html>

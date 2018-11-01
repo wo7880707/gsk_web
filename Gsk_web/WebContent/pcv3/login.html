@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>杠上开期货决策系统</title>
+		<script type="text/javascript" src="../sweet/js/sweet-alert.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sweet/css/sweet-alert.css"/>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet" >
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+		<script src="../js/gVerify.js"></script>
+	</head>
+	<body style="background-color:#DAE0ED;" >
+		<div class="container">
+			<div class="row">
+			<div  style="height: 50px; background-color: cornflowerblue; padding-left: 30px; color: white; line-height: 50px;">
+            	欢迎登录大连睿盈科技旗下睿盈科技有限公司开发的【杠上开】软件!
+       		</div>
+       		</div>
+       		<div class="row" style="background-color:white; height: 590px;">
+       			<!--占6格-->
+       			<div class="col-md-6 col-sm-6 col-xs-6" style=" margin-top: 80px; " align="center">
+                	<img src="../img/login_tu.png" class="img-responsive" alt="Alternate Text"  />
+            	</div>
+            	<!--占6格-->
+            	<div class="col-md-6 col-sm-6 col-xs-6" style=" margin-top: 190px;">
+	                <div class="form-group" style="padding-left: 50px ; width: 75%;">					
+						<input type="text" class="form-control" id="username" autofocus="autofocus" placeholder="请输入账号" style="">	
+					</div> 
+					<div class="form-group" >
+						<div class="input-group" style="padding-left: 50px ; width: 75%; ">
+							<input type="password" class="form-control" id="password" placeholder="请输入密码" style="">
+							<span class="input-group-addon glyphicon glyphicon-eye-open" id="password_show" style=" cursor:pointer; top : 0px;"></span>														
+						</div>
+					</div>
+					<!--<div class="form-group" >					
+						<div class="input-group" style="padding-left: 50px ; width: 75%; ">
+							<input type="text" class="form-control" id="verification_code" placeholder="请输入验证码" style="">
+								<span class="input-group-addon glyphicon " id="verification_code_show"  style=" width: 30%; height: 100%; background-color : white; cursor:pointer; top : 0px; padding: 0; border: 0;">
+								</span>
+						</div>
+					</div> -->
+					<div class="form-group" style="padding-left: 50px;margin-top: 10px;margin-bottom: 10px; width: 75%;background-color: lightblue; ">
+						<div >
+								<div class="col-md-6 col-sm-6 col-xs-6" >
+                    				<input type="checkbox" value="" id="c" /> <label class="control-label" for="c" style="cursor:pointer; ">请记住我</label>
+                    			</div>
+                    			<div class="col-md-6 col-sm-6 col-xs-6" >
+                    				<div style=" text-align: right; " >
+		                    			<select id="frontShow" style="cursor:pointer;">
+			                    		</select>
+		                    		</div>
+                    			</div>
+						</div>
+                	</div>
+               		<div class="form-group" style="padding-left: 50px ;width: 75%;  ">
+                    	<input onclick="login()" type="button" value="登录" style="margin-top: 10px;font-size: 18px; letter-spacing: 10px; height: 40px; width: 100%; border: none; border-radius: 6px; background-color: cornflowerblue;color:white" />
+                	</div>
+                	<div class="form-group" style="padding-left: 50px ; width: 75%;">
+                      	<div style=" text-align: right; ">
+                      	<a href="https://www.gskwin.com/user/forgetPassword1" target="_blank" >忘记密码</a>  |  <a href="https://www.gskwin.com/user/registered" target="_blank">注册账号</a>        
+                    	</div>
+                	</div>            
+	            </div>
+       		</div>
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->
+		<div class="modal" id="loading" style="">
+			<div align="center" class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="  margin-top:280px;">
+			
+			<img style="height: 65px; width: 95px; padding-right: 30px;" src="../img/load_3.gif" />
+			<span style="display: block; margin-top: 18px; font-family: '微软雅黑';font-size: 21px;color: #337AB7; padding-right: 30px;">Load . . . . . .</span>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">	
+			//如果frontList有保存的值，就显示frontList的值 如果没有就默认公共前置
+			if (localStorage.getItem("frontList")!= null) {
+				//显示取出来的值
+				var frontListHave = JSON.parse(localStorage.getItem("frontList"));
+				for (var i = 0; i < frontListHave.length; i++) {
+					$('#frontShow').append('<option value = "' + frontListHave[i].fid + '">' + frontListHave[i].title + '</option>')
+				}
+			} else {
+				//默认公用的前置列表 写死
+				var frontList = [
+				{"fid":"1","title":"GSK前置1","isp":"大连联通","brokerId":"","type":"2-共用","ip":"https://www.dlruiying.com","port":"9443","gskApiHost":"http://www.dlruiying.com","gskApiPort":"10104"},
+				{"fid":"2","title":"GSK前置2","isp":"大连电信","brokerId":"","type":"2-共用","ip":"https://www.dlruiying.com","port":"9443","gskApiHost":"http://www.dlruiying.com","gskApiPort":"10104"},
+				{"fid":"3","title":"GSK前置3","isp":"大连联通","brokerId":"","type":"2-共用","ip":"https://www.dlruiying.com","port":"9443","gskApiHost":"http://www.dlruiying.com","gskApiPort":"10104"}
+							]
+				for (var i = 0; i < frontList.length; i++) {
+					$('#frontShow').append('<option value = "' + frontList[i].fid + '">' + frontList[i].title + '</option>')
+				}
+				//保存到浏览器中
+				localStorage.setItem("frontList",JSON.stringify(frontList));
+			}
+			//方法：根据fid取到前置数据
+			function getFrontInfo(fid){
+				//查到所有的front前置
+				var frontListHave = JSON.parse(localStorage.getItem("frontList"));
+				//根据ID去取前置的信息
+				var frontInfo;
+				for (var i = 0; i < frontListHave.length; i++) {
+					if (fid == frontListHave[i]["fid"]) {
+						frontInfo = frontListHave[i];
+						break;
+					}
+				}
+				return frontInfo;
+			}
+			//如果登录超过三次
+			//验证码
+			//var verifyCode = new GVerify("verification_code_show");
+			//实现密码显示
+			$("#password_show").mouseover(function(){
+				$("#password").prop("type","text");
+			})
+			$("#password_show").mouseout(function(){
+				$("#password").prop("type","password");
+			})
+
+		if ($.cookie("uuidpp") != null) {
+ 				username_password_cookie =$.cookie("uuidpp");
+ 				var username_cookie = decodeURI($.base64.decode(username_password_cookie)).split("-")[0];
+         		var password_cookie = decodeURI($.base64.decode(username_password_cookie)).split("-")[1];
+         		$("#username").val(username_cookie);
+         		$("#password").val(password_cookie);
+         		$("#c").prop("checked","checked")
+ 		}
+ 		var DevID;
+ 		var Ip;
+ 		var Mac;
+ 		$.ajax({
+			type: "POST",
+			url: "../self/getMAC.action"
+		}).done(function(res) {
+			DevID = res;
+			Ip = res;
+			Mac = res;
+		})
+		//回车登录
+		$(document).keyup(function(event){
+				  if (event.keyCode ==13) {
+				   	//并且sweet-alert没显示
+				   	if ($('.sweet-overlay').css("display") != "block" ){
+				   		login();
+				   	}
+				  }
+				});
+		function login(){
+
+			$('#loading').modal("show");
+ 			if($("#username").val() == ""){
+				$('#loading').modal("hide");
+						swal({
+							  title: "客户，您好！",
+							  text: "账号不能为空！",
+							  type: "error",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							})
+			}else if($("#password").val() == ""){
+				$('#loading').modal("hide");
+						swal({
+							  title: "客户，您好！",
+							  text: "密码不能为空！",
+							  type: "error",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							})
+			}else{
+				var login_data = {
+					"userName":$("#username").val(),
+					"password":$("#password").val(),
+					"clientType":"GskWeb",		// 客户端类型："GskMobile","GskIOS","GskPc","GskWeb","GskWebSite"
+					"devID":DevID,				// 设备ID，用来唯一标识客户端
+					"ip":Ip,
+					"mac":Mac,
+					"version":"",				// 当前客户端的版本号，pc端为null
+					"clientId":"gsk-web",			// oauth2的客户端id
+					"clientSecret":"gsk-web",		// oauth2的客户端密码
+					"grantType":"password", 	// 目前只支持oauth的password模式
+					"frontId":$("#frontShow").val()  // 前置ID，由前面存储的前置列表取出  
+				};
+				$.ajax({
+						type: "POST",
+						url: "../restapi_v3/user_login.action",
+						data:{
+							"param":JSON.stringify(login_data),
+							"paramFront":JSON.stringify(getFrontInfo($("#frontShow").val()))    //前端访问的前置信息
+						}
+				}).done(function(temp) {	
+						if (temp == null || temp == "") {
+							swal({
+								  title: "客户，您好!",
+								  text: "Api(user_login)返回信息为空",
+								  type: "error",
+								  showCancelButton: false,
+								  confirmButtonColor: "#DD6B55",
+								  confirmButtonText: "确定",
+								  closeOnConfirm: false
+							});
+						return;
+						}
+						var res = JSON.parse(temp);
+						if(res.retNo == "0"){
+							if(res.retInfo.errNo == "0"){
+								//有可能是未绑定的  未绑定的返回值frontList == null
+								if (res.frontList != null){
+									localStorage.setItem("frontList",JSON.stringify(res.frontList));
+								} 
+								//--------------保存密码功能的代码------------
+								var user_pass = $("#username").val() + "-" + $("#password").val();
+								if($("#c").prop("checked")){
+									$.cookie("uuidpp",$.base64.encode(encodeURI(user_pass)),{path:'/',expires:7})
+								}else{
+									$.cookie("uuidpp",null,{path:'/',expires:-1}) 	
+								}
+								var publicInfo = getPublicInfo();
+								//如果公共信息都没问题，跳转，不然弹出提示
+								if (publicInfo == "1") {
+									location.href = "main.html"
+								} else {
+									$('#loading').modal("hide");
+									swal({
+									  title: "客户，您好！",
+									  text: publicInfo,
+									  type: "error",
+									  showCancelButton: false,
+									  confirmButtonColor: "#DD6B55",
+									  confirmButtonText: "确定",
+									  closeOnConfirm: false
+									})
+								}
+								
+							}  else {
+								$('#loading').modal("hide");	
+								swal({
+									  title: "客户，您好！",
+									  text: res.retInfo.message,
+									  type: "error",
+									  showCancelButton: false,
+									  confirmButtonColor: "#DD6B55",
+									  confirmButtonText: "确定",
+									  closeOnConfirm: false
+								})						
+							}
+						} else if (res.retNo == "-13") {
+								//有绑定 但是取的前置不对 需要把绑定的这个前置保存过来 然后重新访问
+								localStorage.setItem("frontList",JSON.stringify(res.frontList));
+								//再去访问下API 这次应该一定可以返回不是-13
+								var login_data_second = {
+									"userName":$("#username").val(),
+									"password":$("#password").val(),
+									"clientType":"GskWeb",		// 客户端类型："GskMobile","GskIOS","GskPc","GskWeb","GskWebSite"
+									"devID":DevID,				// 设备ID，用来唯一标识客户端
+									"ip":Ip,
+									"mac":Mac,
+									"version":"",				// 当前客户端的版本号，pc端为null
+									"clientId":"gsk-web",			// oauth2的客户端id
+									"clientSecret":"gsk-web",		// oauth2的客户端密码
+									"grantType":"password", 	// 目前只支持oauth的password模式
+									"frontId":res.frontList[0].fid  // 前置ID，由前面存储的前置列表取出  （web端默认取第一个数组吧  szq）
+								};
+								$.ajax({
+									type: "POST",
+									url: "../restapi_v3/user_login.action",
+									data:{"param":JSON.stringify(login_data_second),
+										  "paramFront":JSON.stringify(getFrontInfo(res.frontList[0].fid))    //前端访问的前置信息
+									}
+								}).done(function(temp) {
+									var res = JSON.parse(temp);
+									if(res.retNo == "0"){
+										if(res.retInfo.errNo == "0"){
+											//有可能是未绑定的  未绑定的返回值frontList == null
+											if (res.frontList != null){
+												localStorage.setItem("frontList",JSON.stringify(res.frontList));
+											} 
+											//--------------保存密码功能的代码------------
+											var user_pass = $("#username").val() + "-" + $("#password").val();
+											if($("#c").prop("checked")){
+												$.cookie("uuidpp",$.base64.encode(encodeURI(user_pass)),{path:'/',expires:7})
+											}else{
+												$.cookie("uuidpp",null,{path:'/',expires:-1}) 	
+											}
+											var publicInfo = getPublicInfo();
+											//如果公共信息都没问题，跳转，不然弹出提示
+											if (publicInfo == "1") {
+												location.href = "main.html"
+											} else {
+												$('#loading').modal("hide");
+												swal({
+												  title: "客户，您好！",
+												  text: publicInfo,
+												  type: "error",
+												  showCancelButton: false,
+												  confirmButtonColor: "#DD6B55",
+												  confirmButtonText: "确定",
+												  closeOnConfirm: false
+												})
+											}
+										}  else {
+											$('#loading').modal("hide");	
+											swal({
+												  title: "客户，您好！",
+												  text: res.retInfo.message,
+												  type: "error",
+												  showCancelButton: false,
+												  confirmButtonColor: "#DD6B55",
+												  confirmButtonText: "确定",
+												  closeOnConfirm: false
+											})						
+										}
+									} else {
+										$('#loading').modal("hide");	
+										swal({
+											  title: "客户，您好！",
+											  text: res.retInfo.message,
+											  type: "error",
+											  showCancelButton: false,
+											  confirmButtonColor: "#DD6B55",
+											  confirmButtonText: "确定",
+											  closeOnConfirm: false
+										})						
+									}
+								})
+							}  else {
+								$('#loading').modal("hide");
+								swal({
+									  title: "客户，您好！",
+									  text: res.retInfo.message,
+									  type: "error",
+									  showCancelButton: false,
+									  confirmButtonColor: "#DD6B55",
+									  confirmButtonText: "确定",
+									  closeOnConfirm: false
+								})
+							}
+					}).fail(function(error){	
+						
+							$('#loading').modal("hide");	
+							swal({
+								  title: "客户，您好!",
+								  text: "很抱歉，登录API异常，请重试或联系客服 ！",
+								  type: "error",
+								  showCancelButton: false,
+								  confirmButtonColor: "#DD6B55",
+								  confirmButtonText: "确定",
+								  closeOnConfirm: false
+								});
+							
+				})	
+			}
+		}	
+	function getPublicInfo(){
+		// "1" : 全部取到正常  其它:不正常
+		var gotAllPubInfo = "1";
+		//3、查询服务器支持的策略信息
+		//先查询本地是否有md5值
+		var param_strategys;
+		if(localStorage.getItem("strategys_return_v3")!= null){
+ 				param_strategys = {"strategyMd5":JSON.parse(localStorage.getItem("strategys_return_v3")).strategyMd5};
+ 			}else {
+ 				//MD5值为空  强制更新
+ 				param_strategys = {"strategyMd5":""};
+ 			} 
+		$.ajax({
+			type: "POST",
+			url: "../restapi_v3/qry_strategys_return.action",
+			async: false,
+			data:{"param":JSON.stringify(param_strategys)}
+		}).done(function(temp) {	
+			if (temp == null || temp == "") {
+				gotAllPubInfo = "Api(qry_strategys)返回信息为空"
+				return gotAllPubInfo;
+			}
+			var res = JSON.parse(temp);							
+			if(res.retNo != "0"){
+				gotAllPubInfo = "" + res.retInfo.message;
+				//swal("" + res.retInfo.message);
+			} else {
+				//如果查到值的MD5和保存在本地的相同 “不用更新” 不同 “强制更新存储”
+				if(res.strategyMd5 != "" && res.strategyMd5 != null){
+					//把json数据存到localStorage中
+					localStorage.setItem("strategys_return_v3",temp);
+				}	
+			}
+			
+		}).fail(function(error){
+			gotAllPubInfo = "查询服务器支持的策略信息调用错误";
+			return gotAllPubInfo;
+		})	
+
+		//10、查询合约列表（该服务器支持的所有合约，一般来说是主力和次主力）
+/*		var param_contracts = {};
+		$.ajax({
+			type: "POST",
+			url: "../restapi_v3/qry_contracts_return.action",
+			async: false,
+			data:{"param":JSON.stringify(param_contracts)}
+		}).done(function(temp) {
+			if (temp == null || temp == "") {
+				gotAllPubInfo = "Api(qry_contracts)返回信息为空"
+				return gotAllPubInfo;
+			}
+			var res = JSON.parse(temp);
+			if(res.retNo != "0"){
+				gotAllPubInfo = "" + res.retInfo.message;
+				//swal("" + res.retInfo.message);
+			} else {
+				//把json数据存到cookies中
+				localStorage.setItem("contracts_return_v3",temp);	
+			}		
+		}).fail(function(error){	
+			gotAllPubInfo = "查询合约列表调用错误";
+			return gotAllPubInfo;
+		})*/	
+		var contracts = {"retNo":"0",
+						"retInfo":{"errNo":"0","message":"成功"},
+						"contracts":"AP901,AP905,CF901,CF905,CY810,CY901,FG901,FG905,IC1810,IC1812,IF1810,IF1812,IH1810,IH1812,JR901,JR907,LR901,LR903,MA901,MA905,OI901,OI905,PM901,PM903,RI811,RI901,RM901,RM905,RS908,RS909,SF901,SF905,SM901,SM905,SR901,SR905,T1812,T1903,TA901,TA905,TF1812,TF1903,WH901,WH905,ZC811,ZC901,a1901,a1905,ag1812,ag1906,al1811,al1812,au1812,au1906,b1901,b1905,bb1810,bb1903,bu1812,bu1906,c1901,c1905,cs1901,cs1905,cu1811,cu1812,fb1810,fb1811,fu1901,fu1905,hc1901,hc1905,i1901,i1905,j1901,j1905,jd1901,jd1905,jm1901,jm1905,l1901,l1905,m1901,m1905,ni1811,ni1901,p1901,p1905,pb1811,pb1812,pp1901,pp1905,rb1901,rb1905,ru1901,ru1905,sc1812,sc1901,sn1901,sn1905,v1901,v1905,y1901,y1905,zn1811,zn1812"}
+		localStorage.setItem("contracts_return_v3",JSON.stringify(contracts));
+		//12、查询合约信息FutureCompanyMd5   存储了MD5 且没变动下 返回的还是原来的MD5值
+		//先查询本地是否有md5值
+		var param_instrument;
+		if(localStorage.getItem("instrument_return_v3")!= null){
+ 				param_instrument = {"instrumentMd5":JSON.parse(localStorage.getItem("instrument_return_v3")).instrumentMd5};
+ 			}else {
+ 				//MD5值为空  强制更新
+ 				param_instrument = {"instrumentMd5":""};
+ 			} 
+		$.ajax({
+			type: "POST",
+			url: "../restapi_v3/qry_instrument_return.action",
+			async: false,
+			data:{"param":JSON.stringify(param_instrument)}
+		}).done(function(temp) {
+			if (temp == null || temp == "") {
+				gotAllPubInfo = "Api(qry_instrument)返回信息为空"
+				return gotAllPubInfo;
+			}
+			var res = JSON.parse(temp);
+			if(res.retNo != "0"){
+				gotAllPubInfo = "" + res.retInfo.message;
+				//swal("" + res.retInfo.message);
+			} else {
+				//如果查到值的MD5和保存在本地的相同 “不用更新” 不同 “强制更新存储Cookie”
+				if(res.instrumentMd5 != "" && res.instrumentMd5 != null){
+					//把json数据存到localStorage中
+					localStorage.setItem("instrument_return_v3",temp);
+					//------提取出来的显示转换信息也保存	------	
+					//交易所数组
+					var exchangeInfo = res.exchangeInfo;
+					//交易所标号对应英文编码对象
+					var futuresExchange = {};
+					for (var i = 0; i < exchangeInfo.length; i++) {
+						var exchangeInfoIndex = exchangeInfo[i].exc.split(",");
+						futuresExchange[exchangeInfoIndex[0]] = exchangeInfoIndex[3] ;
+					}
+					//合约数组
+					var tradeTimeRange = res.tradeTimeRange;
+					//合约代码和中文对照表
+					var contracts_contrast = {};
+					//合约代码和交易所英文编码对照表
+					var contracts_exchange = {};
+					//组成id数字和英文编码名称对象
+					//循环合约数组赋值到需要的对象中
+					for (var i = 0; i < tradeTimeRange.length; i++) {
+						var tradeTimeRangeIndex = tradeTimeRange[i].range.split(",");
+						contracts_contrast[tradeTimeRangeIndex[0]] = tradeTimeRangeIndex[1];
+						contracts_exchange[tradeTimeRangeIndex[0]] = futuresExchange[tradeTimeRangeIndex[tradeTimeRangeIndex.length - 2]];
+					}
+					localStorage.setItem("contracts_contrast",JSON.stringify(contracts_contrast));
+					localStorage.setItem("contracts_exchange",JSON.stringify(contracts_exchange));
+					
+				}
+			}
+				
+		}).fail(function(error){
+			gotAllPubInfo = "查询合约信息调用错误";
+			return gotAllPubInfo;
+		})	
+		//13、查询期货公司                 有MD5不变的话  返回的数据字段中 没有FutureCompanyMd5 
+		$.ajax({
+			type: "POST",
+			url: "../restapi_v3/qry_futures_company_return.action",
+			async: false,
+			data:{"param":JSON.stringify({})}
+		}).done(function(temp) {
+			if (temp == null || temp == "") {
+				gotAllPubInfo = "Api(qry_futures_company)返回信息为空"
+				return gotAllPubInfo;
+			}
+			var res = JSON.parse(temp);
+			if(res.retNo != "0"){
+				gotAllPubInfo = "" + res.retInfo.message;
+				//swal("" + res.retInfo.message);
+			} else {
+				//把json数据存到localStorage中
+				localStorage.setItem("futures_company_return_v3",temp);
+			}
+		}).fail(function(error){	
+			gotAllPubInfo = "查询期货公司信息调用错误";
+			return gotAllPubInfo;
+		})	
+		return gotAllPubInfo ;
+	}
+	</script>
+	<!--<script type="text/javascript" src="../js/public_info_v3.js"></script> -->
+</html>

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet" >
+		<link href="../css/ALL.css" rel="stylesheet" >
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+		<script type="text/javascript" src="../js/echarts.js"></script>
+
+		<script type="text/javascript" src="../js/init.js"></script>
+	</head>
+	<body style="background-color: grey;">
+		<!--1.第一行  显示框-->
+		<div class="container-fluid" style="background-color: #808080; ">
+			<div class="row" style="line-height: 50px; ">
+				<div class = "col-lg-1  col-md-1 col-sm-1 col-xs-1" style="padding-left: 0px; ">	
+					<img src="../img/g.png" style="margin: 0px; padding: 0px; border: solid 0px white;"/>
+				</div>
+				<div class = "col-lg-7  col-md-7 col-sm-7 col-xs-7" style="padding-left: 0px; ">
+					<span class="text-left" style="color: #FFFFFF; font-size: 18px; font-weight: 500; margin-left: 30px;">杠上开期货决策系统</span>							
+				</div>
+				<div class = "col-lg-4  col-md-4 col-sm-4 col-xs-4" style="padding-left: 0px; ">
+					<span class="text-left" style="color: #FFFFFF;font-size: 14px; ">杠上开服务器2</span>
+				</div>
+			</div>	
+			<!--主力合约-->
+			<div class="row" style="line-height: 50px;background-color: #FFFFFF; ">
+				<div class = "col-lg-6  col-md-6 col-sm-6 col-xs-6  col-lg-offset-1  col-md-offset-1 col-sm-offset-1 col-xs-offset-1 " style="padding-left: 0px; ">
+					<span  style="color: #2B669A;font-size: 16px; margin-left: 30px;">欢迎您！
+					<span  id="username" style="color: #2B669A;font-size: 16px;margin-right: 30px;">dasdads</span></span>
+				</div>
+				<div class = "col-lg-4  col-md-4 col-sm-4 col-xs-4  col-lg-offset-1  col-md-offset-1 col-sm-offset-1 col-xs-offset-1" style="padding-left: 0px; ">
+					<span class="text-left" style="font-size: 16px; color: #2B669A;">主力合约</span>
+				</div>
+			</div>
+			
+			<!--期货公司-->
+			<div class="row" style="line-height: 60px; background-color: #FFFFFF; margin-left: -15px;">	
+				<div class= "col-lg-12  col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px; padding-right: 0px;" align="center">
+					<a href="main_phone.html">
+					<button type="button" class="btn btn-default " style="height: 40px; margin-left: 5px;">
+  					<span class="glyphicon glyphicon-th-list" style="color: blue;"></span>
+					</button>
+					</a>							
+					<span  style="  color: #FFFFFF; font-size: 14px; "><a style="cursor: pointer; ">中金所CFFEX</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">上期所SHFE</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">大商所DCE</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">郑商所CZCE</a></span>						
+				</div>
+			</div>
+		<!--2.功能框-->				
+						<div class="row" style="line-height: 60px; background-color: #FFFFFF; margin-left: -15px; ">
+				<div class= "col-lg-12  col-md-12 col-sm-12 col-xs-12" align="center" style="padding-left: 0px; padding-right: 0px;">				
+					<span class="dropdown" style="color: #FFFFFF; font-size: 14px; margin-left: 20px;">
+						<!--<a href = "login_trade_acc.html" style="cursor: pointer; ">期货账号登录</a>-->
+						<a id="future_login" class="dropdown-toggle" data-toggle="dropdown" role= "button" style="cursor: pointer; ">期货账号登录</a>
+						<ul id="future_login_list" class="dropdown-menu" style="margin-top: 12px; " >
+      						<li><a href = "login_trade_acc_phone.html">首创期货</a></li>
+      						<li><a href = "login_trade_acc_phone_hongyuan.html">宏源期货</a></li>
+    					</ul>
+					</span>		
+					<span class="dropdown" style="color: #FFFFFF;font-size: 14px; margin-left: 10px; display: inline-block;">						
+						<a id="order" class="dropdown-toggle" data-toggle="dropdown" role= "button" style="cursor: pointer; ">委托单
+							<!-- <span class="badge" style="background-color: lightgreen;width: 18px; position:relative;left:-6px ; top: -9px;">
+								7
+							</span> -->
+						</a>
+						<ul id="order_list"  class="dropdown-menu" style="margin-top: -10px;" >
+      						<li><a href = "show_strategy_orders_phone.html">所有委托单</a></li>
+      						<li><a href = "add_strategy_orders_phone.html">增加委托单</a></li>
+    					</ul>
+					</span>		
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px;"><a id = "accountdetail" style="cursor: pointer; ">账户信息</a></span>		
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px; margin-right: 30px;"><a id = "out" style="cursor: pointer; ">注销登录</a></span>		
+				</div>
+			</div>	
+		<!--3.显示K线-->
+			<div class="row" style="border: solid 1px red;">
+				<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" id = "Kline" style="height: 400px; background-color: gray; ">
+				</div>	
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="padding-left: 0px; padding-right: 0px; height: 350px; background-color: lightblue;">
+					<div id = "you1" style="width: 100%; height: 150px; background-color: lightgray;">
+						<center>螺纹1801 <small>rb1801</small></center>
+						<span>最新</span><span>现手</span> <br />
+						<span>涨跌</span><span>持仓</span>
+					</div>
+					<div id = "" style="width: width: 100%; height: 80px; background-color: lightseagreen;padding-left: 0px;padding-right: 0px;">
+							<center><button class="btn btn-danger" style="margin-top: 38px;">报入委托单</button></center>
+					</div>
+				</div>	
+			</div>
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->  
+        <div class="modal" id="aa">
+			<div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<p class="page-header">尊贵的客户，您好！</p>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table style="width: 85%; margin-left: 15%; ">
+						<tr class="success">
+							<td>姓名:<span id="return_Name"></span></td>
+							<td>用户类型:<span id="return_UserType"></span></td>
+						</tr>
+						<tr class="success">
+							<td>电话:<span id="return_Telephone"></span></td>
+							<td>邮箱:<span id="return_EmailAddress"></span></td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table id="login_detail_Indices" class="table-bordered" style="width: 100%;">
+						<thead>
+							<td>指标类型</td>
+							<td>指标订阅到期日</td>
+							<td>状态</td>
+						</thead>
+						<!--<tr>
+                		<td >白盘</td>
+                		<td >2018年4月21日</td>
+                		<td>正常</td>
+                	</tr>-->
+					</table>
+				</div>
+				<p style="margin-top: 20px;">
+					注：如有任何问题请联系杠上开期货交易决策系统客服!
+				</p>
+				<p class="text-right"><button class="btn btn-info" onclick='$("#aa").modal("hide")'>关闭</button></p>
+			</div>
+		</div> 
+	</body>
+	<script type="text/javascript">
+		//      这一句代码是调用了bootstrap的函数,直接传入ID即可使用.  
+		/*$('#aa').modal("show") ;*/
+		$('#accountdetail').click(function() {
+			$('#aa').modal("show");
+		})
+
+		//K线显示
+		//第一步：解析URL中的想要显示的合约
+		var url = location.search;
+		var contract = url.split("=")[1];
+		//第二步：根据合约查询指标信号   方式1：查询一个时间段内的行情  （两天内的行情）
+		//prama
+		//取到今天的当前时间
+		var date = new Date();
+		//年
+		var year_now = date.getFullYear();
+		//月
+		var month_now = date.getMonth() + 1;
+		if(month_now < 10) {
+			month_now = "0" + month_now;
+		}
+		//日
+		var day_now = date.getDate();
+		if(day_now < 10) {
+			day_now = "0" + day_now;
+		}
+		//小时
+		var hour_now = date.getHours();
+		if(hour_now < 10) {
+			hour_now = "0" + hour_now;
+		}
+		//分钟
+		var minute_now = date.getMinutes();
+		if(minute_now < 10) {
+			minute_now = "0" + minute_now;
+		}
+		//秒
+		var second_now = date.getSeconds();
+		if(second_now < 10) {
+			second_now = "0" + second_now;
+		}
+		var End = year_now + "-" + month_now + "-" + day_now + " " + hour_now + ":" + minute_now + ":" + second_now;
+		//今天的时间 -2天
+		var start_date = new Date();
+		start_date.setDate(start_date.getDate() - 2);
+		//拼接成两天前09：00：00的时间
+		//获取当前年
+		var year_start = start_date.getFullYear();
+		//获取当前月
+		var month_start = start_date.getMonth() + 1;
+		if(month_start < 10) {
+			month_start = "0" + month_start;
+		}
+		//获取当前日
+		var day_start = start_date.getDate();
+		if(day_start < 10) {
+			day_start = "0" + day_start;
+		}
+		var Start = year_start + "-" + month_start + "-" + day_start + " 09:00:00";
+		var param = {
+			"IndexID": "OTVX,KLINE",
+			"ContractID": contract,
+			"QryType": "1",
+			"ResoType": "1",
+			"Start": Start,
+			"End": End
+		}
+		//K线信号   总的数据
+		var all_kline = [];
+		var all_kline_temp;
+		//指标信号 总的数据
+		var all_otvx = [];
+		var all_kline_x = [];
+		var all_kline_y = []
+		//查询指标信号
+		$.ajax({
+			type: "post",
+			url: "../restapi/qry_index_return.action",
+			//async:false,
+			data: {
+				"param": JSON.stringify(param)
+			}
+		}).done(function(temp) {
+			//生成带有指标的K线
+			var res = JSON.parse(temp);
+			//切割数据----------------------------------------------------------
+			//K线数据 处理
+			var data_kline = res.KLINE;
+			for (var i = 0; i < res.KLINE.length; i++) {
+				//K线信号数据
+				var kline_temp1 =  res.KLINE[i].Data.split(",");
+				var kline_temp_x = [kline_temp1[0].split(".")[0]]
+				var kline_temp_y = [Number(kline_temp1[2]),Number(kline_temp1[5]),Number(kline_temp1[4]),Number(kline_temp1[3])]
+				//all_kline.push(kline_temp2);
+				all_kline_x.push(kline_temp_x);
+				all_kline_y.push(kline_temp_y);
+			}
+			//指标数据 处理
+			var data_otvx = res.OTVX;
+			var a_max = {	
+						name: 'highest value',
+		                type: 'max' ,
+		                valueDim: 'highest'}
+		
+			var a_min = {		
+						name: 'lowest value',
+		                type: 'min',
+		                valueDim: 'lowest'}
+			all_otvx.push(a_max);
+			all_otvx.push(a_min);
+			for (var i = 0; i < res.OTVX.length; i++) {
+				//指标信号数据
+				var otvx_temp1 =  res.OTVX[i].Data.split(",");
+				//对比看第二个数据是 0 1 3
+				if(otvx_temp1[2] == "1"|| otvx_temp1[3] == "1"){
+					//买开
+					//一个markpoint对象
+					var temp_1 = {"symbol": 'image://img/up.jpg',"coord": ["" + otvx_temp1[0].split(".")[0], otvx_temp1[9]],"value": Number(otvx_temp1[9])-40};
+					//放进数组里
+					all_otvx.push(temp_1);
+				}else if(otvx_temp1[2] == "3"|| otvx_temp1[3] == "3"){
+					//卖开
+					//一个markpoint对象
+					var temp_2 = {"symbol": 'image://img/down.jpg',"coord": ["" + otvx_temp1[0].split(".")[0], otvx_temp1[8]],"value": Number(otvx_temp1[8])+40};
+					//放进数组里
+					all_otvx.push(temp_2);
+				}
+			}
+			//这块需要给一个最大最小值  在一个显示的区间内
+			//将现在到两天前的数据保存到cookie中  循环显示的时候 调用这数据在加上  现在最新的价钱
+			/*
+			k线： 开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+			数据：开盘价    最高价  最低价   收盘价
+			 {
+				"Data": "2017-10-26 10:13:00.000,pp1801,8944.00,8948.00,8935.00,8938.00,3176,433710,268906"
+			}*/
+			//指标数据
+			//var data_otvx = res.OTVX;
+			/*{0：无行情		1：买开         2：买平    3：卖开   4：卖平
+				"Data": "2017-10-26 11:29:00.000,pp1801,0,0,1508988540,0,8969.00,8972.00,8976.00,8966.00,1618,364666,417826,9.80,9.84,8995.00,8952.00,135"
+			}*/
+		var myChart = echarts.init(document.getElementById('Kline'));
+		var upColor = '#ec0000';
+		var upBorderColor = '#8A0000';
+		var downColor = '#00da3c';
+		var downBorderColor = '#008F28';
+		// 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+		function calculateMA(dayCount) {
+		    var result = [];
+		    for (var i = 0, len = all_kline_y.length; i < len; i++) {
+		        if (i < dayCount) {
+		            result.push('-');
+		            continue;
+		        }
+		        var sum = 0;
+		        for (var j = 0; j < dayCount; j++) {
+		            sum += all_kline_y[i - j][1];
+		        }
+		        result.push(sum / dayCount);
+		    }
+		    return result;
+		}
+		option = {
+				//背景颜色
+				backgroundColor: 'lightblue',
+				//标题  还可以有副标题 标题链接
+			    title: {
+			        text: contract,
+			        left: 0
+			    },
+			    //提示框组件   出现标尺和刻度线
+			    tooltip: {
+			        trigger: 'axis',
+			        axisPointer: {
+			            type: 'cross'
+			        }
+			    },
+			    //图例组件
+			    legend: {
+			        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+			    },
+			    //K线图像部分 可设置边框  左右上下间距
+			    grid: {
+			    	//show:true,
+			    	//borderColor:"red",
+			        left: '15%',
+			        right: '10%',
+			        bottom: '15%'
+			    },
+			    //X轴数据类型和数据
+			    xAxis: {
+			    	//category坐标抽类型
+			        type: 'category',
+			        data: all_kline_x,
+			        scale: true,
+			        boundaryGap : false,
+			        axisLine: {onZero: false},
+			        splitLine: {show: false},
+			        splitNumber: 20,
+			        min: 'dataMin',
+			        max: 'dataMax'
+			    },
+			    //底下显示的呢
+			    //Y轴数据类型和数据
+			    yAxis: {
+			        scale: true,
+			        splitArea: {
+			            show: true
+			        }
+			    },
+			    //区域缩放   滚轴
+			    dataZoom: [
+			        {
+			            type: 'inside',
+			            start: 50,
+			            end: 100
+			        },
+			        {
+			            show: true,
+			            type: 'slider',
+			            y: '90%',
+			            start: 50,
+			            end: 100
+			        }
+			    ],
+			    
+			    series: [
+			        {
+			            name: '日K',
+			            type: 'candlestick',
+			            data: all_kline_y,
+						//折线拐点标志
+			            itemStyle: {
+			                normal: {
+			                    color: upColor,
+			                    color0: downColor,
+			                    borderColor: upBorderColor,
+			                    borderColor0: downBorderColor
+			                }
+			            },
+			            //图标标注
+			            markPoint:{
+			            	//symbol: 'image://img/向下绿箭头.jpg',
+			            	//symbol: 'roundRect',
+			                label: {
+			                    normal: {
+			                        formatter: function (param) {
+			                            return param != null ? Math.round(param.value) : '';
+			                        }
+			                    }
+			                },
+			                data:all_otvx,
+			                tooltip: {
+			                    formatter: function (param) {
+			                        return param.name + '<br>' + (param.data.coord || '');
+			                    }
+			                }
+			            },
+			            //图标标线
+			  		markLine: {
+			                symbol: ['none', 'none'],
+			                data: [
+/* 			                    [
+			                        {
+			                            name: 'from lowest to highest',
+			                            type: 'min',
+			                            valueDim: 'lowest',
+			                            symbol: 'pin',
+			                            symbolSize: 10,
+			                            label: {
+			                                normal: {show: false},
+			                                emphasis: {show: false}
+			                            }
+			                        },
+			                        {
+			                            type: 'max',
+			                            valueDim: 'highest',
+			                            symbol: 'circle',
+			                            symbolSize: 10,
+			                            label: {
+			                                normal: {show: false},
+			                                emphasis: {show: false}
+			                            }
+			                        }
+			                    ], */
+			                    {
+			                        name: 'min line on close',
+			                        type: 'min',
+			                        valueDim: 'close'
+			                    },
+			                    {
+			                        name: 'max line on close',
+			                        type: 'max',
+			                        valueDim: 'close'
+			                    }
+			                ]
+			            }
+			        },
+			        {
+			            name: 'MA5',
+			            type: 'line',
+			            data: calculateMA(5),
+			            smooth: true,
+			            lineStyle: {
+			                normal: {opacity: 0.5}
+			            }
+			        },
+			        {
+			            name: 'MA10',
+			            type: 'line',
+			            data: calculateMA(10),
+			            smooth: true,
+			            lineStyle: {
+			                normal: {opacity: 0.5}
+			            }
+			        },
+			        {
+			            name: 'MA20',
+			            type: 'line',
+			            data: calculateMA(20),
+			            smooth: true,
+			            lineStyle: {
+			                normal: {opacity: 0.5}
+			            }
+			        },
+			        {
+			            name: 'MA30',
+			            type: 'line',
+			            data: calculateMA(30),
+			            smooth: true,
+			            lineStyle: {
+			                normal: {opacity: 0.5}
+			            }
+			        },
+			
+			    ]
+	};
+	myChart.setOption(option);
+	$(window).resize(function(){
+        myChart.resize();    
+    }); 
+}).fail(function(error) {
+	swal("查询指标信号调用错误");
+}) 
+		//传入查询的参数
+		param = {
+			"IndexID": "OTVX,KLINE",
+			"ContractID": contract,
+			"QryType": "0",
+			"ResoType": "1",
+			"Start": Start,
+			"End": End
+			}
+	$("body").everyTime("5s","K线数据",function(){
+		//二三步需要每分钟刷新一次		
+		//第二步：根据合约查询指标信号/api/services/gsk/public/qry_index
+		//查询指标信号
+		$.ajax({
+			type: "post",
+			url: "../restapi/qry_index_return.action",
+			data: {
+				"param": JSON.stringify(param)
+			}
+		}).done(function(temp) {
+			//生成带有指标的K线
+			var res = JSON.parse(temp);
+			//切割数据
+			//K线数据
+			var data_kline = res.KLINE;
+			for (var i = 0; i < res.KLINE.length; i++) {
+				var kline_temp1 =  res.KLINE[i].Data.split(",");
+				var kline_temp_x = [kline_temp1[0].split(".")[0]]
+				var kline_temp_y = [Number(kline_temp1[2]),Number(kline_temp1[5]),Number(kline_temp1[4]),Number(kline_temp1[3])]
+				//all_kline.push(kline_temp2);
+				all_kline_x.push(kline_temp_x);
+				all_kline_y.push(kline_temp_y);
+			}
+			//指标数据 处理
+			var data_otvx = res.OTVX;
+			for (var i = 0; i < res.OTVX.length; i++) {
+				//指标信号数据
+				var otvx_temp1 =  res.OTVX[i].Data.split(",");
+				//对比看第二个数据是 0 1 3
+				if(otvx_temp1[2] == "1"){
+					//买开
+					//一个markpoint对象
+					var temp_1 = {"symbol": 'image://img/向上红箭头.jpg',"coord": ["" + otvx_temp1[0].split(".")[0], otvx_temp1[9]],"value": otvx_temp1[9]};
+					//放进数组里
+					all_otvx.push(temp_1);
+				}else if(otvx_temp1[2] == "3"){
+					//卖开
+					//一个markpoint对象
+					var temp_2 = {"symbol": 'image://img/向下绿箭头.jpg',"coord": ["" + otvx_temp1[0].split(".")[0], otvx_temp1[8]],"value": otvx_temp1[8]};
+					//放进数组里
+					all_otvx.push(temp_1);
+				}
+			}
+			//指标数据
+			var data_otvx = res.OTVX;
+			var myChart = echarts.init(document.getElementById('Kline'));
+			var upColor = '#ec0000';
+			var upBorderColor = '#8A0000';
+			var downColor = '#00da3c';
+			var downBorderColor = '#008F28';
+		// 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+		function calculateMA(dayCount) {
+		    var result = [];
+		    for (var i = 0, len = all_kline_y.length; i < len; i++) {
+		        if (i < dayCount) {
+		            result.push('-');
+		            continue;
+		        }
+		        var sum = 0;
+		        for (var j = 0; j < dayCount; j++) {
+		            sum += all_kline_y[i - j][1];
+		        }
+		        result.push(sum / dayCount);
+		    }
+		    return result;
+		}
+		option = {
+			backgroundColor: 'lightblue',
+		    title: {
+		        text: contract,
+		        left: 0
+		    },
+		    tooltip: {
+		        trigger: 'axis',
+		        axisPointer: {
+		            type: 'cross'
+		        }
+		    },
+		    legend: {
+		        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+		    },
+		    grid: {
+		        left: '10%',
+		        right: '10%',
+		        bottom: '15%'
+		    },
+		    xAxis: {
+		        type: 'category',
+		        data: all_kline_x,
+		        scale: true,
+		        boundaryGap : false,
+		        axisLine: {onZero: false},
+		        splitLine: {show: false},
+		        splitNumber: 20,
+		        min: 'dataMin',
+		        max: 'dataMax'
+		    },
+		    yAxis: {
+		        scale: true,
+		        splitArea: {
+		            show: true
+		        }
+		    },
+		    dataZoom: [
+		        {
+		            type: 'inside',
+		            start: 50,
+		            end: 100
+		        },
+		        {
+		            show: true,
+		            type: 'slider',
+		            y: '90%',
+		            start: 50,
+		            end: 100
+		        }
+		    ],
+		    series: [
+		        {
+		            name: '日K',
+		            type: 'candlestick',
+		            data: all_kline_y,
+		            itemStyle: {
+		                normal: {
+		                    color: upColor,
+		                    color0: downColor,
+		                    borderColor: upBorderColor,
+		                    borderColor0: downBorderColor
+		                }
+		            },
+			        markPoint:{
+		            	data:all_otvx ,
+		                tooltip: {
+		                    formatter: function (param) {
+		                        return param.name + '<br>' + (param.data.coord || '');
+		                    }
+		                }
+			        }
+	            },
+		        {
+		            name: 'MA5',
+		            type: 'line',
+		            data: calculateMA(5),
+		            smooth: true,
+		            lineStyle: {
+		                normal: {opacity: 0.5}
+		            }
+		        },
+		        {
+		            name: 'MA10',
+		            type: 'line',
+		            data: calculateMA(10),
+		            smooth: true,
+		            lineStyle: {
+		                normal: {opacity: 0.5}
+		            }
+		        },
+		        {
+		            name: 'MA20',
+		            type: 'line',
+		            data: calculateMA(20),
+		            smooth: true,
+		            lineStyle: {
+		                normal: {opacity: 0.5}
+		            }
+		        },
+		        {
+		            name: 'MA30',
+		            type: 'line',
+		            data: calculateMA(30),
+		            smooth: true,
+		            lineStyle: {
+		                normal: {opacity: 0.5}
+		            }
+		        },
+		
+		    ]
+};
+	myChart.setOption(option);
+	//响应式K线
+		$(window).resize(function(){
+                myChart.resize();    
+            }); 
+		}).fail(function(error) {
+			swal("查询指标信号调用错误");
+		}) 
+				}, 0, true) 
+	</script>
+	<script type="text/javascript" src="../js/login.js"></script>
+</html>

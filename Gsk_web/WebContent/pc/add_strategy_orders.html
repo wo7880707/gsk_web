@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<link rel="stylesheet" type="text/css" href="../sweet/css/sweet-alert.css"/>
+		<script type="text/javascript" src="../sweet/js/sweet-alert.min.js"></script>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../css/ALL.css" rel="stylesheet">
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+		<script type="text/javascript" src="../laydate/laydate.js"></script>
+		<script type="text/javascript" src="../js/init.js"></script>   
+
+	</head>
+
+	<body style = "background-color: lightblue;">
+		<!--1.第一行  显示框-->
+		<div class="container-fluid" style="background-color: lightblue; ">
+			<div class="row" style=" height: 60px; background-color: #5BC0DE;" id = "bb1">
+			</div>
+			<!--2.功能框-->
+			<div class="row" style="line-height: 50px; background-color: #FFFFFF; margin-left: -15px; "id = "bb2">
+			</div>
+	<script type="text/javascript">
+	$('#bb1').load("header_1floor.html",function() {
+		if(window.innerWidth <= 1100){
+			$('#xuanchuanzi').html("");
+		}
+		if(window.innerWidth <= 800){
+					$('#div1').prop("class","col-lg-2  col-md-2 col-sm-2 col-xs-2");
+					$('#div2').prop("class","col-lg-9  col-md-9 col-sm-9 col-xs-9");
+					$('#div3').prop("class","col-lg-1  col-md-1 col-sm-1 col-xs-1");
+					$('#xitongming').html("");
+					$('#username_button').html("");
+				}
+		if(window.innerWidth <= 1219){
+		
+				}		
+		});
+	$('#bb2').load("header_2floor.html");
+	</script>
+		<!--3.报单区域-->
+				<div id = "add_div" class="row" style="background-color:lightblue;" id = "insert" >
+					<div id = "add_top" class="col-lg-4  col-md-4 col-sm-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4" style="" align="center">
+						<div style="text-align: center;" >
+						<h3 style="color: #6495ED; font-size : 32px; margin-top : 0px;">请正确填写以下信息</h3>
+						</div>
+					<fieldset>
+						<legend></legend>
+							<div class="form-group" >
+								<span style= "font-size : 16px; margin-top : 40px;" >合&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;约</span> 
+								<select id="ContractID" style="width:172px;margin-left:20px; height: 30px; cursor:pointer;"  >
+								</select>
+							</div> 
+			                <div class="form-group" >			
+								<span id="Name_change" style= "font-size : 16px; cursor:pointer;" >策&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;略</span> 
+								<select id="Name" style="width:80px;margin-left:20px; height: 30px;cursor:pointer; font-size : 10px;">
+								</select>
+								<button id="cl" class="btn btn-info " style="margin-left: 7px; height: 30px; ">策略说明</button>
+							</div> 
+							<div class="form-group" >
+								<span style= "font-size : 16px;" >委托数量</span> 
+								<input id = "OrderAmount" type="text" style="margin-left:20px; height: 30px; width : 172px;"  >
+							</div>
+							<div class="form-group" >
+								<span style= "font-size : 16px;" >报入时间</span> 
+								<input type="text" id = "InsertDate" style="margin-left:20px; height: 30px; width : 172px;" >
+							</div>
+							<div class="form-group" >
+								<span style= "font-size : 16px;" >有效期限</span> 
+								<input type="text"  id = "ExpirationDate" style="margin-left:20px; height: 30px; width : 172px;" >
+							</div>
+							<div class="form-group" >
+								<span style= "font-size : 16px;" >有效交易时段</span> 
+								<select id="ValidTime" style="margin-left:20px; height: 30px; width:145px; cursor:pointer;" >
+									<option value="0">白盘</option>
+									<option value="1">夜盘</option>
+									<option value="2">白盘+夜盘</option>
+								</select>
+							</div>
+					</fieldset>
+					<fieldset id = "add_index">
+                		</fieldset>
+                	<fieldset id = "add_foot">
+						<legend></legend>
+						<div class="form-group"  style= "margin-top : 15px;">
+		                    	
+		                		<button id = "commit" onclick="commit()"   style="font-size: 18px;  height: 35px; width: 22%; border: none; border-radius: 8px; background-color: cornflowerblue;color:white;" >提交</button>
+		                		<button id = "remove" onclick="remove()" disabled="disabled"  style=" font-size: 18px;  height: 35px; width: 22%; border: none; border-radius: 8px; background-color: grey;color:white;" >撤销</button>
+		                </div>
+					</fieldset>
+					</div>
+				</div>
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->
+		<div class="modal" id="aa">
+			<div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<p class="page-header" style="margin-left: 15px; font-size : 20px; color : lightcoral; font-weight : 600;margin-right: 15px;">
+					尊贵的客户，您好！
+				</p>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table style="width: 85%; margin-left: 15%; font-size: 18px;">
+						<tr class="success">
+							<td>姓 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_Name"></span></td>
+							<td>用户类型&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_UserType"></span></td>
+						</tr>
+						<tr class="success">
+							<td>电 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_Telephone"></span></td>
+							<td>邮 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;:&nbsp;&nbsp;<span id="return_EmailAddress"></span></td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="table-responsive" style="margin-top: 30px;" align = "center">
+					<table id="login_detail_Indices" class="table-bordered table-striped" style="width: 97%;" >
+						<thead>
+							<td> 指标类型</td>
+							<td> 指标订阅到期日</td>
+							<td> 状态</td>
+						</thead>
+					</table>
+				</div>
+				<p style="margin-top: 20px;margin-left: 15px; font-size : 17px; ">
+					温馨提示 ：如有任何问题请联系杠上开期货交易决策系统客服 !
+				</p>
+				<p class="text-right " style="margin-right: 20px;"><button class="btn btn-info " onclick='$("#aa").modal("hide")'>关闭</button></p>
+			</div>
+		</div>
+		<!--   策略显示    这里制作一个策略说明模态框，相关还有一句JavaScript代码-->
+		<div class="modal" id="aa_cl">
+			<div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<p id="cl_show" style="margin-top: 20px; padding-left: 20px;">
+
+				</p>
+				<p class="text-right" style="padding-right: 20px;"><button class="btn btn-info" onclick='$("#aa_cl").modal("hide")'>关闭</button></p>
+			</div>
+		</div>
+		<!--   请求加载      这里制作一个模态框，相关还有一句JavaScript代码-->
+		<div class="modal" id="loading" style="">
+			<div align="center" class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="  margin-top:280px;">
+			
+			<img style="height: 65px; width: 95px; padding-right: 30px;" src="../img/load_3.gif" />
+			<!--<img style="height: 50px; width: 50px;" src="../img/loading.gif" />-->
+			<span style="display: block; margin-top: 18px; font-family: '微软雅黑';font-size: 21px;color: #337AB7; padding-right: 30px;">Load . . . . . .</span>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//函数方法：参数为Date（）类型   转成String 
+		function change_date(date){
+			//年 月 日 小时 分钟 秒
+			var year_now = date.getFullYear();
+			var month_now = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1):(date.getMonth() + 1);
+			var day_now = date.getDate() < 10 ? "0" + date.getDate():date.getDate();
+			var hour_now = date.getHours() < 10 ? "0" + date.getHours():date.getHours();
+			var minute_now = date.getMinutes() < 10 ? "0" + date.getMinutes():date.getMinutes();
+			var second_now = date.getSeconds() < 10 ? "0" + date.getSeconds():date.getSeconds();
+			//现在的时间------------------------------------
+			var End = year_now + "-" + month_now + "-" + day_now + " " + hour_now + ":" + minute_now + ":" + second_now;
+			return End;
+		}
+		//函数方法 ：判断现在时间端的收盘时间    ：白盘默认结束时间下午15点20分，夜盘默认结束时间凌晨3点20分
+		function change_expirationdate(date){
+			var End;
+			//年 月 日 小时 分钟 秒
+			var year_now = date.getFullYear();
+			var month_now = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1):(date.getMonth() + 1);
+			var day_now = date.getDate() < 10 ? "0" + date.getDate():date.getDate();
+			var hour_now = date.getHours() < 10 ? "0" + date.getHours():date.getHours();
+			var minute_now = date.getMinutes() < 10 ? "0" + date.getMinutes():date.getMinutes();
+			var second_now = date.getSeconds() < 10 ? "0" + date.getSeconds():date.getSeconds();
+			//今天的3:20之前 3:20  今天的3:20-15:20 15:20 今天的15:20-24:00 明天的3:20
+			if (date.getHours() < 3 || date.getHours() == 3 && date.getMinutes() <=20) {
+				//3:20之前的 
+				End = year_now + "-" + month_now + "-" + day_now + " " + "03" + ":" + "20" + ":" + "00";
+			} else if (date.getHours() > 15 || date.getHours() == 15 && date.getMinutes() >=20){
+				var day_now_addone = date.getDate() + 1 ;
+				var show_date_addone = day_now_addone < 10 ? "0" + day_now_addone : day_now_addone;
+				//15:20之后的
+				End = year_now + "-" + month_now + "-" + show_date_addone + " " + "03" + ":" + "20" + ":" + "00";
+			} else {
+				//中间的
+				End = year_now + "-" + month_now + "-" + day_now + " " + "15" + ":" + "20" + ":" + "00";
+			}
+			return End;
+		}
+	//根据不同的页面大小 调一下报单区域的位置 
+		$("#add_div").css("height",window.innerHeight - 110 + "px");
+		var add_top_temp = window.innerHeight - 110 - 532 ;
+		$("#add_top").css("margin-top",( add_top_temp > 140 ? 140 : 80 ) / 2 + "px");
+		//给一个本时间段收盘的时间
+		laydate.render({
+		  elem: '#InsertDate'
+		  ,type: 'datetime'
+		  ,value:change_date(new Date())
+		});
+		laydate.render({
+		  elem: '#ExpirationDate'
+		  ,type: 'datetime'
+		  ,value:change_expirationdate(new Date())
+		});
+
+		var dynamic_param = [] ;
+ 		try{ 
+ 			var allcontracts = [];
+ 			if(JSON.parse(localStorage.getItem("contracts_return")) != null){
+ 				allcontracts = JSON.parse(localStorage.getItem("contracts_return")).Contracts.split(",");	
+ 			}
+		}catch(error){ 
+			swal("合约数据错误")
+		}
+		$("#ContractID").empty();
+		for (var i = 0; i < allcontracts.length; i++) {
+			$("#ContractID").append('<option value = "' + allcontracts[i] + '"> '+ allcontracts[i] +'</option>')
+		} 
+		var url = location.search;
+		if(url != ""){
+			var contract = url.split("=")[1];
+			$('option[value="' + contract +'"]').prop("selected","selected");
+		}
+		try{ 
+ 			var allstrategys = [];
+ 			var allPropertyDescription = [];
+ 			if(JSON.parse(localStorage.getItem("strategys_return")) != null){
+ 				allstrategys = JSON.parse(localStorage.getItem("strategys_return")).Strategys;	
+ 				allPropertyDescription = JSON.parse(localStorage.getItem("strategys_return")).PropertyDescription;									
+ 			}
+		}catch(error){ 
+			swal("读取策略信息错误，请刷新页面");
+		}
+		
+		$("#Name").empty();
+		$("#Name").append('<option>请选择以下策略</option>');
+		for (var i = allstrategys.length - 1; i >= 0; i--) {
+			$("#Name").append('<option value = "' + allstrategys[i].StrategyID + '"  class = "' + allstrategys[i].Name + '">' + allstrategys[i].Name  +'</option>')
+		}		
+		$("#cl").click(function(){
+			if($("#Name").val() == "请选择以下策略"){
+				$('#cl_show').html("您好！客户，请选择策略");
+				$('#aa_cl').modal("show");
+			}else{
+				var cl = $("#Name option:selected").val();
+				for (var i = 0; i < allstrategys.length; i++) {
+					if(cl == allstrategys[i].StrategyID){
+						$('#cl_show').html(allstrategys[i].Description);
+						$('#aa_cl').modal("show");
+						break;
+					}	
+				}		
+			}
+		})
+		//切换策略名称和数字编号
+		var Name_change_select = "2" ;
+		$("#Name_change").click(function(){
+			if (Name_change_select == "1") {
+				Name_change_select = "2";
+				$("#Name  option:not(:first)").remove();
+				for (var i = allstrategys.length - 1; i >= 0; i--) {
+					$("#Name").append('<option value = "' + allstrategys[i].StrategyID + '"  class = "' + allstrategys[i].Name + '">' + allstrategys[i].Name  +'</option>')
+				}	
+			}else if(Name_change_select == "2") {
+				Name_change_select = "1";
+				$("#Name  option:not(:first)").remove();
+				for (var i = allstrategys.length - 1; i >= 0; i--) {
+					$("#Name").append('<option value = "' + allstrategys[i].StrategyID + '"  class = "' + allstrategys[i].Name + '">' + allstrategys[i].StrategyID  +'</option>')
+				}	
+			}
+			
+		})
+		$("#Name").change(function(){
+			if($("#Name option:selected").html() == "请选择以下策略"){
+				$("#add_index").empty();
+			}else{
+			//选的是策略
+			$("#add_index").empty();
+			$("#add_index").append("<legend></legend>");
+			/*var cl = $("#Name option:selected").html();*/
+			var cl = $("#Name option:selected").val();
+			dynamic_param = [] ;
+			for (var i = 0; i < allstrategys.length; i++) {
+				if(cl == allstrategys[i].StrategyID){
+
+					$('#cl_show').html(allstrategys[i].Description);
+
+					var property = allstrategys[i].Property ;
+
+					var property_array = property.split("").reverse();
+
+					for (var j = 0; j < property_array.length; j++) {
+						if(property_array[j] != "0"){
+
+							var propertyDescription = allPropertyDescription[allPropertyDescription.length - 1 - j];
+
+							if(propertyDescription.DispType == "Edit"){
+
+								$('#add_index').append('<div class="form-group"  id="makemoney" style=""><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><input id = "' + propertyDescription.Name + '" type="text" style="margin-left:20px; height: 30px;width : 172px;"  >');
+
+								dynamic_param.push("" + propertyDescription.Name);
+
+							}else if(propertyDescription.DispType == "Check"){
+
+								$('#add_index').append('<div class="form-group" ><div align = "left" style = "width : 260px"><label style= "font-size : 16px; cursor : pointer;"   class="control-label" for="' + propertyDescription.Name + '" >' + propertyDescription.Title + '</label><input id="' + propertyDescription.Name + '" style="margin-left: 25px; height: 15px;width: 15px; cursor : pointer; " type="checkbox" value=""  />');
+
+								dynamic_param.push("" + propertyDescription.Name);
+
+								
+							}else if(propertyDescription.DispType == "List"){
+
+								$('#add_index').append('<div class="form-group" ><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><select id="' + propertyDescription.Name + '" style="margin-left:20px; height: 30px; width:145px; cursor:pointer;" ></select></div>')
+
+								var dataRange = propertyDescription.DataRange.split(",");
+								for (var k = 0; k < dataRange.length; k++) {								
+									$('#' + propertyDescription.Name).append('<option value="'+dataRange[k]+'">' + dataRange[k] + '</option>')								
+								}
+
+								dynamic_param.push("" + propertyDescription.Name);
+
+							}else if(propertyDescription.DispType == "Dates"){
+
+								$('#add_index').append('<div class="form-group" ><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><input type="text" id ="' + propertyDescription.Name + '" style="margin-left:20px; height: 30px;width : 172px;" ></div>')
+
+								laydate.render({
+								  elem: '#' + propertyDescription.Name
+								  ,type: 'datetime'
+								});
+
+								dynamic_param.push("" + propertyDescription.Name);
+
+							
+							}
+						}						
+					}	
+
+				break;
+				}					
+			}
+			}
+		})
+
+
+		$('#loading').modal("show");
+
+		var UserID;
+		var	TradeAcc;
+		var TradePwd;
+		var BrokerID;
+		var ClientInfo;
+
+		$.ajax({
+			type: "POST",
+			url: "../restapi/future_login_return.action"
+		}).done(function(temp) {
+
+			$('#loading').modal("hide");
+			
+			 var res = JSON.parse(temp);
+			UserID = res.UserID;
+			TradeAcc = res.TradeAcc;
+			TradePwd = res.TradePwd;
+			BrokerID = res.BrokerID;
+			ClientInfo = res.ClientInfo;
+					
+			var conntract_data =  {
+						"UserID": UserID,
+						"TradeAcc": TradeAcc,
+						"TradePwd":TradePwd,								// 交易密码（暂定不使用）
+						"BrokerID":BrokerID									// 经纪公司代码
+					}
+			
+			$('#loading').modal("show");
+			$.ajax({
+					type: "POST",
+					url: "../restapi/qry_strategy_orders_return.action",
+					data:{"param":JSON.stringify(conntract_data)}
+				}).done(function(temp) {
+					
+					$('#loading').modal("hide");
+					
+					var open = "0";
+					var res = JSON.parse(temp);
+					
+					localStorage.setItem("strategy_orders_return",temp);
+					var ValidTime_temp = ["白盘","夜盘","白盘+夜盘"];
+					
+					if(res.StrategyOrders != null || res.StrategyOrders != ""){ 
+						
+						for (var k = 0; k < res.StrategyOrders.length; k++) {
+							
+							if($("#ContractID").val() == res.StrategyOrders[k].ContractID && res.StrategyOrders[k].OrderState != "remove"){
+								
+								open = "1";
+								
+								$("#add_index").empty();
+								
+								$("#Name").val(res.StrategyOrders[k].StrategyID);
+								
+								$("#add_index").append("<legend></legend>");
+								/*var cl = $("#Name option:selected").html();*/
+								var cl = $("#Name option:selected").val();
+								for (var i = 0; i < allstrategys.length; i++) {
+									if(cl == allstrategys[i].StrategyID){
+										
+										$('#cl_show').html(allstrategys[i].Description);
+										
+										var property = allstrategys[i].Property ;
+										
+										var property_array = property.split("").reverse();
+										
+										for (var j = 0; j < property_array.length; j++) {
+											if(property_array[j] != "0"){
+												
+												var propertyDescription = allPropertyDescription[allPropertyDescription.length - 1 - j];
+												
+												if(propertyDescription.DispType == "Edit"){
+													
+													$('#add_index').append('<div class="form-group"  id="makemoney" style=""><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><input id = "' + propertyDescription.Name + '" type="text" style="margin-left:20px; height: 30px;width : 172px;"  >');								
+													
+													$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}else if(propertyDescription.DispType == "Check"){
+													
+													$('#add_index').append('<div class="form-group" ><div align = "left" style = "width : 260px"><label style= "font-size : 16px;"   class="control-label" for="' + propertyDescription.Name + '" >' + propertyDescription.Title + '</label><input id="' + propertyDescription.Name + '" style="margin-left: 25px; height: 15px;width: 15px; " type="checkbox" value=""  />');
+													
+													if(res.StrategyOrders[k]["" + propertyDescription.Name] == "0"){
+														
+													}else if(res.StrategyOrders[k]["" + propertyDescription.Name] == "1"){
+														$('#' + propertyDescription.Name).prop("checked","checked");
+													}
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}else if(propertyDescription.DispType == "List"){
+													
+													$('#add_index').append('<div class="form-group" ><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><select id="' + propertyDescription.Name + '" style="margin-left:20px; height: 30px; width:145px; cursor:pointer;" ></select></div>')
+												
+													var dataRange = propertyDescription.DataRange.split(",");
+													for (var k = 0; k < dataRange.length; k++) {								
+														$('#' + propertyDescription.Name).append('<option value="'+dataRange[k]+'">' + dataRange[k] + '</option>')								
+													}
+													
+													$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}else if(propertyDescription.DispType == "Dates"){
+													
+													$('#add_index').append('<div class="form-group" ><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><input type="text" id ="' + propertyDescription.Name + '" style="margin-left:20px; height: 30px;width : 172px;" ></div>')
+													
+													laydate.render({
+													  elem: '#' + propertyDescription.Name
+													  ,type: 'datetime'
+													});		
+													
+													$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}
+											}						
+										}	
+									
+									break;
+									}					
+								}
+								
+								$("#Name").prop("disabled","true");										//策略名
+								$("#Name").css("background-color","#EBEBE4");
+								$("#OrderAmount").val(res.StrategyOrders[k].OrderAmount),				// 托管手数
+								$("#OrderAmount").prop("disabled","true");
+								$("#ExpectPoint").val(res.StrategyOrders[k].ExpectPoint),				// 期望收益的Tick数
+								$("#ExpectPoint").prop("disabled","true");
+								$("#InsertDate").val(res.StrategyOrders[k].InsertDate),					// 报入时间
+								$("#InsertDate").prop("disabled","true");
+								$("#ExpirationDate").val(res.StrategyOrders[k].ExpirationDate),			// 有效期限
+								$("#ExpirationDate").prop("disabled","true");
+								$("#ValidTime").val(res.StrategyOrders[k].ValidTime),					// 有效时段	
+								$("#ValidTime").prop("disabled","true");
+								$("#ValidTime").css("background-color","#EBEBE4");
+								
+								$("#commit").prop("disabled","true");
+								$("#commit").css("background-color","grey");
+								$("#remove").prop("disabled","");
+								$("#remove").css("background-color","cornflowerblue");
+								
+								$("#remove").prop("class",res.StrategyOrders[k].StrategyOrderID);
+								
+								break;
+							}
+						}
+						   
+						if(open == "0"){
+							
+							$("#add_index").empty();
+							
+							$("#Name").val("");
+							$("#Name").prop("disabled","");
+							$("#Name").css("background-color","");
+							
+							$("#OrderAmount").val("");			// 托管手数
+							$("#OrderAmount").prop("disabled","");
+							$("#InsertDate").val(change_date(new Date()));				// 报入时间
+							$("#InsertDate").prop("disabled","");
+							$("#ExpirationDate").val(change_expirationdate(new Date()));			// 有效期限
+							$("#ExpirationDate").prop("disabled","");
+							$("#ValidTime").val("")	;				
+							$("#ValidTime").prop("disabled","");
+							$("#ValidTime").css("background-color","");
+							//提交可点  撤销不可点
+							$("#commit").prop("disabled","");
+							$("#commit").css("background-color","#6495ED");
+							$("#remove").prop("disabled","true");
+							$("#remove").css("background-color","grey");							
+						}
+			//	如果没有策略单
+					}else{
+							//清空动态显示框
+							$("#add_index").empty();
+							//把策略名称改为”选择策略“
+							$("#Name").val("");
+							$("#Name").prop("disabled","");
+							$("#Name").css("background-color","");
+							//把固定的几个改为空  且可编辑
+							$("#OrderAmount").val("");			// 托管手数
+							$("#OrderAmount").prop("disabled","");
+							$("#InsertDate").val(change_date(new Date()));				// 报入时间
+							$("#InsertDate").prop("disabled","");
+							$("#ExpirationDate").val(change_expirationdate(new Date()));			// 有效期限
+							$("#ExpirationDate").prop("disabled","");
+							$("#ValidTime").val("")	;				
+							$("#ValidTime").prop("disabled","");
+							$("#ValidTime").css("background-color","");
+							
+							$("#commit").prop("disabled","");
+							$("#commit").css("background-color","#6495ED");
+							$("#remove").prop("disabled","true");
+							$("#remove").css("background-color","grey");
+					}
+					
+				}).fail(function(error){	
+					
+					$('#loading').modal("hide");
+					
+					swal({
+						  title: "客户，您好！",
+						  text: "抱歉，策略单信息查询失败，点击确认刷新页面！",
+						  type: "error",
+						  showCancelButton: false,
+						  confirmButtonColor: "#DD6B55",
+						  cancelButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  closeOnConfirm: true
+						},
+						function(){
+							window.location.reload();
+						});				
+				})	
+			}).fail(function(error){	
+				
+				$('#loading').modal("hide");
+				
+				swal({
+					  title: "客户，您好！",
+					  text: "抱歉，提取登录信息失败，点击确认刷新页面！",
+					  type: "error",
+					  showCancelButton: false,
+					  confirmButtonColor: "#DD6B55",
+					  cancelButtonColor: "#DD6B55",
+					  confirmButtonText: "确定",
+					  closeOnConfirm: true
+					},
+					function(){
+						window.location.reload();
+					});				
+		})	
+
+			$("#ContractID").change(function(){
+
+
+				var temp = localStorage.getItem("strategy_orders_return");
+					
+					var open = "0";
+					var res = JSON.parse(temp);
+					var ValidTime_temp = ["白盘","夜盘","白盘+夜盘"];
+					
+					if(res.StrategyOrders != null || res.StrategyOrders != ""){ 
+						
+						for (var k = 0; k < res.StrategyOrders.length; k++) {
+							
+							if($("#ContractID").val() == res.StrategyOrders[k].ContractID && res.StrategyOrders[k].OrderState != "remove"){
+								
+								open = "1";
+								
+								$("#add_index").empty();
+								
+								$("#Name").val(res.StrategyOrders[k].StrategyID);
+								
+								$("#add_index").append("<legend></legend>");
+								/*var cl = $("#Name option:selected").html();*/
+								var cl = $("#Name option:selected").val();
+								for (var i = 0; i < allstrategys.length; i++) {
+									if(cl == allstrategys[i].StrategyID){
+										
+										$('#cl_show').html(allstrategys[i].Description);
+										
+										var property = allstrategys[i].Property ;
+										
+										var property_array = property.split("").reverse();
+										
+										for (var j = 0; j < property_array.length; j++) {
+											if(property_array[j] != "0"){
+												
+												var propertyDescription = allPropertyDescription[allPropertyDescription.length - 1 - j];
+												
+												if(propertyDescription.DispType == "Edit"){
+													
+													$('#add_index').append('<div class="form-group"  id="makemoney" style=""><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><input id = "' + propertyDescription.Name + '" type="text" style="margin-left:20px; height: 30px;width : 172px;"  >');								
+													
+													$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}else if(propertyDescription.DispType == "Check"){
+													
+													$('#add_index').append('<div class="form-group" ><div align = "left" style = "width : 260px"><label style= "font-size : 16px;"   class="control-label" for="' + propertyDescription.Name + '" >' + propertyDescription.Title + '</label><input id="' + propertyDescription.Name + '" style="margin-left: 25px; height: 15px;width: 15px; " type="checkbox" value=""  />');
+													
+													if(res.StrategyOrders[k]["" + propertyDescription.Name] == "0"){
+														
+													}else if(res.StrategyOrders[k]["" + propertyDescription.Name] == "1"){
+														$('#' + propertyDescription.Name).prop("checked","checked");
+													}
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}else if(propertyDescription.DispType == "List"){
+													
+													$('#add_index').append('<div class="form-group" ><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><select id="' + propertyDescription.Name + '" style="margin-left:20px; height: 30px; width:145px; cursor:pointer;" ></select></div>')
+													
+													var dataRange = propertyDescription.DataRange.split(",");
+													for (var k = 0; k < dataRange.length; k++) {								
+														$('#' + propertyDescription.Name).append('<option value="'+dataRange[k]+'">' + dataRange[k] + '</option>')								
+													}
+													
+													$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}else if(propertyDescription.DispType == "Dates"){
+
+													$('#add_index').append('<div class="form-group" ><span style= "font-size : 16px;" >' + propertyDescription.Title + '</span><input type="text" id ="' + propertyDescription.Name + '" style="margin-left:20px; height: 30px;width : 172px;" ></div>')
+													
+													laydate.render({
+													  elem: '#' + propertyDescription.Name
+													  ,type: 'datetime'
+													});		
+													
+													$('#' + propertyDescription.Name).val(res.StrategyOrders[k]["" + propertyDescription.Name]);
+													$('#' + propertyDescription.Name).prop("disabled","true");
+												}
+											}						
+										}	
+
+									break;
+									}					
+								}
+
+								$("#Name").prop("disabled","true");										//策略名
+								$("#Name").css("background-color","#EBEBE4");
+								$("#OrderAmount").val(res.StrategyOrders[k].OrderAmount),				// 托管手数
+								$("#OrderAmount").prop("disabled","true");
+								$("#ExpectPoint").val(res.StrategyOrders[k].ExpectPoint),				// 期望收益的Tick数
+								$("#ExpectPoint").prop("disabled","true");
+								$("#InsertDate").val(res.StrategyOrders[k].InsertDate),					// 报入时间
+								$("#InsertDate").prop("disabled","true");
+								$("#ExpirationDate").val(res.StrategyOrders[k].ExpirationDate),			// 有效期限
+								$("#ExpirationDate").prop("disabled","true");
+								$("#ValidTime").val(res.StrategyOrders[k].ValidTime),					// 有效时段	
+								$("#ValidTime").prop("disabled","true");
+								$("#ValidTime").css("background-color","#EBEBE4");
+
+								$("#commit").prop("disabled","true");
+								$("#commit").css("background-color","grey");
+								$("#remove").prop("disabled","");
+								$("#remove").css("background-color","cornflowerblue");
+
+								$("#remove").prop("class",res.StrategyOrders[k].StrategyOrderID);
+
+								break;
+							}
+						}
+   
+						if(open == "0"){
+
+							$("#add_index").empty();
+
+							$("#Name").val("");
+							$("#Name").prop("disabled","");
+							$("#Name").css("background-color","");
+
+							$("#OrderAmount").val("");			// 托管手数
+							$("#OrderAmount").prop("disabled","");
+							$("#InsertDate").val(change_date(new Date()));				// 报入时间
+							$("#InsertDate").prop("disabled","");
+							$("#ExpirationDate").val(change_expirationdate(new Date()));			// 有效期限
+							$("#ExpirationDate").prop("disabled","");
+							$("#ValidTime").val("")	;			
+							$("#ValidTime").prop("disabled","");
+							$("#ValidTime").css("background-color","");
+
+							$("#commit").prop("disabled","");
+							$("#commit").css("background-color","#6495ED");
+							$("#remove").prop("disabled","true");
+							$("#remove").css("background-color","grey");							
+						}
+
+					}else{
+
+							$("#add_index").empty();
+
+							$("#Name").val("");
+							$("#Name").prop("disabled","");
+							$("#Name").css("background-color","");
+
+							$("#OrderAmount").val("");			// 托管手数
+							$("#OrderAmount").prop("disabled","");
+							$("#InsertDate").val(change_date(new Date()));				// 报入时间
+							$("#InsertDate").prop("disabled","");
+							//$("#ExpirationDate").val("");			// 有效期限
+							$("#ExpirationDate").prop("disabled","");
+							$("#ValidTime").val("")	;				
+							$("#ValidTime").prop("disabled","");
+							$("#ValidTime").css("background-color","");
+
+							$("#commit").prop("disabled","");
+							$("#commit").css("background-color","#6495ED");
+							$("#remove").prop("disabled","true");
+							$("#remove").css("background-color","grey");
+					}			
+			})
+
+		var reg = /[a-z]+/gi;
+		var reg1 = /[0-9]+/gi;
+
+		var contracts_contrast = JSON.parse(localStorage.getItem("contracts_contrast"));
+		/*var contracts_contrast = {"pp":"PP","T":"T","TF":"TF","bb":"胶板","ni":"沪镍","RI":"早稻","i":"铁矿",
+				  "rb":"螺纹","y":"豆油","al":"沪铝","FG":"玻璃","v":"PVC","fu":"燃油料","jd":"鸡蛋",
+				  "ZC":"郑煤","jm":"焦煤","p":"棕榈","CF":"郑棉","c":"玉米","sn":"沪锡","RM":"菜粕",
+				  "WH":"郑麦","fb":"纤板","ru":"橡胶","OI":"郑油","pb":"沪铅","TA":"PTA","a":"豆一",
+				  "cs":"淀粉","SF":"硅铁","l":"塑料","au":"沪金","LR":"晚稻","zn":"沪锌","j":"焦炭",    
+				  "SM":"猛硅","m":"豆粕","bu":"沥青","SR":"白糖","MA":"郑醇","ag":"沪银","hc":"热卷",
+				  "cu":"沪铜","IH":"IH","IF":"IF","IC":"IC","JR":"粳稻","RS":"菜籽","AP":"苹果","sc":"原油"} */ 
+
+		function change(contract){
+			var chinese  = contract.match(reg)[0];
+			var num  = contract.match(reg1)[0];
+			chinese = contracts_contrast[chinese];
+			return chinese + num;
+		}								  
+
+		function commit(){
+
+			if($("#Name option:selected").html() == "请选择以下策略" || $("#Name option:selected").html() == undefined || $("#Name option:selected").html() == ""){
+				swal("请选择策略");
+			}else if($("#OrderAmount").val() == "" || $("#OrderAmount").val() == undefined ){
+				swal("请正确填写委托数量");
+			}else if($("#InsertDate").val() == "" || $("#InsertDate").val() == undefined){
+				swal("请正确填写报入时间");
+			}else if($("#ExpirationDate").val() == "" || $("#ExpirationDate").val() == undefined){
+				swal("请正确填写有效期限");
+			}else if($("#ValidTime").val() == "" || $("#ValidTime").val() == undefined){
+				swal("请正确选择有效交易时段");
+			}else{
+
+				var ifcancommit = "1";
+
+				for (var i = 0; i < dynamic_param.length; i++) {
+
+					if(!($("#" + dynamic_param[i]).prop("type") == "checkbox")){
+						if($("#" + dynamic_param[i]).val() == "" || $("#" + dynamic_param[i]).val() == undefined){
+							ifcancommit = "0";
+							swal("请正确填写" + $("#" + dynamic_param[i]).prev().html());
+							break;
+						}
+						
+					}
+					
+				}
+
+		 		if(ifcancommit == "1"){
+		 				var login_data =  {
+									"UserID": UserID,										
+									"TradeAcc":TradeAcc,									
+									"TradePwd":TradePwd,									
+									"BrokerID":BrokerID,									
+									"SeatID":"1",											
+									"StrategyOrders":										
+									[			
+										{			
+											
+											"StrategyOrderID":"0",									
+											"OrderState":"enable",									
+											"StrategyID":$("#Name").val(),										
+											"Name":$("#Name option:selected").prop("class"),							
+											"ContractID":$("#ContractID").val(),								
+											"ContractName":change($("#ContractID").val()),			
+											"OrderAmount":$("#OrderAmount").val(),							
+											"ValidTime":$("#ValidTime").val(),								
+											"InsertDate":$("#InsertDate").val(),								
+											"ExpirationDate":$("#ExpirationDate").val(),					
+											"ClientInfo":ClientInfo								  				
+											
+										}
+									]
+								}
+
+		 				for(var j = 0; j < dynamic_param.length; j++) {
+		 					if(!($("#" + dynamic_param[j]).prop("type") == "checkbox")){
+		 						var temp = dynamic_param[j];
+		 						eval("login_data.StrategyOrders[0]." + dynamic_param[j] + "='" + $("#" + dynamic_param[j]).val() + "'");
+		 					}else{
+
+		 						if($("#" + dynamic_param[j]).prop("checked")){
+		 							eval("login_data.StrategyOrders[0]." + dynamic_param[j] + "='1'");
+		 						}else{
+		 							eval("login_data.StrategyOrders[0]." + dynamic_param[j] + "='0'");
+		 						}
+		 					}
+		 						
+		 				}
+
+									$('#loading').modal("show");
+									$.ajax({
+											type: "POST",
+											url: "../restapi/insert_strategy_orders_return.action",
+
+											data:{"param":JSON.stringify(login_data)}
+										}).done(function(temp) {
+
+											$('#loading').modal("hide");
+											var res = JSON.parse(temp);
+											if(res.RetInfo.ErrNo == "0"){
+
+												sweetAlert({
+													  title: "客户,您好！",
+										  			  text: "托 管 成 功",
+										  			  type: "success",
+													  showCancelButton: false,
+													  confirmButtonColor: "#DD6B55",
+													  confirmButtonText: "确定",
+													  closeOnConfirm: false
+													}, function(){
+
+														location.href = "add_strategy_orders.html?contract="+$("#ContractID").val(); 
+														});
+												
+											}else{
+												swal({
+										  			  title: "托管失败",
+										  			  text: res.RetInfo.Message + "",
+										  			  type: "error",
+										  			  showCancelButton: false,
+										  			  confirmButtonColor: "#DD6B55",
+										  			  confirmButtonText: "确定",
+										  			  closeOnConfirm: false
+										  			});
+											}
+										}).fail(function(error){	
+
+											$('#loading').modal("hide");
+											swal({
+									  			  title: "报入失败",
+									  			  text: "连接API报单失败，请重新尝试！",
+									  			  type: "error",
+									  			  showCancelButton: false,
+									  			  confirmButtonColor: "#DD6B55",
+									  			  confirmButtonText: "确定",
+									  			  closeOnConfirm: false
+									  			});
+									})	
+		 		}
+			}
+
+
+		}	
+		
+		function remove(){
+			sweetAlert({
+				  title: "客户,您好！",
+				  text: "撤销委托单后，如果有此合约的策略单，会平仓出场！",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonColor: "#DD6B55",
+				  cancelButtonColor: "#DD6B55",
+				  confirmButtonText: "确定",
+				  cancelButtonText: "取消",
+				  closeOnConfirm: false
+		}, function(){
+			$('#loading').modal("show");
+			var login_data =  {
+					"UserID": UserID,										
+					"TradeAcc":TradeAcc,									
+					"TradePwd":TradePwd,									
+					"BrokerID":BrokerID,									
+					"StrategyOrderID":$("#remove").prop("class"),			
+					"ClientInfo":ClientInfo,								
+					"Option":"remove",										
+					"OrderOpt":"closeall",									
+					"Price":"3800.00",										
+					"Volume":"5"											
+				}		
+					$.ajax({
+					type: "POST",
+					url: "../restapi/strategy_order_opt_return.action",
+					data:{"param":JSON.stringify(login_data)}
+				}).done(function(temp) {
+					$('#loading').modal("hide");
+					var res = JSON.parse(temp);
+					if(res.RetNo == "0"){
+						sweetAlert({
+							 title: "客户,您好！",
+				  			  text: "撤 销 成 功",
+				  			  type: "success",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: false
+							}, function(){
+								location.href = "add_strategy_orders.html?contract="+$("#ContractID").val(); 
+								});
+					}else{
+						swal({
+				  			  title: "撤销失败",
+				  			  text: res.RetInfo.Message + "",
+				  			  type: "error",
+				  			  showCancelButton: false,
+				  			  confirmButtonColor: "#DD6B55",
+				  			  confirmButtonText: "确定",
+				  			  closeOnConfirm: false
+				  			});
+					}
+				}).fail(function(error){	
+					$('#loading').modal("hide");
+					swal("委托单撤销调用失败");
+			})	
+		})
+		}	
+	
+	</script>
+	<script type="text/javascript" src="../js/login.js"></script>
+
+</html>

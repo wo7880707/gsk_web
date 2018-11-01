@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet" >
+		<link href="../css/ALL.css" rel="stylesheet" >
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+	
+		<script type="text/javascript" src="../js/init.js"></script>
+	</head>
+	<body style="background-color: #808080;">
+		<!--1.第一行  显示框-->
+		<div class="container-fluid" style="background-color: #808080; ">
+			<div class="row" style="line-height: 50px; ">
+				<div class = "col-lg-1  col-md-1 col-sm-1 col-xs-1" style="padding-left: 0px; ">	
+					<img src="../img/g.png" style="margin: 0px; padding: 0px; border: solid 0px white;"/>
+				</div>
+				<div class = "col-lg-7  col-md-7 col-sm-7 col-xs-7" style="padding-left: 0px; ">
+					<span class="text-left" style="color: #FFFFFF; font-size: 18px; font-weight: 500; margin-left: 30px;">杠上开期货决策系统</span>							
+				</div>
+				<div class = "col-lg-4  col-md-4 col-sm-4 col-xs-4" style="padding-left: 0px; ">
+					<span class="text-left" style="color: #FFFFFF;font-size: 14px; ">杠上开服务器2</span>
+				</div>
+			</div>	
+			<!--主力合约-->
+			<div class="row" style="line-height: 50px;background-color: #FFFFFF; ">
+				<div class = "col-lg-6  col-md-6 col-sm-6 col-xs-6  col-lg-offset-1  col-md-offset-1 col-sm-offset-1 col-xs-offset-1 " style="padding-left: 0px; ">
+					<span  style="color: #2B669A;font-size: 16px; margin-left: 30px;">欢迎您！
+					<span  id="username" style="color: #2B669A;font-size: 16px;margin-right: 30px;">dasdads</span></span>
+				</div>
+				<div class = "col-lg-4  col-md-4 col-sm-4 col-xs-4  col-lg-offset-1  col-md-offset-1 col-sm-offset-1 col-xs-offset-1" style="padding-left: 0px; ">
+					<span class="text-left" style="font-size: 16px; color: #2B669A;">主力合约</span>
+				</div>
+			</div>
+			
+			<!--期货公司-->
+			<div class="row" style="line-height: 60px; background-color: #FFFFFF; margin-left: -15px;">	
+				<div class= "col-lg-12  col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px; padding-right: 0px;" align="center">
+					<a href="main_phone.html">
+					<button type="button" class="btn btn-default " style="height: 40px; margin-left: 5px;">
+  					<span class="glyphicon glyphicon-th-list" style="color: blue;"></span>
+					</button>
+					</a>							
+					<span  style="  color: #FFFFFF; font-size: 14px; "><a style="cursor: pointer; ">中金所CFFEX</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">上期所SHFE</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">大商所DCE</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">郑商所CZCE</a></span>						
+				</div>
+			</div>
+		<!--2.功能框-->				
+			<div class="row" style="line-height: 60px; background-color: #FFFFFF; margin-left: -15px; ">
+				<div class= "col-lg-12  col-md-12 col-sm-12 col-xs-12" align="center" style="padding-left: 0px; padding-right: 0px;">				
+					<span class="dropdown" style="color: #FFFFFF; font-size: 14px; margin-left: 20px;">
+						<!--<a href = "login_trade_acc.html" style="cursor: pointer; ">期货账号登录</a>-->
+						<a id="future_login" class="dropdown-toggle" data-toggle="dropdown" role= "button" style="cursor: pointer; ">期货账号登录</a>
+						<ul id="future_login_list" class="dropdown-menu" style="margin-top: 12px; " >
+      						<li><a href = "login_trade_acc_phone.html">首创期货</a></li>
+      						<li><a href = "login_trade_acc_phone_hongyuan.html">宏源期货</a></li>
+    					</ul>
+					</span>		
+					<span class="dropdown" style="color: #FFFFFF;font-size: 14px; margin-left: 10px; display: inline-block;">						
+						<a id="order" class="dropdown-toggle" data-toggle="dropdown" role= "button" style="cursor: pointer; ">委托单
+							<!-- <span class="badge" style="background-color: lightgreen;width: 18px; position:relative;left:-6px ; top: -9px;">
+								7
+							</span> -->
+						</a>
+						<ul id="order_list"  class="dropdown-menu" style="margin-top: -10px;" >
+      						<li><a href = "show_strategy_orders_phone.html">所有委托单</a></li>
+      						<li><a href = "add_strategy_orders_phone.html">增加委托单</a></li>
+    					</ul>
+					</span>		
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px;"><a id = "accountdetail" style="cursor: pointer; ">账户信息</a></span>		
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px; margin-right: 30px;"><a id = "out" style="cursor: pointer; ">注销登录</a></span>		
+				</div>
+			</div>		
+		<!--3.所有委托单-->
+			<div class="row" style="background-color:gray;">
+				<div  style="text-align: center;color: lightcoral;">
+					<h3>您账号下的所有委托单</h3>
+				</div>
+				<div class="table-responsive">
+				  <div class="table-responsive">
+					<table id="table_data" class="table table-condensed" style="color: yellow;">
+						<thead>
+							<th>序号</th>
+							<th>编号</th>
+							<th>合约品种</th>
+							<th>浮动收益</th>
+							<th>期望收益</th>
+							<th>状态</th>
+							<th>删除</th>
+						</thead>
+						 <tbody>
+				    	<tr valign="center">
+				      	<td>1</td>
+						<td>rb1801</td>
+						<td>2017.10.2</td>
+						<td>5</td>
+						<td>3542.52</td>
+						<td>正常</td>
+						<td><button class="btn btn-sm btn-danger">删除</button></td>
+						</tr>
+				    </tbody>
+				    <tbody>
+				    	<tr valign="center">
+				      	<td>2</td>
+						<td>ru1801</td>
+						<td>2017.10.2</td>
+						<td>5</td>
+						<td>3542.52</td>
+						<td>正常</td>
+						<td><button class="btn btn-sm btn-danger">删除</button></td>
+						</tr>
+				    </tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->  
+        <div class="modal" id="aa">
+			<div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<p class="page-header">尊贵的客户，您好！</p>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table style="width: 85%; margin-left: 15%;">
+						<tr class="success">
+							<td>姓名:<span id="return_Name"></span></td>
+							<td>用户类型:<span id="return_UserType"></span></td>
+						</tr>
+						<tr class="success">
+							<td>电话:<span id="return_Telephone"></span></td>
+							<td>邮箱:<span id="return_EmailAddress"></span></td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table id="login_detail_Indices" class="table-bordered" style="width: 100%;">
+						<thead>
+							<td>指标类型</td>
+							<td>指标订阅到期日</td>
+							<td>状态</td>
+						</thead>
+						<!--<tr>
+                		<td >白盘</td>
+                		<td >2018年4月21日</td>
+                		<td>正常</td>
+                	</tr>-->
+					</table>
+				</div>
+				<p style="margin-top: 20px;">
+					注：如有任何问题请联系杠上开期货交易决策系统客服!
+				</p>
+				<p class="text-right"><button class="btn btn-info" onclick='$("#aa").modal("hide")'>关闭</button></p>
+			</div>
+		</div> 
+	</body>
+<script>
+		//这一句代码是调用了bootstrap的函数,直接传入ID即可使用.  
+		$('#accountdetail').click(function() {
+			$('#aa').modal("show");
+		})
+		//查询所有的委托单然后显示
+		var param = {
+			"UserID": "14",
+			"TradeAcc": "082705",
+			"TradePwd":"789456123",								// 交易密码（暂定不使用）
+			"BrokerID":"9999",									// 经纪公司代码
+			"LastIndex": "0"
+		}
+		$.ajax({
+			type: "post",
+			url: "../restapi/qry_base_info_return.action",
+			data: {
+				"param": JSON.stringify(param)
+			}
+		}).done(function(temp) {
+			var res = JSON.parse(temp);
+			if(res.RetNo == "0") {
+				//在表格中显示
+				$('#table_data').empty();
+				//不等于0 就遍历出来
+				/* if(res.TurnoverInfo.length != "0"){ */
+				$('#table_data').append('<thead><th>序号</th><th>编号</th><th>合约品种</th><th>浮动收益</th><th>期望收益</th><th>状态</th><th>删除</th></thead>');
+				for(var i = 0; i < res.TurnoverInfo.length; i++) {
+					//序号
+					var s0 = i + 1;
+					//策略单编号
+					var s1 = res.TurnoverInfo[i].StrategyOrderId;
+					//取到合约品种
+					var s2 = res.TurnoverInfo[i].ContractID;
+					//浮动收益
+					var s3 = res.TurnoverInfo[i].FloatTurnover;
+					//期望收益
+					var s4 = res.TurnoverInfo[i].ExpectTurnover;
+					//状态
+					var s5 = res.TurnoverInfo[i].OrderState;
+					$('#table_data').append('<thead><tr><th>' + s0 + '</th><th>' + s1 + '</th><th>' + s2 + '</th><th>' + s3 + '</th><th>' + s4 + '</th><th>' + s5 + '</th><th><button class="btn btn-sm btn-danger">删除</button></th></tr></thead>');
+				}
+				//取到所有的button，给她一个删除命令（在查到表格之后绑定事件）
+				var btns = $('.btn btn-sm btn-danger');
+				//循环遍历所有的按钮，一个一个添加事件绑定  
+				for(var i = 0; i < btns.length; ++i) {
+					btns[i].onclick = function() {
+						var a = confirm("确定要删除");
+						if(a = true) {
+							//删除的参数
+							var param = {
+								"UserId": "5",
+								"TradeAcc": "12380000",
+								"BrokerID": "8016",
+								"TradePwd": "password",
+								"StrategyOrderId": "1",
+								"ClientInfo": "GskMobile",
+								"Option": "enable",
+								"OrderOpt": "closeall",
+								"Price": "3800.00",
+								"Volume": "5"
+							}
+							//调用API删除
+							$.ajax({
+								type: "post",
+								url: "../restapi/qry_strategy_orders_return.action",
+								data: {
+									"param": JSON.stringify(param)
+								}
+							}).done(function(temp) {
+								var res = JSON.parse(temp);
+								//成功 RetNo返回值为0
+								if(res.RetNo == "0") {
+									//后台删除成功    html上也跟着删除	
+									$(this).parent().parent().parent().remove();
+								}
+							})
+						}
+					}
+				}
+				/* }else{
+					//等于0就给个提示
+					//alert("尊敬的客户，你还没有委托单");
+				} */
+			} else {
+				//swal("查询委托单接口返回值不等于0");
+				alert("查询委托单接口返回值不等于0");
+			}
+			//取到所有的button，给她一个删除命令（在查到表格之后绑定事件）
+				var btns = $('.btn btn-sm btn-danger');
+				//循环遍历所有的按钮，一个一个添加事件绑定  
+				for(var i = 0; i < btns.length; ++i) {
+					btns[i].onclick = function() {
+						var a = confirm("确定要删除");
+						if(a = true) {
+							//删除的参数
+							var param = {
+								"UserId": "5",
+								"TradeAcc": "12380000",
+								"BrokerID": "8016",
+								"TradePwd": "password",
+								"StrategyOrderId": "1",
+								"ClientInfo": "GskMobile",
+								"Option": "enable",
+								"OrderOpt": "closeall",
+								"Price": "3800.00",
+								"Volume": "5"
+							}
+							//调用API删除
+							$.ajax({
+								type: "post",
+								url: "../restapi/qry_strategy_orders_return.action",
+								data: {
+									"param": JSON.stringify(param)
+								}
+							}).done(function(temp) {
+								var res = JSON.parse(temp);
+								//成功 RetNo返回值为0
+								if(res.RetNo == "0") {
+									//后台删除成功    html上也跟着删除	
+									$(this).parent().parent().parent().remove();
+								}
+							})
+						}
+					}
+				}
+		}).fail(function(error) {
+			//swal("查询策略单（已经委托的策略单）调用错误");
+			alert("查询策略单（已经委托的策略单）调用错误")
+		})
+	</script>
+		<script type="text/javascript" src="../js/login.js"></script>
+</html>

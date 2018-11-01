@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="edge" >
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<script type="text/javascript" src="../sweet/js/sweet-alert.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sweet/css/sweet-alert.css"/>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet" >
+		<link href="../bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap-select.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+		<script type="text/javascript" src="../js/json2.js"></script>
+		<script src="../js/gVerify.js"></script>
+	</head>
+	<body style="background-color:#DAE0ED;" >
+		<div class="container">
+			<div class="row">
+			<div  style="height: 50px; background-color: cornflowerblue; padding-left: 30px; color: white; line-height: 50px;">
+            	欢迎登录大连睿盈科技旗下睿盈科技有限公司开发的【杠上开】软件!
+       		</div>
+       		</div>
+       		<div class="row" style="background-color:white; height: 590px;">
+       			<!--占6格-->
+       			<div class="col-md-6 col-sm-6 col-xs-6" style=" margin-top: 80px; " align="center">
+                	<img src="../img/login_tu.png" class="img-responsive" alt="Alternate Text"  />
+            	</div>
+            	<!--占6格-->
+            	<div class="col-md-6 col-sm-6 col-xs-6" style=" margin-top: 190px;">
+	                <div class="form-group" style="padding-left: 50px ; width: 75%;">					
+						<input type="text" class="form-control" id="username" autofocus="autofocus" placeholder="请输入账号" style="">	
+					</div> 
+					<div class="form-group" >
+						<div class="input-group" style="padding-left: 50px ; width: 75%;">
+							<input type="password" class="form-control" id="password" placeholder="请输入密码" style="">
+							<span class="input-group-addon glyphicon glyphicon-eye-open" id="password_show" style=" cursor:pointer; top : 0px;"></span>														
+						</div>
+					</div>
+					<!--<div class="form-group" >					
+						<div class="input-group" style="padding-left: 50px ; width: 75%; ">
+							<input type="text" class="form-control" id="verification_code" placeholder="请输入验证码" style="">
+								<span class="input-group-addon glyphicon " id="verification_code_show"  style=" width: 30%; height: 100%; background-color : white; cursor:pointer; top : 0px; padding: 0; border: 0;">
+								</span>
+						</div>
+					</div> -->
+					<div class="form-group" style="padding-left: 50px;margin-top: 10px;margin-bottom: 10px; ">
+						<div style=" width: 75%;">
+                    <input type="checkbox" value="" id="c" /> <label class="control-label" for="c" style="cursor:pointer; ">请记住我</label>
+                    	
+                    	</div>
+                	</div>
+               		<div class="form-group" style="padding-left: 50px ;width: 75%;">
+                    	<input onclick="login()" type="button" value="登录" style="font-size: 18px; letter-spacing: 10px; height: 40px; width: 100%; border: none; border-radius: 6px; background-color: cornflowerblue;color:white" />
+                	</div>
+                	<div class="form-group" style="padding-left: 50px ; width: 75%;">
+                      	<div style=" text-align: right; ">
+                      	<a href="https://www.gskwin.com/user/forgetPassword1" target="_blank" >忘记密码</a>  |  <a href="https://www.gskwin.com/user/registered" target="_blank">注册账号</a>        
+                    	</div>
+                	</div>            
+	            </div>
+       		</div>
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->
+		<div class="modal" id="loading" style="">
+			<div align="center" class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="  margin-top:280px;">
+			
+			<img style="height: 65px; width: 95px; padding-right: 30px;" src="../img/load_3.gif" />
+			<span style="display: block; margin-top: 18px; font-family: '微软雅黑';font-size: 21px;color: #337AB7; padding-right: 30px;">Load . . . . . .</span>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">	
+			//如果登录超过三次
+			//验证码
+			//var verifyCode = new GVerify("verification_code_show");
+			//实现密码显示
+			$("#password_show").mouseover(function(){
+				$("#password").prop("type","text");
+			})
+			$("#password_show").mouseout(function(){
+				$("#password").prop("type","password");
+			})
+
+		if($.cookie("uuidpp") != null)
+			{
+ 				username_password_cookie =$.cookie("uuidpp");
+ 				var username_cookie = decodeURI($.base64.decode(username_password_cookie)).split("-")[0];
+         		var password_cookie = decodeURI($.base64.decode(username_password_cookie)).split("-")[1];
+         		$("#username").val(username_cookie);
+         		$("#password").val(password_cookie);
+         		$("#c").prop("checked","checked")
+ 			}else {
+ 				
+ 			}
+
+ 		var DevID;
+ 		$.ajax({
+			type: "POST",
+			url: "../self/getMAC.action"
+		}).done(function(res) {
+			DevID = res;
+		})
+		//回车登录
+		$(document).keyup(function(event){
+				  if (event.keyCode ==13) {
+				   	//并且sweet-alert没显示
+				   	if ($('.sweet-overlay').css("display") != "block" ){
+				   		login();
+				   	}
+				  }
+				});
+		function login(){
+
+			$('#loading').modal("show");
+ 			if($("#username").val() == ""){
+				$('#loading').modal("hide");
+						swal({
+							  title: "客户，您好！",
+							  text: "账号不能为空！",
+							  type: "error",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							})
+			}else if($("#password").val() == ""){
+				$('#loading').modal("hide");
+						swal({
+							  title: "客户，您好！",
+							  text: "密码不能为空！",
+							  type: "error",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: true
+							})
+			}else{
+			var login_data = {"UserName":$("#username").val(),"Password":$("#password").val(),"ClientType":"web","DevID":DevID};			
+
+			$.ajax({
+					type: "POST",
+					url: "../restapi/user_login.action",
+					data:{"param":JSON.stringify(login_data)}
+				}).done(function(res) {
+					
+					$('#loading').modal("hide");					
+					
+					if(res == "0"){
+						var user_pass = $("#username").val() + "-" + $("#password").val();
+						
+						if($("#c").prop("checked")){
+							$.cookie("uuidpp",$.base64.encode(encodeURI(user_pass)),{path:'/',expires:7})
+						}else{
+							$.cookie("uuidpp",null,{path:'/',expires:-1}) 	
+						}
+						location.href = "main.html"
+					}else{
+						swal({
+							  title: "客户，您好！",
+							  text: "密码或账号不正确！",
+							  type: "error",
+							  showCancelButton: false,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "确定",
+							  closeOnConfirm: false
+							})
+						
+						}
+				}).fail(function(error){	
+					
+					$('#loading').modal("hide");	
+					swal({
+						  title: "客户，您好!",
+						  text: "很抱歉，登录超时，请重试 ！",
+						  type: "error",
+						  showCancelButton: false,
+						  confirmButtonColor: "#DD6B55",
+						  confirmButtonText: "确定",
+						  closeOnConfirm: false
+						});
+						
+			})	
+			}
+		}	
+	
+		
+	</script>
+	<script type="text/javascript" src="../js/public_info.js"></script> 
+</html>

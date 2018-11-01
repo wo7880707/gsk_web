@@ -1,0 +1,13 @@
+/* Styles go here */
+
+#table-cont {
+  /**make table can scroll**/
+  /*max-height: 800px;*/
+  overflow: auto;
+  /** add some style**/
+  /* padding: 2px;
+  margin: 20px 10px; */
+  background: #000000;
+  box-shadow: 0 0 1px 3px #ddd; 
+}
+

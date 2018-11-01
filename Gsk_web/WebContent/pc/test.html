@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+				<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<script type="text/javascript" src="../sweet/js/sweet-alert.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../sweet/css/sweet-alert.css"/>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
+		<!--<link href="../css/ALL.css" rel="stylesheet">-->
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap-select.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>
+		<script type="text/javascript" src="../js/init.js"></script>
+		<style>
+        th{
+            text-align:center;
+        }
+        table{
+            text-align:center;
+        }
+        .fixedhead{
+            position: fixed;
+            background: white;
+        }
+    </style>
+	</head>
+	<body>
+		<div class="container-fluid">
+    <!-- 仅含表头的表格，与下面的表格表头必须一致，然后将此表的css设置为position:fixed，脱离文档流，达到表头固定的效果-->
+    <table class="table table-bordered table-striped fixedhead" id="fixedhead">
+        <thead>
+        <tr>
+            <th>用户名</th>
+            <th>密码</th>
+            <th>状态</th>
+        </tr>
+        </thead>
+
+    </table>
+    <!-- 含有数据的表格，实际上表头的内容不会被显示，因为会被上面的表覆盖，但也不要删除表头，因为需要占位，否则表中第一行数据无法看到。-->
+    <table class="table table-bordered table-striped" id="user_table" >
+        <thead>
+        <tr>
+            <th>用户名</th>
+            <th>密码</th>
+            <th>状态</th>
+        </tr>
+        </thead>
+        <tbody id="user_table_tbody">
+        <script>
+            //固定表头的宽度，自适应user_table的宽度
+            function autoWidth()
+            {
+                 document.getElementById("fixedhead").style.width =  document.getElementById("user_table").offsetWidth;
+
+            }
+
+            window.onresize = function () {
+                //当窗口重绘，重新适应宽度
+                autoWidth();
+            }
+            window.onload = function(){
+             //页面加载完毕，表头表的自适应宽度
+             autoWidth(); 
+            }
+
+            //批量生成表格数据
+            var tbody = document.getElementById("user_table_tbody");
+            var inner = "";
+            for (var i=0;i<100;i++) {
+                 inner += "<tr>";
+                    for (var j=0;j<3;j++) {
+                        inner += "<td>" +i+j + "</td>";
+                    }
+                    inner += "</tr>"
+                }
+           tbody.innerHTML = inner;
+
+
+        </script>
+        </tbody>
+    </table>
+</div>
+	</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+		<title>大连睿盈科技</title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+		<script type="text/javascript" src="bootstrap/js/jquery.js"></script>
+	</head>
+	<body >
+		<div class="container-fluid" style="background-color: darkgray;" >
+			<div id="weixin"  class="row" style=" background-color: black; opacity: 0.85; position: fixed; top: 0px;  width: 100%; display: none; ">
+				<div class="col-md-12 col-sm-12" style=" margin-left: 15px;  margin-right: 7px; height: 300px; background-image : url(img/loadapp_weixin.png); background-repeat: no-repeat; background-size: 100% 100%; " >
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var h = $(document).height() - 370;
+		var u = navigator.userAgent;
+		var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		var isiPad =  u.indexOf('iPad') > -1;
+		var is_weixin = (function(){return navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1})();
+		if(is_weixin){
+    		//�����΢�ž���ʾͼƬ
+    		$("#weixin").css("height",$(document).height() + "px");
+    		$("#weixin").css("display","block");
+		}
+		if(isiOS == true || isiPad == true){
+			location.href = "itms-services://?action=download-manifest&url=https://trade.gskwin.com/Gsk_web/applink/manifest_test.plist" ;
+
+		}else if(isAndroid == true){
+			location.href = "https://trade.gskwin.com/Gsk_web/applink/GskApp_test.apk" ;
+		}else{
+			alert("请用手机访问，谢谢合作！")
+		}
+	</script>
+</html>

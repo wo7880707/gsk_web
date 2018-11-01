@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>杠上开期货决策系统</title>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
+		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../css/ALL.css" rel="stylesheet">
+		<script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.jsoncookie.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.timers-1.1.2.js"></script>
+		<script type="text/javascript" src="../bootstrap/js/jquery.base64.js"></script>	
+		<script type="text/javascript" src="../js/init.js"></script> 
+
+	</head>
+
+	<body style="background-color: gray;">
+		<!--1.第一行  显示框-->
+		<div class="container-fluid" style="background-color: #808080; ">
+			<div class="row" style="line-height: 50px; ">
+				<div class = "col-lg-1  col-md-1 col-sm-1 col-xs-1" style="padding-left: 0px; ">	
+					<img src="../img/g.png" style="margin: 0px; padding: 0px; border: solid 0px white;"/>
+				</div>
+				<div class = "col-lg-7  col-md-7 col-sm-7 col-xs-7" style="padding-left: 0px; ">
+					<span class="text-left" style="color: #FFFFFF; font-size: 18px; font-weight: 500; margin-left: 30px;">杠上开期货决策系统</span>							
+				</div>
+				<div class = "col-lg-4  col-md-4 col-sm-4 col-xs-4" style="padding-left: 0px; ">
+					<span class="text-left" style="color: #FFFFFF;font-size: 14px; ">杠上开服务器2</span>
+				</div>
+			</div>	
+			<!--主力合约-->
+			<div class="row" style="line-height: 50px;background-color: #FFFFFF; ">
+				<div class = "col-lg-6  col-md-6 col-sm-6 col-xs-6  col-lg-offset-1  col-md-offset-1 col-sm-offset-1 col-xs-offset-1 " style="padding-left: 0px; ">
+					<span  style="color: #2B669A;font-size: 16px; margin-left: 30px;">欢迎您！
+					<span  id="username" style="color: #2B669A;font-size: 16px;margin-right: 30px;"></span></span>
+				</div>
+				<div class = "col-lg-4  col-md-4 col-sm-4 col-xs-4  col-lg-offset-1  col-md-offset-1 col-sm-offset-1 col-xs-offset-1" style="padding-left: 0px; ">
+					<span class="text-left" style="font-size: 16px; color: #2B669A;">主力合约</span>
+				</div>
+			</div>
+			
+			<!--期货公司-->
+			<div class="row" style="line-height: 60px; background-color: #FFFFFF; margin-left: -15px; border-bottom: solid 1px #337AB7; border-top: solid 1px #337AB7;">	
+				<div class= "col-lg-12  col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px; padding-right: 0px;" align="center">
+					<a href="main_phone.html">
+					<button type="button" class="btn btn-default " style="height: 40px; margin-left: 5px;">
+  					<span class="glyphicon glyphicon-th-list" style="color: blue;"></span>
+					</button>
+					</a>							
+					<span  style="  color: #FFFFFF; font-size: 14px; "><a style="cursor: pointer; ">中金所CFFEX</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">上期所SHFE</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">大商所DCE</a></span>
+							
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 4px;"><a style="cursor: pointer; ">郑商所CZCE</a></span>						
+				</div>
+			</div>
+		<!--2.功能框-->				
+			<div class="row" style="line-height: 60px; background-color: #FFFFFF; margin-left: -15px; ">
+				<div class= "col-lg-12  col-md-12 col-sm-12 col-xs-12" align="center" style="padding-left: 0px; padding-right: 0px;">				
+					<span class="dropdown" style="color: #FFFFFF; font-size: 14px; margin-left: 20px;">
+						<!--<a href = "login_trade_acc.html" style="cursor: pointer; ">期货账号登录</a>-->
+						<a id="future_login" class="dropdown-toggle" data-toggle="dropdown" role= "button" style="cursor: pointer; ">期货账号登录</a>
+						<ul id="future_login_list" class="dropdown-menu" style="margin-top: 12px; " >
+      						<li><a href = "login_trade_acc_phone.html">首创期货</a></li>
+      						<li><a href = "login_trade_acc_phone_hongyuan.html">宏源期货</a></li>
+    					</ul>
+					</span>		
+					<span class="dropdown" style="color: #FFFFFF;font-size: 14px; margin-left: 10px; display: inline-block;">						
+						<a id="order" class="dropdown-toggle" data-toggle="dropdown" role= "button" style="cursor: pointer; ">委托单
+							<!-- <span class="badge" style="background-color: lightgreen;width: 18px; position:relative;left:-6px ; top: -9px;">
+								7
+							</span> -->
+						</a>
+						<ul id="order_list"  class="dropdown-menu" style="margin-top: -10px;" >
+      						<li><a href = "show_strategy_orders_phone.html">所有委托单</a></li>
+      						<li><a href = "add_strategy_orders_phone.html">增加委托单</a></li>
+    					</ul>
+					</span>		
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px;"><a id = "accountdetail" style="cursor: pointer; ">账户信息</a></span>		
+					<span  style="color: #FFFFFF;font-size: 14px; margin-left: 10px; margin-right: 30px;"><a id = "out" style="cursor: pointer; ">注销登录</a></span>		
+				</div>
+			</div>
+		<!--3.报单区域-->
+				<div class="row" style="background-color:lightblue;height: 1000px;" >
+					<div class="col-lg-4  col-md-4 col-sm-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4" style="margin-top: 5%;">
+						<div style="text-align: center;" >
+						<h3 style="color: #6495ED;">请正确填写以下信息</h3>
+						</div>
+						<!--<form class="form-horizontal" role="form" style="margin-top: 40px;">-->
+			                <div class="form-group" >	
+			                	<span>合约</span> 
+								<select id="hy_option" >
+									<!-- <option>GL01</option>
+									<option>GL02</option>
+									<option>GH01</option> -->
+								</select>				
+								<span>策略</span> 
+								<select id="cl_option" >
+									<!-- <option>GL01</option>
+									<option>GL02</option>
+									<option>GH01</option> -->
+								</select>
+								<button id="cl" class="btn btn-info" style="margin-left: 20px;">策略说明</button>
+							</div> 
+							<div class="form-group" >
+								<span>委托数</span> 
+								<input type="password"   >
+								<span>期望收益</span> 
+								<input type="password"   >
+							</div>
+							<div class="form-group" >
+								<span>跳开风控</span> 
+								<input type="password"  >
+								<input type="checkbox" value="" id="c" /> <label class="control-label" for="c" style="cursor:pointer; ">跳开出场</label>
+							</div>
+							<div class="form-group" >
+								<span>跟谁指标数量</span> 
+								<input type="password"  >
+							</div>
+							<div class="form-group" >
+								<span>报入时间</span> 
+								<input type="date"  >
+							</div>
+							<div class="form-group" >
+								<span>有效时间</span> 
+								<input type="date"   >
+							</div>
+							<div class="form-group" >
+								<span>有效交易时段</span> 
+								<input type="date"   >
+								<hr style= " border:none;background-color:blueviolet;height:3px; " />
+							</div>
+							<div class="form-group" >
+								<span>板价风控</span>  
+								<input type="password"   >
+								<span>超价平仓</span> 
+								<input type="password"   >
+							</div>
+							<div class="form-group" >
+								<span>止损条件</span> 
+								<input type="password"   >
+								<span>止盈倍率</span> 
+								<input type="password"   >
+							</div>
+							<div class="form-group" >
+								<span>滑动止盈设定</span> 
+								<input type="password"   >
+							</div>
+							<div class="form-group" >
+								<hr style= " border:none;background-color:blueviolet;height:3px; " />
+							</div>
+							<!--<div class="form-group" >
+								<div >
+		                    <input type="checkbox" value="" id="c" /> <label class="control-label" for="c" style="cursor:pointer; ">请记住我</label>
+		                    	</div>
+		                	</div>-->
+		               		<div class="form-group" >
+		                    	<input onclick="commit()" type="button" value="提交" style="font-size: 18px; letter-spacing: 10px; height: 40px; width: 100%; border: none; border-radius: 6px; background-color: cornflowerblue;color:white" />
+		                		<input onclick="commit2()" type="button" value="查询基本信息" style="font-size: 18px; letter-spacing: 10px; height: 40px; width: 100%; border: none; border-radius: 6px; background-color: cornflowerblue;color:white" />
+		               			<input onclick="commit3()" type="button" value="删除委托单" style="font-size: 18px; letter-spacing: 10px; height: 40px; width: 100%; border: none; border-radius: 6px; background-color: cornflowerblue;color:white" />
+		               		</div>	    
+                		<!--</form>  -->     
+						<!--<form class="form-horizontal" role="form" style="margin-top: 40px;">
+			                <div class="form-group" >					
+								<input type="text" class="form-control" id="username_login" placeholder="请输入账号" >	
+							</div> 
+							<div class="form-group" >
+								<input type="password" class="form-control" id="password" placeholder="请输入密码" >
+							</div>-->
+							<!--<div class="form-group" >
+								<div >
+		                    <input type="checkbox" value="" id="c" /> <label class="control-label" for="c" style="cursor:pointer; ">请记住我</label>
+		                    	</div>
+		                	</div>-->
+		               		<!--<div class="form-group" >
+		                    	<input onclick="login()" type="button" value="登录" style="font-size: 18px; letter-spacing: 10px; height: 40px; width: 100%; border: none; border-radius: 6px; background-color: cornflowerblue;color:white" />
+		                	</div>
+		                	<div class="form-group" >-->
+		                    	<!--<div style="float: right; margin-top: 20px; color: grey; cursor: pointer;width: 60%; border: dashed 2px red;">-->
+		                 <!--   	<div >
+		                    	<a href="http://simnow.sfit.com.cn/static/register1.action" >注册账号</a>
+		                    	<div style="text-align: right; float: right; ">
+                    				<div class="btn-group">
+							 		 <a href="http://simnow.sfit.com.cn/static/resetPWDPage.action" >忘记密码</a> 
+									</div>
+                    			</div>
+                    			</div>
+		                      	
+		                	</div>
+                		</form>  -->
+					</div>
+				</div>
+		</div>
+		<!--这里制作一个模态框，相关还有一句JavaScript代码-->
+		<div class="modal" id="aa">
+			<div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<p class="page-header">尊贵的客户，您好！</p>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table style="width: 85%; margin-left: 15%; ">
+						<tr class="success">
+							<td>姓名:<span id="return_Name"></span></td>
+							<td>用户类型:<span id="return_UserType"></span></td>
+						</tr>
+						<tr class="success">
+							<td>电话:<span id="return_Telephone"></span></td>
+							<td>邮箱:<span id="return_EmailAddress"></span></td>
+						</tr>
+					</table>
+				</div>
+				<div class="table-responsive" style="margin-top: 30px;">
+					<table id="login_detail_Indices" class="table-bordered" style="width: 100%;">
+						<thead>
+							<td>指标类型</td>
+							<td>指标订阅到期日</td>
+							<td>状态</td>
+						</thead>
+					</table>
+				</div>
+				<p style="margin-top: 20px;">
+					注：如有任何问题请联系杠上开期货交易决策系统客服!
+				</p>
+				<p class="text-right"><button class="btn btn-info" onclick='$("#aa").modal("hide")'>关闭</button></p>
+			</div>
+		</div>
+		<!--这里制作一个策略说明模态框，相关还有一句JavaScript代码-->
+		<div class="modal" id="aa_cl">
+			<div class="col-md-6 col-sm-6  col-md-offset-3 col-sm-offset-3" style="background: #FFFFFF;border-radius: 6px;border: solid 1px lightcoral;  margin-top:120px;line-height: 20pt;">
+				<p id="cl_show" style="margin-top: 20px;">
+					注：如有任何问题请联系杠上开期货交易决策系统客服!
+				</p>
+				<p class="text-right"><button class="btn btn-info" onclick='$("#aa_cl").modal("hide")'>关闭</button></p>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//点击出现用户个人信息
+		$('#accountdetail').click(function() {
+				$('#aa').modal("show");
+			})
+		//自动：合约读取
+		var allcontracts = $.JSONCookie("contracts_return").Contracts.split(",");
+		$("#hy_option").empty();
+		for (var i = 0; i < allcontracts.length; i++) {
+			$("#hy_option").append('<option value = "' + allcontracts[i] + '"> '+ allcontracts[i] +'</option>')
+		} 
+		//如果是从K线界面跳过来的 就显示url合约
+		var url = location.search;
+		if(url != ""){
+			var contract = url.split("=")[1];
+			$('option[value="' + contract +'"]').prop("selected","selected");
+		}
+		//自动：策略读取
+		var allstrategys = localStorage.getItem("strategys_return");
+		var allstrategys_json = JSON.parse(allstrategys);
+		$("#cl_option").empty();
+		for (var i = 0; i < allstrategys_json.Strategys.length; i++) {
+			$("#cl_option").append('<option>'+ allstrategys_json.Strategys[i].Name  +'</option>')
+		}
+
+		//点击策略说明
+		$("#cl").click(function(){
+			var cl = $("#cl_option").val();
+			for (var i = 0; i < allstrategys_json.Strategys.length; i++) {
+				if(cl == allstrategys_json.Strategys[i].Name){
+					//给隐藏块赋值
+					$('#cl_show').html(allstrategys_json.Strategys[i].Description);
+					//显示之前隐藏的模块
+					$('#aa_cl').modal("show");
+					//跳出循环
+					break;
+				}	
+			}	
+		})
+		//报入委托单
+		function commit(){
+			var login_data =  {
+			"UserId": "14",											// 用户杠上开ID
+			"TradeAcc":"082705",									// 交易账号
+			"TradePwd":"789456123",									// 交易账号密码
+			"BrokerID":"9999",										// 经纪公司代码
+			"SeatID":"1",											// 席位ID（暂时不使用）
+			"StrategyOrders":										// 策略单集合
+			[			
+				{			
+					"StrategyOrderId":"0",							// 策略单编号（置0，系统会自动分配）
+					"OrderState":"enable",							// 策略单状态："enable","disable","finished","removed"
+					"StrategyId":"1",								// 策略ID
+					"Name":"GL01",									// 策略显示名字
+					"ContractID":"rb1801",							// 合约ID
+					"ContractName":"螺纹1801",						// 合约显示名称
+					"OrderAmount":"1",								// 托管手数
+					"ExpectPoint":"10",								// 期望收益的Tick数
+					"StopPoint":"50",								// 持仓止损Tick数
+					"GiveUpLimit":"10",								// 放弃入场的Tick数限制
+					"SupplementLimit":"5",							// 补单Tick数限制（开启补单功能）
+					"SupperCloseTicks":"5",							// 超价平仓
+					"Reserval":"0",									// 反向操作
+					"OpenJumpLimit":"0",							// 跳开上限
+					"MultiExpectLimit":"1",							// 止盈倍率
+					"ClientInfo":"GskMobile",						// 客户端信息
+					"InsertDate":"2017-11-01 10:10:00",				// 报入时间
+					"ExpirationDate":"2017-11-01 15:00:00"			// 有效期限
+				}
+			]
+		}
+			//var param = {"UserName":$("#username_login").val(),"Password":$("#password").val(),"ClientType":"mobile","DevId":"8792792349274323723947923"};			
+					$.ajax({
+					type: "POST",
+					url: "../restapi/insert_strategy_orders_return.action",
+					//解决跨域安全问题的
+					data:{"param":JSON.stringify(login_data)}
+				}).done(function(temp) {
+					var res = JSON.parse(temp);
+				}).fail(function(error){	
+					//swal("报入委托单调用错误");
+					alert("报入委托单调用错误")
+			})	
+		}		
+		function commit2(){
+			var login_data =  {
+			"UserId": "14",
+			"TradeAcc": "082705",
+			"TradePwd":"789456123",								// 交易密码（暂定不使用）
+			"BrokerID":"9999",									// 经纪公司代码
+			"LastIndex": "0"
+		}
+			//var param = {"UserName":$("#username_login").val(),"Password":$("#password").val(),"ClientType":"mobile","DevId":"8792792349274323723947923"};			
+					$.ajax({
+					type: "POST",
+					url: "../restapi/qry_base_info_return.action",
+					//解决跨域安全问题的
+					data:{"param":JSON.stringify(login_data)}
+				}).done(function(temp) {
+					var res = JSON.parse(temp);
+				}).fail(function(error){	
+					//swal("报入委托单调用错误");
+					alert("报入委托单调用错误");
+			})	
+		}	
+		function commit3(){
+			var login_data =  {
+					"UserId":"14",
+					"TradeAcc": "082705",
+					"BrokerID":"9999",										// 经纪公司代码
+					"TradePwd":"789456123",									// 期货交易密码
+					"StrategyOrderId":"1",									// 策略单编号
+					"ClientInfo":"GskMobile",								// 客户端信息
+					"Option":"enable",										// 操作选项："enable","disable","remove","manual"
+					"OrderOpt":"closeall",									// 定单操作："long","short","reverse","closeall"
+					"Price":"3800.00",										// 价格（不指定时使用对手价）
+					"Volume":"5"											// 数量（不指定时使用策略单中参数）
+				}
+			//var param = {"UserName":$("#username_login").val(),"Password":$("#password").val(),"ClientType":"mobile","DevId":"8792792349274323723947923"};			
+					$.ajax({
+					type: "POST",
+					url: "../restapi/strategy_order_opt_return.action",
+					//解决跨域安全问题的
+					data:{"param":JSON.stringify(login_data)}
+				}).done(function(temp) {
+					var res = JSON.parse(temp);
+				}).fail(function(error){	
+					//swal("报入委托单调用错误");
+					alert("报入委托单调用错误");
+			})	
+		}		
+	</script>
+	<script type="text/javascript" src="../js/login.js"></script>
+
+</html>
